@@ -10,11 +10,14 @@ namespace Diploma
     class DataBase
     {
         
-
-        MySqlConnection mySQLConnection = new MySqlConnection("username=root;password=RaPtorJEDI1;database=userdb");
+       
+        MySqlConnection mySQLConnection = new MySqlConnection("username=root;password=RaPtorJEDI1;database=userdb"); 
+    
+     //    MySqlConnection mySQLConnection = new MySqlConnection("username=u1163679_scarlet;password=RaPtorJEDI1;database=u1163679_userdb");
 
         public void OpenConnection()
         {
+           
             if (mySQLConnection.State == System.Data.ConnectionState.Closed)
                 mySQLConnection.Open();
         }

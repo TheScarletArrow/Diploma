@@ -22,7 +22,7 @@ namespace Diploma
         {
             InitializeComponent();
         }
-        
+
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -34,25 +34,34 @@ namespace Diploma
                 MessageBox.Show("WEEE");
             }
             else {
-                    
-                  }
+
+            }
 
             string name = NameField.Text;
             string surname = SurnameField.Text;
             string mail = MailField.Text;
             string phone = PhoneField.Text;
             DateTime birthdate = BirthDatePicker.Value;
-            MySqlCommand insertToUserInfo = new MySqlCommand("insert into `user_info` (id, name, surname, mail, phone, birth_date) values (NULL, @un, @us, @um, @up, @ub);", 
-                dataBase.GetConnection());
-            insertToUserInfo.Parameters.Add("@un", MySqlDbType.VarChar).Value = name;
-            insertToUserInfo.Parameters.Add("@us", MySqlDbType.VarChar).Value = surname;
-            insertToUserInfo.Parameters.Add("@um", MySqlDbType.VarChar).Value = mail;
-            insertToUserInfo.Parameters.Add("@up", MySqlDbType.VarChar).Value = phone;
-            insertToUserInfo.Parameters.Add("@ub", MySqlDbType.DateTime).Value = birthdate;
+            try
+            {
+                MySqlCommand insertToUserInfo = new MySqlCommand
+                    ("insert into `user_info` (id, name, surname, mail, phone, birth_date) values (NULL, @un, @us, @um, @up, @ub);",
+                    dataBase.GetConnection());
+                insertToUserInfo.Parameters.Add("@un", MySqlDbType.VarChar).Value = name;
+                insertToUserInfo.Parameters.Add("@us", MySqlDbType.VarChar).Value = surname;
+                insertToUserInfo.Parameters.Add("@um", MySqlDbType.VarChar).Value = mail;
+                insertToUserInfo.Parameters.Add("@up", MySqlDbType.VarChar).Value = phone;
+                insertToUserInfo.Parameters.Add("@ub", MySqlDbType.DateTime).Value = birthdate;
 
-            adapter.SelectCommand=insertToUserInfo;
-            adapter.Fill(dataTable);
-
+                adapter.SelectCommand = insertToUserInfo;
+                adapter.Fill(dataTable);
+            }
+            catch (
+                MySqlException mysqlexception
+            )
+            {
+               MessageBox.Show( mysqlexception.StackTrace);
+            }
 
 
         }
