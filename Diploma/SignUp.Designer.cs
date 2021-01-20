@@ -311,6 +311,8 @@ namespace Diploma
             this.Name = "SignUp";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Регистрация нового пользователя";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.formDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.formMove);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Text;
+using System.Drawing;
 
 namespace Diploma
 {
@@ -180,6 +181,21 @@ namespace Diploma
         {
             new Auth().Show();
             this.Hide();
+        }
+        Point lastPoint;
+        private void formMove(object sender, MouseEventArgs e)
+        {
+            int dx = e.X - lastPoint.X;
+            int dy = e.Y - lastPoint.Y;
+            if (e.Button.Equals(MouseButtons.Left)) {
+                this.Left += dx;
+                this.Top += dy;
+                }
+        }
+
+        private void formDown(object sender, MouseEventArgs e)
+        {
+            lastPoint = new Point(e.X, e.Y);
         }
     }
 }

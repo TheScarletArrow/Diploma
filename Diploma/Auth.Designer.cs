@@ -116,6 +116,7 @@ namespace Diploma
             this.label4.Size = new System.Drawing.Size(109, 13);
             this.label4.TabIndex = 18;
             this.label4.Text = "Зарегестрируйтесь!";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // Auth
             // 
@@ -135,6 +136,8 @@ namespace Diploma
             this.Name = "Auth";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.formDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.formMove);
             this.ResumeLayout(false);
             this.PerformLayout();
 

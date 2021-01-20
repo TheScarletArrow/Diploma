@@ -55,7 +55,7 @@ namespace Diploma
             adapter1.SelectCommand = findPersonByLogin;
             adapter1.Fill(dataTable1);
             
-            //fmTI57ZgCo
+            //fmTI57ZgCo u15
             dataReader = findPersonByLogin.ExecuteReader();
             dataReader.Read(); 
                 Name = dataReader.GetString("name");
@@ -86,6 +86,29 @@ namespace Diploma
         private void CloseClick(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        Point lastPoint;
+        private void formMove(object sender, MouseEventArgs e)
+        {
+            int dx = e.X - lastPoint.X;
+            int dy = e.Y - lastPoint.Y;
+            if (e.Button.Equals(MouseButtons.Left))
+            {
+                this.Left += dx;
+                this.Top += dy;
+            }
+        }
+
+        private void formDown(object sender, MouseEventArgs e)
+        {
+            lastPoint = new Point(e.X, e.Y);
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            new SignUp().Show();
+            this.Hide();
         }
     }
 
