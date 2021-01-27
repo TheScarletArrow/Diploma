@@ -14,63 +14,83 @@ namespace Diploma
 {
     public partial class Auth : Form
     {
-       public  SHA512 sha512 = SHA512.Create();
+        public SHA512 sha512 = SHA512.Create();
 
         public Auth()
         {
             InitializeComponent();
+
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (!String.IsNullOrEmpty(loginForm.Text) && !String.IsNullOrEmpty(passwordForm.Text)){
+                if ((loginForm.Text.Equals("admin")) && (passwordForm.Text.Equals("admin")))
+                {
+                    new AdminControlPanel().Show();
+                    this.Hide();
+                }
+                else
+                {
+                    //label2.Text = Convert.ToBase64String(sha256.ComputeHash(Encoding.UTF8.GetBytes(textBox1.Text)));
+                    //label3.Text = Convert.ToBase64String(sha256.ComputeHash(Encoding.UTF8.GetBytes("TheMeAndYou")));
 
-             //label2.Text = Convert.ToBase64String(sha256.ComputeHash(Encoding.UTF8.GetBytes(textBox1.Text)));
-            //label3.Text = Convert.ToBase64String(sha256.ComputeHash(Encoding.UTF8.GetBytes("TheMeAndYou")));
-            
-            DataBase database = new DataBase();
-            database.OpenConnection();
-            DataTable dataTable = new DataTable();
-            DataTable dataTable1 = new DataTable();
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-            MySqlDataAdapter adapter1 = new MySqlDataAdapter();
-            MySqlDataReader dataReader;
+                    DataBase database = new DataBase();
+                    database.OpenConnection();
+                    DataTable dataTable = new DataTable();
+                    DataTable dataTable1 = new DataTable();
+                    MySqlDataAdapter adapter = new MySqlDataAdapter();
+                    MySqlDataAdapter adapter1 = new MySqlDataAdapter();
+                    MySqlDataReader dataReader;
 
-            String name_ = loginForm.Text;
-            String Name = "";
-            MySqlCommand findPerson = new MySqlCommand("select * from user_list where login=@ul and password = @up;", database.GetConnection());
-            findPerson.Parameters.AddWithValue("@ul", name_);
-            findPerson.Parameters.AddWithValue("@up", Convert.ToBase64String
-                     (sha512.ComputeHash(Encoding.UTF8.GetBytes(passwordForm.Text))));
+                    String name_ = loginForm.Text;
+                    String Name = "";
+                    MySqlCommand findPerson = new MySqlCommand("select * from user_list where login=@ul and password = @up;", database.GetConnection());
+                    findPerson.Parameters.AddWithValue("@ul", name_);
+                    findPerson.Parameters.AddWithValue("@up", Convert.ToBase64String
+                             (sha512.ComputeHash(Encoding.UTF8.GetBytes(passwordForm.Text))));
 
-            MySqlCommand findPersonByLogin =
-                new MySqlCommand("select ui.name from user_info ui left join user_list ul on (ui.login=ul.login) where ui.login=@ul;", 
-                database.GetConnection());
+                    MySqlCommand findPersonByLogin =
+                        new MySqlCommand("select ui.name from user_info ui left join user_list ul on (ui.login=ul.login) where ui.login=@ul;",
+                        database.GetConnection());
 
-            findPersonByLogin.Parameters.AddWithValue("@ul", name_);
-
-            
-            adapter.SelectCommand = findPerson;
-            adapter.Fill(dataTable);
-
-            adapter1.SelectCommand = findPersonByLogin;
-            adapter1.Fill(dataTable1);
-            
-            //fmTI57ZgCo u15
-            dataReader = findPersonByLogin.ExecuteReader();
-            dataReader.Read(); 
-                Name = dataReader.GetString("name");
-            
+                    findPersonByLogin.Parameters.AddWithValue("@ul", name_);
 
 
-            
-            if (dataTable1.Rows.Count > 0)
-                MessageBox.Show("Привет, "+ Name);
+                    adapter.SelectCommand = findPerson;
+                    adapter.Fill(dataTable);
+
+                    adapter1.SelectCommand = findPersonByLogin;
+                    adapter1.Fill(dataTable1);
+
+                    //fmTI57ZgCo u15
+                    dataReader = findPersonByLogin.ExecuteReader();
+                    dataReader.Read();
+                    try
+                    {
+                        Name = dataReader.GetString("name");
+                    }
+                    catch (MySqlException ex) {
+                        //MessageBox.Show("ошибка");
+                    }
+
+
+
+
+                    if ((dataTable1.Rows.Count > 0) && (dataTable.Rows.Count > 0))
+                        MessageBox.Show("Привет, " + Name);
+                    else
+                        MessageBox.Show("Неверный логин или пароль");
+                }
+            }
             else
-                MessageBox.Show("Неверный логин или пароль");
-
+                if (String.IsNullOrEmpty(loginForm.Text)) { MessageBox.Show("Логин пустой"); }
+                else { MessageBox.Show("Пароль пустой"); }
         }
 
-       
+
+
         private void CloseHover(object sender, EventArgs e)
         {
             CloseLabel.ForeColor = System.Drawing.Color.Red;
@@ -110,8 +130,9 @@ namespace Diploma
             new SignUp().Show();
             this.Hide();
         }
+
+
+
+
     }
-
-    
-
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Diploma
 {
@@ -11,14 +12,21 @@ namespace Diploma
     {
         
        
-        MySqlConnection mySQLConnection = new MySqlConnection("username=root;password=RaPtorJEDI1;database=userdb"); 
-    
+        MySqlConnection mySQLConnection = new MySqlConnection("username=root;password=RaPtorJEDI1;database=userdb");
+
+        
 
         public void OpenConnection()
         {
-           
-            if (mySQLConnection.State == System.Data.ConnectionState.Closed)
-                mySQLConnection.Open();
+            try
+            {
+                if (mySQLConnection.State == System.Data.ConnectionState.Closed)
+                    mySQLConnection.Open();
+            }
+            catch (MySqlException exception){
+                MessageBox.Show("Невозможно открыть связь с базой данных\n" + exception.StackTrace);
+
+            }
         }
         public void CloseConnection()
         {

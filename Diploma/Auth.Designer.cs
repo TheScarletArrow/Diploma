@@ -37,11 +37,12 @@ namespace Diploma
             this.CloseLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // loginForm
             // 
-            this.loginForm.Location = new System.Drawing.Point(226, 108);
+            this.loginForm.Location = new System.Drawing.Point(226, 146);
             this.loginForm.Name = "loginForm";
             this.loginForm.Size = new System.Drawing.Size(189, 20);
             this.loginForm.TabIndex = 1;
@@ -60,7 +61,7 @@ namespace Diploma
             // 
             // passwordForm
             // 
-            this.passwordForm.Location = new System.Drawing.Point(226, 143);
+            this.passwordForm.Location = new System.Drawing.Point(226, 181);
             this.passwordForm.Name = "passwordForm";
             this.passwordForm.Size = new System.Drawing.Size(189, 20);
             this.passwordForm.TabIndex = 2;
@@ -69,7 +70,7 @@ namespace Diploma
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.label1.Location = new System.Drawing.Point(87, 108);
+            this.label1.Location = new System.Drawing.Point(87, 146);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 17);
             this.label1.TabIndex = 7;
@@ -79,7 +80,7 @@ namespace Diploma
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.label2.Location = new System.Drawing.Point(87, 143);
+            this.label2.Location = new System.Drawing.Point(87, 181);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 17);
             this.label2.TabIndex = 8;
@@ -111,6 +112,7 @@ namespace Diploma
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.Location = new System.Drawing.Point(226, 369);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(109, 13);
@@ -118,12 +120,23 @@ namespace Diploma
             this.label4.Text = "Зарегестрируйтесь!";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(195, 43);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(156, 25);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Приветствуем!";
+            // 
             // Auth
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(534, 418);
+            this.ClientSize = new System.Drawing.Size(530, 457);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.CloseLabel);
@@ -152,6 +165,7 @@ namespace Diploma
         private System.Windows.Forms.Label CloseLabel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label7;
     }
 
    

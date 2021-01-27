@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminControlPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminControlPanel.Designer.cs">
+      <DependentUpon>AdminControlPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataBase.cs" />
     <Compile Include="Auth.cs">
       <SubType>Form</SubType>

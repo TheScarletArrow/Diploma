@@ -31,38 +31,48 @@ namespace Diploma
             string mail = MailField.Text;
             string phone = PhoneField.Text;
             DateTime birthdate = BirthDatePicker.Value;
+
             //имя
-            if (String.IsNullOrEmpty(name)) { MessageBox.Show("Имя не введено"); }
+            if (String.IsNullOrEmpty(name)) { MessageBox.Show("Имя не введено"); return false; }
             else
             {
                 bool name_is_good = name.All(c => Char.IsLetter(c) || Char.IsWhiteSpace(c));
-                if (!name_is_good) MessageBox.Show("Имя сожержит неверные символы");
+                if (!name_is_good) { 
+                    MessageBox.Show("Имя сожержит неверные символы");
+                    return false;
+                }
+
             }
 
             //фамилия
-            if (String.IsNullOrEmpty(surname)) { MessageBox.Show("Фамилия не введена"); }
+            if (String.IsNullOrEmpty(surname)) { MessageBox.Show("Фамилия не введена"); return false; }
             else
             {
                 bool surname_is_good = surname.All(c => Char.IsLetter(c) || Char.IsWhiteSpace(c));
-                if (!surname_is_good) MessageBox.Show("Фамилия сожержит неверные символы");
+                if (!surname_is_good) { MessageBox.Show("Фамилия сожержит неверные символы"); return false; }
             }
             //почта
-            if (String.IsNullOrEmpty(mail)) { MessageBox.Show("Почта не введена"); }
+            if (String.IsNullOrEmpty(mail)) { MessageBox.Show("Почта не введена"); return false; }
             else
-            if (!mail.Contains("@")) { MessageBox.Show("Неправильно введена почта"); }
+            if (!mail.Contains("@")) { MessageBox.Show("Неправильно введена почта"); return false; }
 
-            if (String.IsNullOrEmpty(phone)) { MessageBox.Show("Телефон не введен"); }
+            if (String.IsNullOrEmpty(phone)) { MessageBox.Show("Телефон не введен"); return false; }
             else
             {
                 bool phone_is_good = phone.All(c => Char.IsDigit(c) || c.Equals('-')||c.Equals('+'));
-                if (!phone_is_good) MessageBox.Show("телефон содержит неверные символы");
+                if (!phone_is_good) { MessageBox.Show("телефон содержит неверные символы"); return false; }
             }
-            if (String.IsNullOrEmpty(PasswordField.Text)) { MessageBox.Show("Пароль не задан"); }
+            if (String.IsNullOrEmpty(PasswordField.Text)) { MessageBox.Show("Пароль не задан"); return false; }
 
-          //  if (birthdate.Date.CompareTo(DateTime.Today) > 0)
-           // {
+            //  if (birthdate.Date.CompareTo(DateTime.Today) > 0)
+            // {
             //    MessageBox.Show("Введенная дата позже сегодняшней");
-           // }
+            // }
+
+            if (birthdate > DateTime.Now) {
+                MessageBox.Show("Некорреткная дата рождения");
+                return false;
+            }
             return true;
         }
 
@@ -110,16 +120,16 @@ namespace Diploma
                     insertToUserInfo.Parameters.Add("@up", MySqlDbType.VarChar).Value = phone;
                     insertToUserInfo.Parameters.Add("@ub", MySqlDbType.DateTime).Value = birthdate;
                     MySqlCommand countRows = new MySqlCommand("select * from user_info;", dataBase.GetConnection());
-                    
+
                     adapter2.SelectCommand = countRows;
-                    
+
                     adapter.SelectCommand = insertToUserInfo;
 
                     adapter2.Fill(dataTable);
-                    insertToUserInfo.Parameters.Add("@ul", MySqlDbType.VarChar).Value = "user" + (dataTable.Rows.Count+1).ToString();
+                    insertToUserInfo.Parameters.Add("@ul", MySqlDbType.VarChar).Value = "user" + (dataTable.Rows.Count + 1).ToString();
 
                     adapter.Fill(dataTable);
-                    MessageBox.Show("Ваш логин " + "user"+ (dataTable.Rows.Count+1) +"\nВаш пароль "+PasswordField.Text + "\n ЗАПИШИТЕ ИЛИ ЗАПОМНИТЕ ЕГО!");
+                    MessageBox.Show("Ваш логин " + "user" + (dataTable.Rows.Count + 1) + "\nВаш пароль " + PasswordField.Text + "\n ЗАПИШИТЕ ИЛИ ЗАПОМНИТЕ ЕГО!");
 
                     MySqlCommand insertToUserList = new MySqlCommand("insert into user_list (id, login, password) values (NULL, @ul, @up)", dataBase.GetConnection());
 
@@ -141,7 +151,7 @@ namespace Diploma
 
                     MessageBox.Show(mysqlexception.StackTrace);
                 }
-                
+            else { }    
 
         }
 

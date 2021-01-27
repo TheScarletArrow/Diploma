@@ -11,7 +11,7 @@ namespace Diploma
         private string mail;
         private string phone;
         private DateTime birthdate;
-        Regex regex = new Regex( @"^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$");
+        //Regex regex = new Regex( @"^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$");
 
         public Person(int ID, string name, string surname, string mail, string phone, DateTime dateTime) {
             Id = ID;
