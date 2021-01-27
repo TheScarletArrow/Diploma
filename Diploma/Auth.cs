@@ -66,14 +66,16 @@ namespace Diploma
 
                     //fmTI57ZgCo u15
                     dataReader = findPersonByLogin.ExecuteReader();
-                    dataReader.Read();
-                    try
-                    {
-                        Name = dataReader.GetString("name");
-                    }
-                    catch (MySqlException ex) {
-                        //MessageBox.Show("ошибка");
-                    }
+                    while(  dataReader.Read())
+                         if (!dataReader.IsDBNull(dataReader.GetOrdinal("name")))
+                             try
+                                 {
+                                    Name = dataReader.GetString("name");
+                                    }
+                             catch (MySqlException ex) {
+                                //MessageBox.Show("ошибка");
+                                MessageBox.Show(ex.StackTrace);
+                             }
 
 
 
