@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -11,11 +12,15 @@ namespace Diploma
         {
             InitializeComponent();
         }
-        private void AdminControlPanel_Load(object sender, EventArgs e)
-        {
-      
+       
+        private void EmptyFields() {
+            NameField.Text = "";
+            SurnameField.Text = "";
+            PasswordField.Text = "";
+            MailField.Text = "";
+            PhoneField.Text = "";
+            DateField.Text = "";
         }
-
         private void textBox7_TextChanged(object sender, EventArgs e)
         {
             DataBase dataBase =new DataBase();
@@ -35,13 +40,32 @@ namespace Diploma
                 PhoneField.Text = dataReader.GetValue(5).ToString();
                 DateField.Text = dataReader.GetValue(6).ToString();
             }
+            
             dataBase.CloseConnection();
+            
         }
 
         //удалить
         private void button3_Click(object sender, EventArgs e)
         {
             DataBase dataBase = new DataBase();
+            dataBase.OpenConnection();
+
+            MySqlCommand dropFromUserInfo = new MySqlCommand("delete from user_info where login=@login;", dataBase.GetConnection());
+            MySqlCommand dropFromUserList = new MySqlCommand("delete from user_list where login=@login;", dataBase.GetConnection());
+
+            dropFromUserInfo.Parameters.AddWithValue("@login", searchField.Text);
+            dropFromUserList.Parameters.AddWithValue("@login", searchField.Text);
+
+            dropFromUserInfo.ExecuteNonQuery();
+            dropFromUserList.ExecuteNonQuery();
+
+            dataBase.CloseConnection();
+
+            EmptyFields();
+            
+            MessageBox.Show("Пользователь удален");
+
         }
 
         //изменить
@@ -63,6 +87,8 @@ namespace Diploma
             change.ExecuteNonQuery();
 
             database.CloseConnection();
+
+            EmptyFields();
             MessageBox.Show("Изменено успешно");
 
         }

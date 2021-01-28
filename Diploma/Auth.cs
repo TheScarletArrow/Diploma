@@ -11,16 +11,15 @@ using System.Security.Cryptography;
 using MySql.Data.MySqlClient;
 
 namespace Diploma
-{
+{//u6 iUIzkseoiU
     public partial class Auth : Form
     {
         public SHA512 sha512 = SHA512.Create();
-
+        SignUp sign = new SignUp();
         public Auth()
         {
             InitializeComponent();
-
-            
+                        
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -33,9 +32,7 @@ namespace Diploma
                 }
                 else
                 {
-                    //label2.Text = Convert.ToBase64String(sha256.ComputeHash(Encoding.UTF8.GetBytes(textBox1.Text)));
-                    //label3.Text = Convert.ToBase64String(sha256.ComputeHash(Encoding.UTF8.GetBytes("TheMeAndYou")));
-
+                    
                     DataBase database = new DataBase();
                     database.OpenConnection();
                     DataTable dataTable = new DataTable();
@@ -46,11 +43,13 @@ namespace Diploma
 
                     String name_ = loginForm.Text;
                     String Name = "";
+                    
                     MySqlCommand findPerson = new MySqlCommand("select * from user_list where login=@ul and password = @up;", database.GetConnection());
                     findPerson.Parameters.AddWithValue("@ul", name_);
-                    findPerson.Parameters.AddWithValue("@up", Convert.ToBase64String
-                             (sha512.ComputeHash(Encoding.UTF8.GetBytes(passwordForm.Text))));
-
+                    String enc_pass = Convert.ToBase64String
+                             (sign.sha512.ComputeHash(Encoding.UTF8.GetBytes(passwordForm.Text)));
+                    findPerson.Parameters.AddWithValue("@up", enc_pass);
+                    
                     MySqlCommand findPersonByLogin =
                         new MySqlCommand("select ui.name from user_info ui left join user_list ul on (ui.login=ul.login) where ui.login=@ul;",
                         database.GetConnection());
@@ -59,24 +58,25 @@ namespace Diploma
 
 
                     adapter.SelectCommand = findPerson;
-                    adapter.Fill(dataTable);
-
                     adapter1.SelectCommand = findPersonByLogin;
+                   
+                    adapter.Fill(dataTable);
                     adapter1.Fill(dataTable1);
 
-                    //fmTI57ZgCo u15
                     dataReader = findPersonByLogin.ExecuteReader();
-                    while(  dataReader.Read())
-                         if (!dataReader.IsDBNull(dataReader.GetOrdinal("name")))
-                             try
-                                 {
-                                    Name = dataReader.GetString("name");
-                                    }
-                             catch (MySqlException ex) {
+                    while (dataReader.Read())
+                        if (!dataReader.IsDBNull(dataReader.GetOrdinal("name")))
+                        {
+                            try
+                            {
+                                Name = dataReader.GetString("name");
+                            }
+                            catch (MySqlException ex)
+                            {
                                 //MessageBox.Show("ошибка");
                                 MessageBox.Show(ex.StackTrace);
-                             }
-
+                            }
+                        }
 
 
 

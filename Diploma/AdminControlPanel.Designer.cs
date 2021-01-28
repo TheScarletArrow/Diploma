@@ -39,9 +39,7 @@ namespace Diploma
             this.search = new System.Windows.Forms.Label();
             this.Title = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // NameField
@@ -125,7 +123,7 @@ namespace Diploma
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
             this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button1.Location = new System.Drawing.Point(79, 272);
+            this.button1.Location = new System.Drawing.Point(226, 272);
             this.button1.Margin = new System.Windows.Forms.Padding(0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(147, 50);
@@ -133,25 +131,6 @@ namespace Diploma
             this.button1.Text = "Изменить";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gainsboro;
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.AliceBlue;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button2.Location = new System.Drawing.Point(240, 272);
-            this.button2.Margin = new System.Windows.Forms.Padding(0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(147, 50);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Ручная регистрация";
-            this.button2.UseVisualStyleBackColor = false;
             // 
             // button3
             // 
@@ -173,33 +152,12 @@ namespace Diploma
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
-            // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.BackColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gainsboro;
-            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.AliceBlue;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.button4.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button4.Location = new System.Drawing.Point(569, 272);
-            this.button4.Margin = new System.Windows.Forms.Padding(0);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(147, 50);
-            this.button4.TabIndex = 12;
-            this.button4.Text = "Регистрация";
-            this.button4.UseVisualStyleBackColor = false;
-            // 
             // AdminControlPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Title);
             this.Controls.Add(this.search);
@@ -212,7 +170,6 @@ namespace Diploma
             this.Controls.Add(this.NameField);
             this.Name = "AdminControlPanel";
             this.Text = "AdminControlPanel";
-            this.Load += new System.EventHandler(this.AdminControlPanel_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,8 +187,6 @@ namespace Diploma
         private System.Windows.Forms.Label search;
         private System.Windows.Forms.Label Title;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
     }
 }

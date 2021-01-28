@@ -11,7 +11,7 @@ namespace Diploma
 {
     public partial class SignUp : Form
     {
-       
+       public  SHA512 sha512 = SHA512.Create();
         public SignUp()
         {
             InitializeComponent();
@@ -91,7 +91,7 @@ namespace Diploma
         }
         private void button1_Click(object sender, EventArgs e)
         {
-
+            String enc_pass="";
             DataBase dataBase = new DataBase();
             DataTable dataTable = new DataTable();
             DataTable dataTable1 = new DataTable();
@@ -131,13 +131,14 @@ namespace Diploma
                     adapter.Fill(dataTable);
                     MessageBox.Show("Ваш логин " + "user" + (dataTable.Rows.Count + 1) + "\nВаш пароль " + PasswordField.Text + "\n ЗАПИШИТЕ ИЛИ ЗАПОМНИТЕ ЕГО!");
 
+
+
                     MySqlCommand insertToUserList = new MySqlCommand("insert into user_list (id, login, password) values (NULL, @ul, @up)", dataBase.GetConnection());
-
-                    SHA512 sha512 = SHA512.Create();
-
+                     
                     insertToUserList.Parameters.AddWithValue("@ul", "user" + (dataTable.Rows.Count + 1));
-                    insertToUserList.Parameters.AddWithValue("@up", Convert.ToBase64String
-                     (sha512.ComputeHash(Encoding.UTF8.GetBytes(getPassword()))));
+                    enc_pass = Convert.ToBase64String(sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text)));
+                    insertToUserList.Parameters.AddWithValue("@up", enc_pass);
+                    MessageBox.Show(enc_pass);
                     adapterToList.SelectCommand = insertToUserList;
                     adapterToList.Fill(dataTable1);
 
