@@ -16,7 +16,7 @@ namespace Diploma
         {
             InitializeComponent();
         }
-
+        
         private void clearAllTextBox() {
             NameField.Text = "";
             SurnameField.Text = "";
@@ -89,20 +89,24 @@ namespace Diploma
             
             return pass;
         }
+
+       
         private void button1_Click(object sender, EventArgs e)
         {
             String enc_pass="";
             DataBase dataBase = new DataBase();
             DataTable dataTable = new DataTable();
             DataTable dataTable1 = new DataTable();
+            DataTable dataTable2 = new DataTable();
 
             MySqlDataAdapter adapter = new MySqlDataAdapter();
             MySqlDataAdapter adapter2 = new MySqlDataAdapter();
             MySqlDataAdapter adapterToList = new MySqlDataAdapter();
+            MySqlDataAdapter adapterToWork = new MySqlDataAdapter();
             dataBase.OpenConnection();
 
             string name = NameField.Text;
-       
+            int id  =0;
             string surname = SurnameField.Text;
             string mail = MailField.Text;
             string phone = PhoneField.Text;
@@ -112,8 +116,7 @@ namespace Diploma
                 try
                 {
                     MySqlCommand insertToUserInfo = new MySqlCommand
-                        ("insert into user_info (id, name, surname, mail, phone, birth_date,login) values (NULL, @un, @us, @um, @up, @ub, @ul);", dataBase.GetConnection());
-                    // ("select * from user_info;",  dataBase.GetConnection());
+                    ("insert into user_info (id, name, surname, mail, phone, birth_date,login) values (NULL, @un, @us, @um, @up, @ub, @ul);", dataBase.GetConnection());
                     insertToUserInfo.Parameters.Add("@un", MySqlDbType.VarChar).Value = name;
                     insertToUserInfo.Parameters.Add("@us", MySqlDbType.VarChar).Value = surname;
                     insertToUserInfo.Parameters.Add("@um", MySqlDbType.VarChar).Value = mail;
@@ -125,23 +128,41 @@ namespace Diploma
 
                     adapter.SelectCommand = insertToUserInfo;
 
+                   
+
+                    MySqlCommand findID = new MySqlCommand("select id from user_info order by id desc limit 1;", dataBase.GetConnection());
+                    MySqlDataReader dataReader = null;
+                    try { dataReader = findID.ExecuteReader(); }
+                    catch (MySqlException ex) { id = 0; }
+                    while (dataReader.Read())
+                    {
+                        id = int.Parse(dataReader.GetValue(0).ToString());
+                    }
+                    dataReader.Close();
+                    MessageBox.Show("Ваш логин " + "user" + (id.ToString()) + "\nВаш пароль " + PasswordField.Text + "\n ЗАПИШИТЕ ИЛИ ЗАПОМНИТЕ ЕГО!");
                     adapter2.Fill(dataTable);
-                    insertToUserInfo.Parameters.Add("@ul", MySqlDbType.VarChar).Value = "user" + (dataTable.Rows.Count + 1).ToString();
+                    insertToUserInfo.Parameters.Add("@ul", MySqlDbType.VarChar).Value = "user" + (id.ToString()).ToString();
 
                     adapter.Fill(dataTable);
-                    MessageBox.Show("Ваш логин " + "user" + (dataTable.Rows.Count + 1) + "\nВаш пароль " + PasswordField.Text + "\n ЗАПИШИТЕ ИЛИ ЗАПОМНИТЕ ЕГО!");
 
 
-
-                    MySqlCommand insertToUserList = new MySqlCommand("insert into user_list (id, login, password) values (NULL, @ul, @up)", dataBase.GetConnection());
+                    MessageBox.Show(id.ToString());
+                    MySqlCommand insertToUserList = new MySqlCommand("insert into user_list (id, login, password) values (NULL, @ul, @up);", dataBase.GetConnection());
                      
-                    insertToUserList.Parameters.AddWithValue("@ul", "user" + (dataTable.Rows.Count + 1));
+                    insertToUserList.Parameters.AddWithValue("@ul", "user" + (id.ToString()));
                     enc_pass = Convert.ToBase64String(sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text)));
                     insertToUserList.Parameters.AddWithValue("@up", enc_pass);
-                    MessageBox.Show(enc_pass);
                     adapterToList.SelectCommand = insertToUserList;
+                    dataBase.OpenConnection();
                     adapterToList.Fill(dataTable1);
 
+                    MySqlCommand insertToWork = new MySqlCommand
+                        ("insert into user_dep (id, user_id, worker_type, department_type) values (NULL, @ul, @uwt, @udt);", dataBase.GetConnection());
+                    insertToWork.Parameters.AddWithValue("@ul", "user" + (id.ToString()));
+                    insertToWork.Parameters.AddWithValue("@uwt", workingXPComboBox.SelectedItem);
+                    insertToWork.Parameters.AddWithValue("@udt", KnowledgeComboBox.SelectedItem);
+                    adapter2.SelectCommand = insertToWork;
+                    adapter2.Fill(dataTable2);
 
                     clearAllTextBox();
                 }

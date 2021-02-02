@@ -108,7 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="search.png" />
-    <None Include="Untitled-1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
