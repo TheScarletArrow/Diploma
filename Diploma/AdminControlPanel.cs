@@ -24,13 +24,18 @@ namespace Diploma
             DateField.Text = "";
             KnowledgeComboBox.SelectedItem = null;
             workingXPComboBox.SelectedItem = null;
+            HeadOfficer.Text = null;
+
         }
         private void textBox7_TextChanged(object sender, EventArgs e)
         {
             DataBase dataBase =new DataBase();
             dataBase.OpenConnection();
+            EmptyFields();
             MySqlCommand cmd = new MySqlCommand(
-                "select ui.login, ui.name, ui.surname, ul.password, ui.mail, ui.phone, ui.birth_date from user_list ul left join user_info ui on ((ul.login=ui.login)) where ui.login=@id;"
+                @"select ui.login_id, ui.name, ui.surname, ul.password,
+                ui.mail, ui.phone, ui.birth_date from user_list ul left join
+                user_info ui on ((ul.login=ui.login_id)) where ui.login_id=@id;"
                 , dataBase.GetConnection());
             cmd.Parameters.AddWithValue("@id", searchField.Text);
 
@@ -45,6 +50,7 @@ namespace Diploma
                 DateField.Text = dataReader.GetValue(6).ToString();
             }
             dataReader.Close();
+            
             MySqlCommand cmd2 = new MySqlCommand(
                 "select ud.user_id, ud.worker_type, ud.department_type, eho.HeadOfficer from user_dep ud left join engineer_head_officer eho on ud.department_type=Department where  user_id=@ui;"
                 , dataBase.GetConnection());
@@ -58,6 +64,14 @@ namespace Diploma
             }
             dataReader1.Close();
 
+            MySqlCommand officer = new MySqlCommand("select eho.HeadOfficer from user_dep ud left join engineer_head_officer eho on ud.department_type=Department where user_id=@id;", dataBase.GetConnection());
+            officer.Parameters.AddWithValue("@id", searchField.Text);
+            MySqlDataReader dataReader2 = officer.ExecuteReader();
+            while (dataReader2.Read()) {
+                HeadOfficer.Text = dataReader2.GetValue(0).ToString();
+            }
+            dataReader2.Close();
+
             dataBase.CloseConnection();
             
         }
@@ -68,19 +82,23 @@ namespace Diploma
             DataBase dataBase = new DataBase();
             dataBase.OpenConnection();
 
-            MySqlCommand dropFromUserInfo = new MySqlCommand("delete from user_info where login=@login;", dataBase.GetConnection());
+            MySqlCommand dropFromUserInfo = new MySqlCommand("delete from user_info where login_id=@login;", dataBase.GetConnection());
             MySqlCommand dropFromUserList = new MySqlCommand("delete from user_list where login=@login;", dataBase.GetConnection());
+            MySqlCommand dropFromUserDep = new MySqlCommand("delete from user_dep where user_id=@login", dataBase.GetConnection());
 
             dropFromUserInfo.Parameters.AddWithValue("@login", searchField.Text);
             dropFromUserList.Parameters.AddWithValue("@login", searchField.Text);
+            dropFromUserDep.Parameters.AddWithValue("@login", searchField.Text);
 
-            dropFromUserInfo.ExecuteNonQuery();
             dropFromUserList.ExecuteNonQuery();
+            dropFromUserDep.ExecuteNonQuery();
+            dropFromUserInfo.ExecuteNonQuery();
 
             dataBase.CloseConnection();
 
             EmptyFields();
-            
+            searchField.Text = "";
+
             MessageBox.Show("Пользователь удален");
 
         }
@@ -93,7 +111,7 @@ namespace Diploma
             database.OpenConnection();
 
             MySqlCommand change = new MySqlCommand
-                ("update user_info set name=@name,surname=@surname,mail=@mail,phone=@phone,birth_date=@birthdate where login=@login;"
+                ("update user_info set name=@name,surname=@surname,mail=@mail,phone=@phone,birth_date=@birthdate where login_id=@login;"
                 , database.GetConnection());
 
             change.Parameters.AddWithValue("@name", NameField.Text);
@@ -121,7 +139,8 @@ namespace Diploma
             changePassword.Parameters.AddWithValue("@login", searchField.Text);
             changePassword.ExecuteNonQuery(); 
             
-            EmptyFields();
+            EmptyFields(); searchField.Text = "";
+
             MessageBox.Show("Изменено успешно");
 
         }

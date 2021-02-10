@@ -50,53 +50,55 @@ namespace Diploma
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.HeadOfficer = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // NameField
             // 
-            this.NameField.Location = new System.Drawing.Point(389, 138);
+            this.NameField.Location = new System.Drawing.Point(389, 114);
             this.NameField.Name = "NameField";
             this.NameField.Size = new System.Drawing.Size(100, 20);
             this.NameField.TabIndex = 2;
             // 
             // SurnameField
             // 
-            this.SurnameField.Location = new System.Drawing.Point(389, 179);
+            this.SurnameField.Location = new System.Drawing.Point(389, 155);
             this.SurnameField.Name = "SurnameField";
             this.SurnameField.Size = new System.Drawing.Size(100, 20);
             this.SurnameField.TabIndex = 1;
             // 
             // PasswordField
             // 
-            this.PasswordField.Location = new System.Drawing.Point(389, 222);
+            this.PasswordField.Location = new System.Drawing.Point(389, 198);
             this.PasswordField.Name = "PasswordField";
             this.PasswordField.Size = new System.Drawing.Size(100, 20);
             this.PasswordField.TabIndex = 2;
             // 
             // MailField
             // 
-            this.MailField.Location = new System.Drawing.Point(389, 263);
+            this.MailField.Location = new System.Drawing.Point(389, 239);
             this.MailField.Name = "MailField";
             this.MailField.Size = new System.Drawing.Size(100, 20);
             this.MailField.TabIndex = 3;
             // 
             // PhoneField
             // 
-            this.PhoneField.Location = new System.Drawing.Point(389, 309);
+            this.PhoneField.Location = new System.Drawing.Point(389, 285);
             this.PhoneField.Name = "PhoneField";
             this.PhoneField.Size = new System.Drawing.Size(100, 20);
             this.PhoneField.TabIndex = 4;
             // 
             // DateField
             // 
-            this.DateField.Location = new System.Drawing.Point(389, 348);
+            this.DateField.Location = new System.Drawing.Point(389, 324);
             this.DateField.Name = "DateField";
             this.DateField.Size = new System.Drawing.Size(100, 20);
             this.DateField.TabIndex = 5;
             // 
             // searchField
             // 
-            this.searchField.Location = new System.Drawing.Point(157, 100);
+            this.searchField.Location = new System.Drawing.Point(157, 76);
             this.searchField.Name = "searchField";
             this.searchField.Size = new System.Drawing.Size(450, 20);
             this.searchField.TabIndex = 1;
@@ -106,7 +108,7 @@ namespace Diploma
             // 
             this.search.AutoSize = true;
             this.search.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.search.Location = new System.Drawing.Point(624, 94);
+            this.search.Location = new System.Drawing.Point(624, 70);
             this.search.Name = "search";
             this.search.Size = new System.Drawing.Size(33, 25);
             this.search.TabIndex = 7;
@@ -169,7 +171,7 @@ namespace Diploma
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(154, 432);
+            this.label10.Location = new System.Drawing.Point(154, 408);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(115, 17);
             this.label10.TabIndex = 24;
@@ -182,7 +184,7 @@ namespace Diploma
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(154, 392);
+            this.label9.Location = new System.Drawing.Point(154, 368);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(41, 17);
             this.label9.TabIndex = 23;
@@ -196,8 +198,8 @@ namespace Diploma
             "Инженер",
             "Медицина",
             "Юриспруденция",
-            "Гос. Служба\t"});
-            this.KnowledgeComboBox.Location = new System.Drawing.Point(368, 432);
+            "Гос. Служба"});
+            this.KnowledgeComboBox.Location = new System.Drawing.Point(368, 408);
             this.KnowledgeComboBox.Name = "KnowledgeComboBox";
             this.KnowledgeComboBox.Size = new System.Drawing.Size(121, 21);
             this.KnowledgeComboBox.TabIndex = 22;
@@ -212,7 +214,7 @@ namespace Diploma
             "Стажер",
             "Ученик",
             "Без работы"});
-            this.workingXPComboBox.Location = new System.Drawing.Point(368, 392);
+            this.workingXPComboBox.Location = new System.Drawing.Point(368, 368);
             this.workingXPComboBox.Name = "workingXPComboBox";
             this.workingXPComboBox.Size = new System.Drawing.Size(121, 21);
             this.workingXPComboBox.TabIndex = 21;
@@ -224,7 +226,7 @@ namespace Diploma
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(154, 351);
+            this.label1.Location = new System.Drawing.Point(154, 327);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(112, 17);
             this.label1.TabIndex = 25;
@@ -237,7 +239,7 @@ namespace Diploma
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(154, 310);
+            this.label2.Location = new System.Drawing.Point(154, 286);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(121, 17);
             this.label2.TabIndex = 26;
@@ -250,7 +252,7 @@ namespace Diploma
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(154, 263);
+            this.label3.Location = new System.Drawing.Point(154, 239);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 17);
             this.label3.TabIndex = 27;
@@ -263,7 +265,7 @@ namespace Diploma
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(154, 222);
+            this.label4.Location = new System.Drawing.Point(154, 198);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(57, 17);
             this.label4.TabIndex = 28;
@@ -276,7 +278,7 @@ namespace Diploma
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(154, 180);
+            this.label5.Location = new System.Drawing.Point(154, 156);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(70, 17);
             this.label5.TabIndex = 29;
@@ -289,17 +291,41 @@ namespace Diploma
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(154, 141);
+            this.label6.Location = new System.Drawing.Point(154, 117);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 17);
             this.label6.TabIndex = 30;
             this.label6.Text = "Имя";
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(154, 450);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(80, 17);
+            this.label7.TabIndex = 32;
+            this.label7.Text = "Начальник";
+            // 
+            // HeadOfficer
+            // 
+            this.HeadOfficer.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.HeadOfficer.Location = new System.Drawing.Point(389, 450);
+            this.HeadOfficer.Name = "HeadOfficer";
+            this.HeadOfficer.ReadOnly = true;
+            this.HeadOfficer.Size = new System.Drawing.Size(100, 20);
+            this.HeadOfficer.TabIndex = 31;
             // 
             // AdminControlPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(699, 580);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.HeadOfficer);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -351,5 +377,7 @@ namespace Diploma
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox HeadOfficer;
     }
 }

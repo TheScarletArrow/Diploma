@@ -307,7 +307,7 @@ namespace Diploma
             "Инженер",
             "Медицина",
             "Юриспруденция",
-            "Гос. Служба\t"});
+            "Гос. Служба"});
             this.KnowledgeComboBox.Location = new System.Drawing.Point(221, 401);
             this.KnowledgeComboBox.Name = "KnowledgeComboBox";
             this.KnowledgeComboBox.Size = new System.Drawing.Size(121, 21);

@@ -6,15 +6,21 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Text;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace Diploma
-{
+{     
     public partial class SignUp : Form
     {
        public  SHA512 sha512 = SHA512.Create();
+        
+
         public SignUp()
         {
+
+
             InitializeComponent();
+            BirthDatePicker.Value = DateTime.Parse("2020-01-01");
         }
         
         private void clearAllTextBox() {
@@ -23,6 +29,9 @@ namespace Diploma
             MailField.Text = "";
             PhoneField.Text = "";
             PasswordField.Text = "";
+            workingXPComboBox.SelectedItem = null;
+            KnowledgeComboBox.SelectedItem = null;
+            BirthDatePicker.Value = DateTime.Now;
         }
         private bool check_fields() {
             string name = NameField.Text;
@@ -64,11 +73,6 @@ namespace Diploma
             }
             if (String.IsNullOrEmpty(PasswordField.Text)) { MessageBox.Show("Пароль не задан"); return false; }
 
-            //  if (birthdate.Date.CompareTo(DateTime.Today) > 0)
-            // {
-            //    MessageBox.Show("Введенная дата позже сегодняшней");
-            // }
-
             if (birthdate > DateTime.Now) {
                 MessageBox.Show("Некорреткная дата рождения");
                 return false;
@@ -93,7 +97,10 @@ namespace Diploma
        
         private void button1_Click(object sender, EventArgs e)
         {
-            String enc_pass="";
+
+
+           
+            String enc_pass ="";
             DataBase dataBase = new DataBase();
             DataTable dataTable = new DataTable();
             DataTable dataTable1 = new DataTable();
@@ -116,7 +123,7 @@ namespace Diploma
                 try
                 {
                     MySqlCommand insertToUserInfo = new MySqlCommand
-                    ("insert into user_info (id, name, surname, mail, phone, birth_date,login) values (NULL, @un, @us, @um, @up, @ub, @ul);", dataBase.GetConnection());
+                    ("insert into user_info (id, name, surname, mail, phone, birth_date,login_id) values (NULL, @un, @us, @um, @up, @ub, @ul);", dataBase.GetConnection());
                     insertToUserInfo.Parameters.Add("@un", MySqlDbType.VarChar).Value = name;
                     insertToUserInfo.Parameters.Add("@us", MySqlDbType.VarChar).Value = surname;
                     insertToUserInfo.Parameters.Add("@um", MySqlDbType.VarChar).Value = mail;

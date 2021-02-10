@@ -51,7 +51,7 @@ namespace Diploma
                     findPerson.Parameters.AddWithValue("@up", enc_pass);
                     
                     MySqlCommand findPersonByLogin =
-                        new MySqlCommand("select ui.name from user_info ui left join user_list ul on (ui.login=ul.login) where ui.login=@ul;",
+                        new MySqlCommand("select ui.name from user_info ui left join user_list ul on (ui.login_id=ul.login) where ui.login_id=@ul;",
                         database.GetConnection());
 
                     findPersonByLogin.Parameters.AddWithValue("@ul", name_);
