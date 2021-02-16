@@ -107,7 +107,8 @@ namespace Diploma
 
         private void CloseClick(object sender, EventArgs e)
         {
-            Application.Exit();
+            this.Close();
+            //Application.Exit();
         }
 
         Point lastPoint;
@@ -133,8 +134,24 @@ namespace Diploma
             this.Hide();
         }
 
+              
+        private void MimimzeClick(object sender, EventArgs e)
+        {
 
+            if (this.WindowState.Equals(FormWindowState.Normal))
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
+        }
+        private void MinimizeHover(object sender, EventArgs e)
+        {
+            MinimizeLabel.BackColor = System.Drawing.Color.FromArgb(70, 63, 72, 204);
+        }
+        private void MinimizeLeave(object sender, EventArgs e)
+        {
+            MinimizeLabel.BackColor = System.Drawing.Color.Transparent;
 
+        }
 
     }
 }

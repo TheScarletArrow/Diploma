@@ -36,7 +36,6 @@ namespace Diploma
             this.SurnameField = new System.Windows.Forms.TextBox();
             this.MailField = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.PhoneField = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.BirthDatePicker = new System.Windows.Forms.DateTimePicker();
@@ -51,6 +50,8 @@ namespace Diploma
             this.KnowledgeComboBox = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.MinimizeLabel = new System.Windows.Forms.Label();
+            this.PhoneField = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -68,7 +69,7 @@ namespace Diploma
             this.button1.Margin = new System.Windows.Forms.Padding(0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(147, 50);
-            this.button1.TabIndex = 6;
+            this.button1.TabIndex = 8;
             this.button1.Text = "Регистрация";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -141,17 +142,6 @@ namespace Diploma
             this.label3.Size = new System.Drawing.Size(49, 17);
             this.label3.TabIndex = 5;
             this.label3.Text = "Почта";
-            // 
-            // PhoneField
-            // 
-            this.PhoneField.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PhoneField.Location = new System.Drawing.Point(234, 211);
-            this.PhoneField.MaxLength = 20;
-            this.PhoneField.Name = "PhoneField";
-            this.PhoneField.Size = new System.Drawing.Size(104, 20);
-            this.PhoneField.TabIndex = 4;
             // 
             // label4
             // 
@@ -280,7 +270,7 @@ namespace Diploma
             this.label8.Location = new System.Drawing.Point(219, 493);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(104, 13);
-            this.label8.TabIndex = 16;
+            this.label8.TabIndex = 9;
             this.label8.Text = "Уже есть аккаунт?";
             this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
@@ -297,7 +287,7 @@ namespace Diploma
             this.workingXPComboBox.Location = new System.Drawing.Point(222, 366);
             this.workingXPComboBox.Name = "workingXPComboBox";
             this.workingXPComboBox.Size = new System.Drawing.Size(121, 21);
-            this.workingXPComboBox.TabIndex = 17;
+            this.workingXPComboBox.TabIndex = 6;
             // 
             // KnowledgeComboBox
             // 
@@ -311,7 +301,7 @@ namespace Diploma
             this.KnowledgeComboBox.Location = new System.Drawing.Point(221, 401);
             this.KnowledgeComboBox.Name = "KnowledgeComboBox";
             this.KnowledgeComboBox.Size = new System.Drawing.Size(121, 21);
-            this.KnowledgeComboBox.TabIndex = 18;
+            this.KnowledgeComboBox.TabIndex = 7;
             // 
             // label9
             // 
@@ -339,12 +329,36 @@ namespace Diploma
             this.label10.TabIndex = 20;
             this.label10.Text = "Область знаний";
             // 
+            // MinimizeLabel
+            // 
+            this.MinimizeLabel.AutoSize = true;
+            this.MinimizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MinimizeLabel.ForeColor = System.Drawing.Color.Black;
+            this.MinimizeLabel.Location = new System.Drawing.Point(482, 9);
+            this.MinimizeLabel.Name = "MinimizeLabel";
+            this.MinimizeLabel.Size = new System.Drawing.Size(24, 20);
+            this.MinimizeLabel.TabIndex = 38;
+            this.MinimizeLabel.Text = "—";
+            this.MinimizeLabel.Click += new System.EventHandler(this.MimimzeClick);
+            this.MinimizeLabel.MouseLeave += new System.EventHandler(this.MinimizeLeave);
+            this.MinimizeLabel.MouseHover += new System.EventHandler(this.MinimizeHover);
+            // 
+            // PhoneField
+            // 
+            this.PhoneField.Location = new System.Drawing.Point(234, 211);
+            this.PhoneField.Mask = "+7-(000)-000-00-00";
+            this.PhoneField.Name = "PhoneField";
+            this.PhoneField.Size = new System.Drawing.Size(104, 20);
+            this.PhoneField.TabIndex = 4;
+            // 
             // SignUp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(530, 530);
+            this.Controls.Add(this.PhoneField);
+            this.Controls.Add(this.MinimizeLabel);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.KnowledgeComboBox);
@@ -358,7 +372,6 @@ namespace Diploma
             this.Controls.Add(this.label6);
             this.Controls.Add(this.BirthDatePicker);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.PhoneField);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.MailField);
             this.Controls.Add(this.label3);
@@ -381,7 +394,6 @@ namespace Diploma
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox PhoneField;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox MailField;
         private System.Windows.Forms.Label label3;
@@ -402,5 +414,7 @@ namespace Diploma
         private System.Windows.Forms.ComboBox KnowledgeComboBox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label MinimizeLabel;
+        private System.Windows.Forms.MaskedTextBox PhoneField;
     }
 }

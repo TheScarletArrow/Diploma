@@ -38,6 +38,7 @@ namespace Diploma
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.MinimizeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // loginForm
@@ -130,12 +131,27 @@ namespace Diploma
             this.label7.TabIndex = 19;
             this.label7.Text = "Приветствуем!";
             // 
+            // MinimizeLabel
+            // 
+            this.MinimizeLabel.AutoSize = true;
+            this.MinimizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MinimizeLabel.ForeColor = System.Drawing.Color.Black;
+            this.MinimizeLabel.Location = new System.Drawing.Point(481, 9);
+            this.MinimizeLabel.Name = "MinimizeLabel";
+            this.MinimizeLabel.Size = new System.Drawing.Size(24, 20);
+            this.MinimizeLabel.TabIndex = 39;
+            this.MinimizeLabel.Text = "—";
+            this.MinimizeLabel.Click += new System.EventHandler(this.MimimzeClick);
+            this.MinimizeLabel.MouseLeave += new System.EventHandler(this.MinimizeLeave);
+            this.MinimizeLabel.MouseHover += new System.EventHandler(this.MinimizeHover);
+            // 
             // Auth
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(530, 457);
+            this.Controls.Add(this.MinimizeLabel);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -166,6 +182,7 @@ namespace Diploma
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label MinimizeLabel;
     }
 
    
