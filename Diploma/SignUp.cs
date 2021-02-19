@@ -6,19 +6,16 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Text;
 using System.Drawing;
-using System.Threading.Tasks;
 
 namespace Diploma
 {
     public partial class SignUp : Form
     {
-        public SHA512 sha512 = SHA512.Create();
+        public readonly SHA512 sha512 = SHA512.Create();
 
 
         public SignUp()
         {
-
-
             InitializeComponent();
             BirthDatePicker.Value = DateTime.Parse("2020-01-01");
         }
@@ -125,24 +122,23 @@ namespace Diploma
             DateTime birthdate = BirthDatePicker.Value.Date;
             bool all_is_ok = check_fields();
             if (all_is_ok)
-                for(int i=0;i<100;i++)
                 try
                 {
                         dataBase.OpenConnection();
                     MySqlCommand insertToUserInfo = new MySqlCommand
+                    //    ("insert into user_info (id, name, surname, mail, phone, birth_date,login_id) values (NULL, @un, @us, @um, @up, @ub, @ul);", dataBase.GetConnection());
+
                     ("insert into user_info (id, name, surname, mail, phone, birth_date,login_id) values (NULL, @un, @us, @um, @up, @ub, @ul);", dataBase.GetConnection());
                     insertToUserInfo.Parameters.Add("@un", MySqlDbType.VarChar).Value = name;
                     insertToUserInfo.Parameters.Add("@us", MySqlDbType.VarChar).Value = surname;
                     insertToUserInfo.Parameters.Add("@um", MySqlDbType.VarChar).Value = mail;
                     insertToUserInfo.Parameters.Add("@up", MySqlDbType.VarChar).Value = phone;
                     insertToUserInfo.Parameters.Add("@ub", MySqlDbType.DateTime).Value = birthdate;
+                    
+                    
                     MySqlCommand countRows = new MySqlCommand("select * from user_info;", dataBase.GetConnection());
-
                     adapter2.SelectCommand = countRows;
-
                     adapter.SelectCommand = insertToUserInfo;
-
-
 
                     MySqlCommand findID = new MySqlCommand("select id from user_info order by id desc limit 1;", dataBase.GetConnection());
                     MySqlDataReader dataReader = null;
@@ -153,7 +149,7 @@ namespace Diploma
                         id = int.Parse(dataReader.GetValue(0).ToString());
                     }
                     dataReader.Close();
-                   // MessageBox.Show("Ваш логин " + "user" + (id.ToString()) + "\nВаш пароль " + PasswordField.Text + "\n ЗАПИШИТЕ ИЛИ ЗАПОМНИТЕ ЕГО!");
+                    MessageBox.Show("Ваш логин " + "user" + (id.ToString()) + "\nВаш пароль " + PasswordField.Text + "\n ЗАПИШИТЕ ИЛИ ЗАПОМНИТЕ ЕГО!");
                     adapter2.Fill(dataTable);
                     insertToUserInfo.Parameters.Add("@ul", MySqlDbType.VarChar).Value = "user" + (id.ToString()).ToString();
 
@@ -174,8 +170,8 @@ namespace Diploma
                     insertToWork.Parameters.AddWithValue("@ul", "user" + (id.ToString()));
                     insertToWork.Parameters.AddWithValue("@uwt", workingXPComboBox.SelectedItem);
                     insertToWork.Parameters.AddWithValue("@udt", KnowledgeComboBox.SelectedItem);
-                    adapter2.SelectCommand = insertToWork;
-                    adapter2.Fill(dataTable2);
+                    adapterToWork.SelectCommand = insertToWork;
+                    adapterToWork.Fill(dataTable2);
 
                     MySqlCommand insertToXP = new MySqlCommand
                         ("insert into user_xp (login) values (@UL);", dataBase.GetConnection());
@@ -184,7 +180,7 @@ namespace Diploma
                     dataAdapter.SelectCommand = insertToXP;
                     dataAdapter.Fill(dataTable3);
 
-                 //   clearAllTextBox();
+                    clearAllTextBox();
                 }
                 catch (
                     MySqlException mysqlexception
@@ -242,8 +238,8 @@ namespace Diploma
             int dy = e.Y - lastPoint.Y;
             if (e.Button.Equals(MouseButtons.Left))
             {
-                this.Left += dx;
-                this.Top += dy;
+                Left += dx;
+                Top += dy;
             }
         }
 

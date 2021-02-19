@@ -17,8 +17,6 @@ namespace Diploma
         {
             InitializeComponent();
             label8.Visible = false;
-            
-          
         }
 
         private void EmptyFields()
@@ -32,6 +30,7 @@ namespace Diploma
             KnowledgeComboBox.SelectedItem = null;
             workingXPComboBox.SelectedItem = null;
             HeadOfficer.Text = null;
+            scienceLeader.SelectedItem = null;
 
         }
         private void textBox7_TextChanged(object sender, System.EventArgs e)
@@ -85,9 +84,15 @@ namespace Diploma
             }
             dataReader2.Close();
 
-          //  HashSet<String> list = new HashSet<string>(4);
-            
-            
+            MySqlCommand SelectScienceLeader = new MySqlCommand("select * from user_xp where login = @ul;"
+                , dataBase.GetConnection());
+            SelectScienceLeader.Parameters.AddWithValue("@ul", searchField.Text);
+            MySqlDataReader SceinceLeaderReader = SelectScienceLeader.ExecuteReader();
+            while (SceinceLeaderReader.Read())
+            {
+                scienceLeader.SelectedItem = SceinceLeaderReader.GetValue(0).ToString();
+            }
+            SceinceLeaderReader.Close();
             
             dataBase.CloseConnection();
             
@@ -205,6 +210,7 @@ namespace Diploma
 
         private void searchByName_TextChanged(object sender, EventArgs e)
         {
+            if (searchByName.Text.Contains("%")) return;
             DataBase dataBase = new DataBase();
             dataBase.OpenConnection();
             MySqlCommand cmd = new MySqlCommand(
