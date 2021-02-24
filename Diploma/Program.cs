@@ -18,7 +18,7 @@ namespace Diploma
             Application.SetCompatibleTextRenderingDefault(false);
            // Application.Run(new SignUp());
            Application.Run(new AdminControlPanel());
-            
+           // Application.Run((new About()));
         }
 
     }
