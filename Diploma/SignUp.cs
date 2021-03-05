@@ -35,20 +35,20 @@ namespace Diploma
         private bool check_fields()
         {
             
-            string name = NameField.Text;
+            var name = NameField.Text;
 
-            string surname = SurnameField.Text;
-            string mail = MailField.Text;
-            string phone = PhoneField.Text;
-            DateTime birthdate = BirthDatePicker.Value;
+            var surname = SurnameField.Text;
+            var mail = MailField.Text;
+            var phone = PhoneField.Text;
+            var birthdate = BirthDatePicker.Value;
 
             //имя
             if (string.IsNullOrEmpty(name)) { MessageBox.Show(@"Имя не введено"); return false; }
             else
             {
-                var name_is_good = name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
+                var nameIsGood = name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
                 
-                if (!name_is_good)
+                if (!nameIsGood)
                 {
                     MessageBox.Show(@"Имя сожержит неверные символы");
                     return false;
@@ -60,15 +60,15 @@ namespace Diploma
             if (string.IsNullOrEmpty(surname)) { MessageBox.Show(@"Фамилия не введена"); return false; }
             else
             {
-                var surname_is_good = surname.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
-                if (!surname_is_good) { MessageBox.Show(@"Фамилия сожержит неверные символы"); return false; }
+                var surnameIsGood = surname.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
+                if (!surnameIsGood) { MessageBox.Show(@"Фамилия сожержит неверные символы"); return false; }
             }
             //почта
             if (string.IsNullOrEmpty(mail)) { MessageBox.Show(@"Почта не введена"); return false; }
            
             if (!mail.Contains("@")) { MessageBox.Show(@"Неправильно введена почта"); return false; }
 
-            if (String.IsNullOrEmpty(phone)) { MessageBox.Show(@"Телефон не введен"); return false; }
+            if (string.IsNullOrEmpty(phone)) { MessageBox.Show(@"Телефон не введен"); return false; }
             
             {
                 var phone_is_good = phone.All(c => char.IsDigit(c) || c.Equals('-') || c.Equals('+') || c.Equals('(')|| c.Equals(')'));
@@ -84,17 +84,17 @@ namespace Diploma
             return true;
         }
 
-        private static string getPassword(int length)
+        private static string GetPassword(int length)
         {
             
             var pass = "";
             var random = new Random();
-            var password_length = length;
+            var passwordLength = length;
 
-            while (pass.Length < password_length)
+            while (pass.Length < passwordLength)
             {
-                Char c = (char)random.Next(33, 125);
-                if (Char.IsLetterOrDigit(c))
+                var c = (char)random.Next(33, 125);
+                if (char.IsLetterOrDigit(c))
                     pass += c;
             }
 
@@ -106,30 +106,30 @@ namespace Diploma
         {
             try
             {
-                String enc_pass = "";
-                DataBase dataBase = new DataBase();
-                DataTable dataTable = new DataTable();
+                var enc_pass = "";
+                var dataBase = new DataBase();
+                var dataTable = new DataTable();
 
 
 
-                MySqlDataAdapter adapter = new MySqlDataAdapter();
-                MySqlDataAdapter adapter2 = new MySqlDataAdapter();
+                var adapter = new MySqlDataAdapter();
+                var adapter2 = new MySqlDataAdapter();
 
                 dataBase.OpenConnection();
 
-                string name = NameField.Text;
-                int id = 0;
-                string surname = SurnameField.Text;
-                string mail = MailField.Text;
-                string phone = PhoneField.Text;
-                DateTime birthdate = BirthDatePicker.Value.Date;
-                bool all_is_ok = check_fields();
+                var name = NameField.Text;
+                var id = 0;
+                var surname = SurnameField.Text;
+                var mail = MailField.Text;
+                var phone = PhoneField.Text;
+                var birthdate = BirthDatePicker.Value.Date;
+                var all_is_ok = check_fields();
                 if (all_is_ok)
                     //for(int i=0;i<100;i++)
                     try
                     {
                         dataBase.OpenConnection();
-                        MySqlCommand insertToUserInfo = new MySqlCommand
+                        var insertToUserInfo = new MySqlCommand
                         ("insert into user_info (id, name, surname, mail, phone, birth_date,login_id) values (NULL, @un, @us, @um, @up, @ub, @ul);",
                             dataBase.GetConnection());
                         insertToUserInfo.Parameters.Add("@un", MySqlDbType.VarChar).Value = name;
@@ -138,12 +138,12 @@ namespace Diploma
                         insertToUserInfo.Parameters.Add("@up", MySqlDbType.VarChar).Value = phone;
                         insertToUserInfo.Parameters.Add("@ub", MySqlDbType.DateTime).Value = birthdate;
 
-                        MySqlCommand countRows = new MySqlCommand("select * from user_info;", dataBase.GetConnection());
+                        var countRows = new MySqlCommand("select * from user_info;", dataBase.GetConnection());
 
                         adapter2.SelectCommand = countRows;
                         adapter.SelectCommand = insertToUserInfo;
 
-                        MySqlCommand findID = new MySqlCommand("select id from user_info order by id desc limit 1;",
+                        var findID = new MySqlCommand("select id from user_info order by id desc limit 1;",
                             dataBase.GetConnection());
                         MySqlDataReader dataReader = null;
                         try
@@ -155,12 +155,12 @@ namespace Diploma
                             id = 0;
                         }
 
-                        while (dataReader.Read())
+                        while (dataReader != null && dataReader.Read())
                         {
                             id = int.Parse(dataReader.GetValue(0).ToString());
                         }
 
-                        dataReader.Close();
+                        dataReader?.Close();
                         MessageBox.Show(@"Ваш логин user" + (id.ToString()) + "\nВаш пароль " + PasswordField.Text +
                                         "\n ЗАПИШИТЕ ИЛИ ЗАПОМНИТЕ ЕГО!");
                         adapter2.Fill(dataTable);
@@ -170,11 +170,11 @@ namespace Diploma
                         adapter.Fill(dataTable);
 
 
-                        MySqlCommand insertToUserList = new MySqlCommand(
+                        var insertToUserList = new MySqlCommand(
                             "insert into user_list (id, login, password) values (NULL, @ul, @up);",
                             dataBase.GetConnection());
 
-                        insertToUserList.Parameters.AddWithValue("@ul", "user" + (id.ToString()));
+                        insertToUserList.Parameters.AddWithValue("@ul", "user" + (id));
                         enc_pass = Convert.ToBase64String(
                             sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text)));
                         insertToUserList.Parameters.AddWithValue("@up", enc_pass);
@@ -186,7 +186,7 @@ namespace Diploma
                         dataBase.OpenConnection();
                         //adapterToList.Fill(dataTable1);
 
-                        MySqlCommand insertToWork = new MySqlCommand
+                        var insertToWork = new MySqlCommand
                         ("insert into user_dep (id, user_id, worker_type, department_type) values (NULL, @ul, @uwt, @udt);",
                             dataBase.GetConnection());
                         insertToWork.Parameters.AddWithValue("@ul", "user" + (id.ToString()));
@@ -197,11 +197,11 @@ namespace Diploma
                         //adapterToWork.SelectCommand = insertToWork;
                         //adapterToWork.Fill(dataTable2);
 
-                        MySqlCommand insertToXP = new MySqlCommand
+                        var insertToXp = new MySqlCommand
                             ("insert into user_xp (login) values (@UL);", dataBase.GetConnection());
-                        insertToXP.Parameters.AddWithValue("@UL", "user" + (id.ToString()));
-                        MySqlDataAdapter dataAdapter = new MySqlDataAdapter();
-                        insertToXP.ExecuteNonQuery();
+                        insertToXp.Parameters.AddWithValue("@UL", "user" + (id));
+                        var dataAdapter = new MySqlDataAdapter();
+                        insertToXp.ExecuteNonQuery();
 
                         // dataAdapter.SelectCommand = insertToXP;
                         // dataAdapter.Fill(dataTable3);
@@ -220,13 +220,13 @@ namespace Diploma
             }
             catch (Exception exception)
             {
-                using (FileStream fstream =
+                using (var fstream =
                     new FileStream(
                         $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log",
                         FileMode.Append))
                 {
 
-                    byte[] array = Encoding.Default.GetBytes(exception.StackTrace);
+                    var array = Encoding.Default.GetBytes(exception.StackTrace);
                     // асинхронная запись массива байтов в файл
                     await fstream.WriteAsync(array, 0, array.Length);
                     await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
@@ -250,7 +250,7 @@ namespace Diploma
 
         private void button2_Click(object sender, EventArgs e)
         {
-            PasswordField.Text = getPassword(Decimal.ToInt32( numericUpDown1.Value));
+            PasswordField.Text = GetPassword(Decimal.ToInt32( numericUpDown1.Value));
 
         }
 
@@ -278,8 +278,8 @@ namespace Diploma
         Point _lastPoint;
         private void formMove(object sender, MouseEventArgs e)
         {
-            int dx = e.X - _lastPoint.X;
-            int dy = e.Y - _lastPoint.Y;
+            var dx = e.X - _lastPoint.X;
+            var dy = e.Y - _lastPoint.Y;
             if (e.Button.Equals(MouseButtons.Left))
             {
                 Left += dx;

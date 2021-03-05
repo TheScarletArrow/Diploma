@@ -16,9 +16,10 @@ namespace Diploma
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-           // Application.Run(new SignUp());
-           Application.Run(new AdminControlPanel());
-           // Application.Run((new About()));
+            //Application.Run(new SignUp());
+           //Application.Run(new AdminControlPanel());
+          // Application.Run((new About()));
+           Application.Run(new Auth());
         }
 
     }

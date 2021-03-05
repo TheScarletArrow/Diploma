@@ -35,8 +35,6 @@ namespace Diploma
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -75,31 +73,11 @@ namespace Diploma
             this.label4.TabIndex = 3;
             this.label4.Text = "Размер файла";
             // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.label5.Location = new System.Drawing.Point(498, 161);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(334, 218);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "label5";
-            // 
-            // label6
-            // 
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.label6.Location = new System.Drawing.Point(498, 116);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(303, 45);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Дата и время последней модиффикаци";
-            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -109,10 +87,6 @@ namespace Diploma
             this.Load += new System.EventHandler(this.About_Load);
             this.ResumeLayout(false);
         }
-
-        private System.Windows.Forms.Label label6;
-
-        private System.Windows.Forms.Label label5;
 
         private System.Windows.Forms.Label label4;
 

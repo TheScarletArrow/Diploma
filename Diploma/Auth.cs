@@ -10,7 +10,7 @@ namespace Diploma
 {
     public partial class Auth : Form
     {
-        readonly SignUp sign = new SignUp();
+        readonly SignUp _sign = new SignUp();
         public Auth()
         {
             InitializeComponent();
@@ -32,26 +32,25 @@ namespace Diploma
                     else
                     {
 
-                        DataBase database = new DataBase();
+                        var database = new DataBase();
                         database.OpenConnection();
-                        DataTable dataTable = new DataTable();
-                        DataTable dataTable1 = new DataTable();
-                        MySqlDataAdapter adapter = new MySqlDataAdapter();
-                        MySqlDataAdapter adapter1 = new MySqlDataAdapter();
-                        MySqlDataReader dataReader;
+                        var dataTable = new DataTable();
+                        var dataTable1 = new DataTable();
+                        var adapter = new MySqlDataAdapter();
+                        var adapter1 = new MySqlDataAdapter();
 
-                        String name_ = loginForm.Text;
-                        String Name = "";
+                        var name_ = loginForm.Text;
+                        var Name = "";
 
-                        MySqlCommand findPerson =
+                        var findPerson =
                             new MySqlCommand("select * from user_list where login=@ul and password = @up;",
                                 database.GetConnection());
                         findPerson.Parameters.AddWithValue("@ul", name_);
-                        String enc_pass = Convert.ToBase64String
-                            (sign.sha512.ComputeHash(Encoding.UTF8.GetBytes(passwordForm.Text)));
+                        var enc_pass = Convert.ToBase64String
+                            (_sign.sha512.ComputeHash(Encoding.UTF8.GetBytes(passwordForm.Text)));
                         findPerson.Parameters.AddWithValue("@up", enc_pass);
 
-                        MySqlCommand findPersonByLogin =
+                        var findPersonByLogin =
                             new MySqlCommand(
                                 "select ui.name from user_info ui left join user_list ul on (ui.login_id=ul.login) where ui.login_id=@ul;",
                                 database.GetConnection());
@@ -59,13 +58,17 @@ namespace Diploma
                         findPersonByLogin.Parameters.AddWithValue("@ul", name_);
 
 
+                        findPerson.ExecuteNonQuery();
+                        
                         adapter.SelectCommand = findPerson;
+                        adapter.Fill(dataTable);
+
+                        
                         adapter1.SelectCommand = findPersonByLogin;
 
-                        adapter.Fill(dataTable);
                         adapter1.Fill(dataTable1);
 
-                        dataReader = findPersonByLogin.ExecuteReader();
+                        var dataReader = findPersonByLogin.ExecuteReader();
                         while (dataReader.Read())
                             if (!dataReader.IsDBNull(dataReader.GetOrdinal("name")))
                             {
@@ -104,13 +107,13 @@ namespace Diploma
             
             catch (Exception ex)
             {
-                using (FileStream fstream =
+                using (var fstream =
                     new FileStream(
                         $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log",
                         FileMode.Append))
                 {
 
-                    byte[] array = Encoding.Default.GetBytes(ex.StackTrace);
+                    var array = Encoding.Default.GetBytes(ex.StackTrace);
                     // асинхронная запись массива байтов в файл
                     await fstream.WriteAsync(array, 0, array.Length);
                     await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
@@ -123,13 +126,12 @@ namespace Diploma
 
         private void CloseHover(object sender, EventArgs e)
         {
-            CloseLabel.ForeColor = Color.Red;
-
+            CloseLabel.BackColor = Color.FromArgb(70, Color.Red);
         }
 
         private void CloseLeave(object sender, EventArgs e)
         {
-            CloseLabel.ForeColor = Color.Black;
+            CloseLabel.BackColor = Color.Transparent;
 
         }
 
@@ -139,11 +141,11 @@ namespace Diploma
             //Application.Exit();
         }
 
-        Point lastPoint;
+        private Point _lastPoint;
         private void formMove(object sender, MouseEventArgs e)
         {
-            int dx = e.X - lastPoint.X;
-            int dy = e.Y - lastPoint.Y;
+            var dx = e.X - _lastPoint.X;
+            var dy = e.Y - _lastPoint.Y;
             if (e.Button.Equals(MouseButtons.Left))
             {
                 Left += dx;
@@ -153,7 +155,7 @@ namespace Diploma
 
         private void formDown(object sender, MouseEventArgs e)
         {
-            lastPoint = new Point(e.X, e.Y);
+            _lastPoint = new Point(e.X, e.Y);
         }
 
         private void label4_Click(object sender, EventArgs e)

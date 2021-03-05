@@ -24,8 +24,8 @@ namespace Diploma
         #region Код, автоматически созданный конструктором форм Windows
 
         /// <summary>
-        /// Требуемый метод для поддержки конструктора — не изменяйте 
-        /// содержимое этого метода с помощью редактора кода.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -64,8 +64,10 @@ namespace Diploma
             // 
             this.passwordForm.Location = new System.Drawing.Point(226, 181);
             this.passwordForm.Name = "passwordForm";
+            this.passwordForm.PasswordChar = '☺';
             this.passwordForm.Size = new System.Drawing.Size(189, 20);
             this.passwordForm.TabIndex = 2;
+            this.passwordForm.UseSystemPasswordChar = true;
             // 
             // label1
             // 
@@ -90,7 +92,7 @@ namespace Diploma
             // CloseLabel
             // 
             this.CloseLabel.AutoSize = true;
-            this.CloseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CloseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
             this.CloseLabel.ForeColor = System.Drawing.Color.Black;
             this.CloseLabel.Location = new System.Drawing.Point(501, 9);
             this.CloseLabel.Name = "CloseLabel";
@@ -113,18 +115,18 @@ namespace Diploma
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
             this.label4.Location = new System.Drawing.Point(226, 369);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(109, 13);
             this.label4.TabIndex = 18;
-            this.label4.Text = "Зарегестрируйтесь!";
+            this.label4.Text = "Зарегистрируйтесь!";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
             this.label7.Location = new System.Drawing.Point(195, 43);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(156, 25);
@@ -134,9 +136,9 @@ namespace Diploma
             // MinimizeLabel
             // 
             this.MinimizeLabel.AutoSize = true;
-            this.MinimizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MinimizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
             this.MinimizeLabel.ForeColor = System.Drawing.Color.Black;
-            this.MinimizeLabel.Location = new System.Drawing.Point(481, 9);
+            this.MinimizeLabel.Location = new System.Drawing.Point(471, 9);
             this.MinimizeLabel.Name = "MinimizeLabel";
             this.MinimizeLabel.Size = new System.Drawing.Size(24, 20);
             this.MinimizeLabel.TabIndex = 39;
@@ -169,7 +171,6 @@ namespace Diploma
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.formMove);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

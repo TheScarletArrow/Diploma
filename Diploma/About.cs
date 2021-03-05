@@ -17,7 +17,7 @@ namespace Diploma
 
             label1.Text = "";
             label2.Text = "";
-            label5.Text = "";
+           // label5.Text = "";
             
             const string dir = @"F:\MySQL\MySQL Server 5.5\data\userdb";
            
@@ -28,19 +28,15 @@ namespace Diploma
           //label2.Text+=($"{"Filename",-18} {"Size (bytes)"}");
            foreach (var file in files)
            {
-              
-              
                    var info = new FileInfo(file);
                    var bytes = info.Length;
                    var kbytes = (float)bytes / 1024;
                    label1.Text += Path.GetFileNameWithoutExtension(file)+'\n';
-                   label2.Text += string.Format( "{0:0.00}",kbytes) + '\t'+"Кб" + '\n';
-                   label5.Text += File.GetLastWriteTimeUtc(file).ToString()+'\n';
+                   label2.Text += $@"{kbytes:0.00}" + '\t'+@"Кб" + '\n';
+                   //label5.Text += File.GetLastWriteTime(file).ToString()+'\n';
 
            }
-
-
-
+           
         }
     }
 }

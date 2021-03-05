@@ -2,11 +2,11 @@
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.IO;
+
 
 
 namespace Diploma
@@ -16,13 +16,11 @@ namespace Diploma
     /// </summary>
     public partial class AdminControlPanel : Form
     {
-        
-        SignUp signUp = new SignUp();
+        private readonly SignUp _signUp = new SignUp();
         public AdminControlPanel()
         {
             InitializeComponent();
             label8.Visible = false;
-           
         }
         
 
@@ -40,32 +38,32 @@ namespace Diploma
             scienceLeader.SelectedItem = null;
             scienceLeader.SelectedItem = null;
         }
-        private async void textBox7_TextChanged(object sender, System.EventArgs e)
+        private async void textBox7_TextChanged(object sender, EventArgs e)
         {
             try
             {
 
-                DataBase dataBase = new DataBase();
+                var dataBase = new DataBase();
                 dataBase.OpenConnection();
                 EmptyFields();
-                MySqlCommand cmd = new MySqlCommand(
+                var cmd = new MySqlCommand(
                     @"select ui.login_id, ui.name, ui.surname, ul.password,
                 ui.mail, ui.phone, ui.birth_date from user_list ul left join
                 user_info ui on ((ul.login=ui.login_id)) where ui.login_id=@id;"
                     , dataBase.GetConnection());
                 cmd.Parameters.AddWithValue("@id", searchField.Text);
 
-                MySqlDataReader dataReader = cmd.ExecuteReader();
+                var dataReader = cmd.ExecuteReader();
 
 
-                String password_cached = PasswordField.Text;
+                var passwordCached = PasswordField.Text;
 
                 while (dataReader.Read())
                 {
                     NameField.Text = dataReader.GetValue(1).ToString();
                     SurnameField.Text = dataReader.GetValue(2).ToString();
-                    password_cached = dataReader.GetValue(3).ToString();
-                    PasswordField.Text = password_cached;
+                    passwordCached = dataReader.GetValue(3).ToString();
+                    PasswordField.Text = passwordCached;
                     MailField.Text = dataReader.GetValue(4).ToString();
                     PhoneField.Text = dataReader.GetValue(5).ToString();
                     DateField.Text = dataReader.GetValue(6).ToString();
@@ -73,11 +71,11 @@ namespace Diploma
 
                 dataReader.Close();
 
-                MySqlCommand cmd2 = new MySqlCommand(
+                var cmd2 = new MySqlCommand(
                     "select ud.user_id, ud.worker_type, ud.department_type, eho.HeadOfficer from user_dep ud left join engineer_head_officer eho on ud.department_type=Department where  user_id=@ui;"
                     , dataBase.GetConnection());
                 cmd2.Parameters.AddWithValue("@ui", searchField.Text);
-                MySqlDataReader dataReader1 = cmd2.ExecuteReader();
+                var dataReader1 = cmd2.ExecuteReader();
 
                 while (dataReader1.Read())
                 {
@@ -88,20 +86,11 @@ namespace Diploma
 
                 dataReader1.Close();
 
-                /* MySqlCommand officer = new MySqlCommand("select eho.HeadOfficer from user_dep ud left join engineer_head_officer eho on ud.department_type=Department where user_id=@id;", dataBase.GetConnection());
-                 officer.Parameters.AddWithValue("@id", searchField.Text);
-                 MySqlDataReader dataReader2 = officer.ExecuteReader();
-                 while (dataReader2.Read())
-                 {
-                     HeadOfficer.Text = dataReader2.GetValue(0).ToString();
-                 }
-                 dataReader2.Close();*/
-
-                MySqlCommand SelectScienceLeader = new MySqlCommand
+                var selectScienceLeader = new MySqlCommand
                 ("select ux.leader_name from user_xp ux left join worker_table_officer wo on wo.worker_type_officer=ux.leader_name where login=@ul;"
                     , dataBase.GetConnection());
-                SelectScienceLeader.Parameters.AddWithValue("@ul", searchField.Text);
-                MySqlDataReader sceinceLeaderReader = SelectScienceLeader.ExecuteReader();
+                selectScienceLeader.Parameters.AddWithValue("@ul", searchField.Text);
+                var sceinceLeaderReader = selectScienceLeader.ExecuteReader();
                 while (sceinceLeaderReader.Read())
                 {
                     scienceLeader.SelectedItem = sceinceLeaderReader.GetValue(0).ToString();
@@ -114,10 +103,10 @@ namespace Diploma
             }
             catch (InvalidOperationException exception)
             {
-                using (FileStream fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
+                using (var fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
                 {
 
-                    byte[] array = Encoding.Default.GetBytes(exception.StackTrace);
+                    var array = Encoding.Default.GetBytes(exception.StackTrace);
                     // асинхронная запись массива байтов в файл
                     await fstream.WriteAsync(array,  0, array.Length);
                     await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
@@ -125,72 +114,75 @@ namespace Diploma
                 }
 
             }
-
+                
 
         }
 
         //удалить
         private async void button3_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DataBase dataBase = new DataBase();
-                dataBase.OpenConnection();
-
-                MySqlCommand dropFromUserInfo = new MySqlCommand("delete from user_info where login_id=@login;",
-                    dataBase.GetConnection());
-                MySqlCommand dropFromUserList =
-                    new MySqlCommand("delete from user_list where login=@login;", dataBase.GetConnection());
-                MySqlCommand dropFromUserDep =
-                    new MySqlCommand("delete from user_dep where user_id=@login", dataBase.GetConnection());
-                MySqlCommand dropFromUserXP =
-                    new MySqlCommand("delete from user_xp where login=@login", dataBase.GetConnection());
-
-                dropFromUserInfo.Parameters.AddWithValue("@login", searchField.Text);
-                dropFromUserList.Parameters.AddWithValue("@login", searchField.Text);
-                dropFromUserDep.Parameters.AddWithValue("@login", searchField.Text);
-                dropFromUserXP.Parameters.AddWithValue("@login", searchField.Text);
-
-                dropFromUserList.ExecuteNonQuery();
-                dropFromUserDep.ExecuteNonQuery();
-                dropFromUserInfo.ExecuteNonQuery();
-                dropFromUserXP.ExecuteNonQuery();
-
-                dataBase.CloseConnection();
-
-                EmptyFields();
-                searchField.Text = "";
-
-                MessageBox.Show("Пользователь удален");
-            }
-            catch (InvalidOperationException exception)
-            {
-                using (FileStream fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
+            if ((MessageBox.Show(@"Удалить данного пользователя? Это действие нельзя отменить!", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) == DialogResult.Yes)
+                try
                 {
+                    var dataBase = new DataBase();
+                    dataBase.OpenConnection();
 
-                    byte[] array = Encoding.Default.GetBytes(exception.StackTrace);
-                    // асинхронная запись массива байтов в файл
-                    await fstream.WriteAsync(array,  0, array.Length);
-                    await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
+                    var dropFromUserInfo = new MySqlCommand("delete from user_info where login_id=@login;",
+                        dataBase.GetConnection());
+                    var dropFromUserList =
+                        new MySqlCommand("delete from user_list where login=@login;", dataBase.GetConnection());
+                    var dropFromUserDep =
+                        new MySqlCommand("delete from user_dep where user_id=@login", dataBase.GetConnection());
+                    var dropFromUserXp =
+                        new MySqlCommand("delete from user_xp where login=@login", dataBase.GetConnection());
 
+                    dropFromUserInfo.Parameters.AddWithValue("@login", searchField.Text);
+                    dropFromUserList.Parameters.AddWithValue("@login", searchField.Text);
+                    dropFromUserDep.Parameters.AddWithValue("@login", searchField.Text);
+                    dropFromUserXp.Parameters.AddWithValue("@login", searchField.Text);
+
+                    dropFromUserList.ExecuteNonQuery();
+                    dropFromUserDep.ExecuteNonQuery();
+                    dropFromUserInfo.ExecuteNonQuery();
+                    dropFromUserXp.ExecuteNonQuery();
+
+                    dataBase.CloseConnection();
+
+                    EmptyFields();
+                    searchField.Text = "";
+
+                    MessageBox.Show(@"Пользователь удален");
                 }
-            }
+                catch (InvalidOperationException exception)
+                {
+                    using (var fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
+                    {
+
+                        var array = Encoding.Default.GetBytes(exception.StackTrace);
+                        // асинхронная запись массива байтов в файл
+                        await fstream.WriteAsync(array,  0, array.Length);
+                        await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
+
+                    }
+                }
 
         }
 
         //изменить
         private async void button1_Click(object sender, EventArgs e)
         {
-            try
+            if ((MessageBox.Show(@"Изменить данные данного пользователя?", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) == DialogResult.Yes)
+
+             try
             {
-                String password = PasswordField.Text;
-                String password1 = "";
-                DataBase database = new DataBase();
+                var password = PasswordField.Text;
+                var password1 = "";
+                var database = new DataBase();
                 database.OpenConnection();
-                MySqlCommand getPasswordFromDB = new MySqlCommand("select password from user_list where login=@ul",
+                var getPasswordFromDb = new MySqlCommand("select password from user_list where login=@ul",
                     database.GetConnection());
-                getPasswordFromDB.Parameters.AddWithValue("@ul", searchField.Text);
-                MySqlDataReader readPassword = getPasswordFromDB.ExecuteReader();
+                getPasswordFromDb.Parameters.AddWithValue("@ul", searchField.Text);
+                var readPassword = getPasswordFromDb.ExecuteReader();
                 while (readPassword.Read())
                 {
                     password1 = readPassword.GetValue(0).ToString();
@@ -199,7 +191,7 @@ namespace Diploma
                 readPassword.Close();
 
 
-                MySqlCommand change = new MySqlCommand
+                var change = new MySqlCommand
                 ("update user_info set name=@name,surname=@surname,mail=@mail,phone=@phone,birth_date=@birthdate where login_id=@login;"
                     , database.GetConnection());
 
@@ -212,7 +204,7 @@ namespace Diploma
                 change.ExecuteNonQuery();
 
 
-                MySqlCommand change2 = new MySqlCommand
+                var change2 = new MySqlCommand
                 ("update user_dep set worker_type=@wt, department_type=@dt where user_id=@login;",
                     database.GetConnection());
                 change2.Parameters.AddWithValue("@login", searchField.Text);
@@ -220,20 +212,20 @@ namespace Diploma
                 change2.Parameters.AddWithValue("@dt", KnowledgeComboBox.SelectedItem);
                 change2.ExecuteNonQuery();
 
-                MySqlCommand changeUserXP = new MySqlCommand
+                var changeUserXp = new MySqlCommand
                 ("update user_xp set leader_name=@leader where login=@login;"
                     , database.GetConnection());
-                changeUserXP.Parameters.AddWithValue("@login", searchField.Text);
-                changeUserXP.Parameters.AddWithValue("@leader", scienceLeader.SelectedItem);
-                changeUserXP.ExecuteNonQuery();
+                changeUserXp.Parameters.AddWithValue("@login", searchField.Text);
+                changeUserXp.Parameters.AddWithValue("@leader", scienceLeader.SelectedItem);
+                changeUserXp.ExecuteNonQuery();
 
                 if (!password.Equals(password1))
                 {
-                    MySqlCommand changePassword = new MySqlCommand
+                    var changePassword = new MySqlCommand
                     ("update user_list set password=@pass where login=@login;"
                         , database.GetConnection());
                     changePassword.Parameters.AddWithValue("@pass",
-                        Convert.ToBase64String(signUp.sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text))));
+                        Convert.ToBase64String(_signUp.sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text))));
                     changePassword.Parameters.AddWithValue("@login", searchField.Text);
                     changePassword.ExecuteNonQuery();
                 }
@@ -242,11 +234,11 @@ namespace Diploma
                 }
 
 
-                MySqlCommand disable = new MySqlCommand("SET SQL_SAFE_UPDATES = 0;", database.GetConnection());
+                var disable = new MySqlCommand("SET SQL_SAFE_UPDATES = 0;", database.GetConnection());
                 disable.ExecuteNonQuery();
 
 
-                MySqlCommand change3 = new MySqlCommand(
+                var change3 = new MySqlCommand(
                     @"update user_xp set leader_name=@ln where login=@login;",
                     database.GetConnection());
                 change3.Parameters.AddWithValue("@login", searchField.Text);
@@ -262,10 +254,10 @@ namespace Diploma
             }
             catch (InvalidOperationException exception)
             {
-                using (FileStream fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
+                using (var fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
                 {
 
-                    byte[] array = Encoding.Default.GetBytes(exception.StackTrace);
+                    var array = Encoding.Default.GetBytes(exception.StackTrace);
                     // асинхронная запись массива байтов в файл
                     await fstream.WriteAsync(array,  0, array.Length);
                     await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
@@ -296,19 +288,18 @@ namespace Diploma
             {
                 
 
-                long timeNow = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                var timeNow = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
                 if (searchByName.Text.Contains("%")) return;
-                DataBase dataBase = new DataBase();
+                var dataBase = new DataBase();
                 dataBase.OpenConnection();
                
                 //String[] name = searchByName.Text.Split(' ');
                 // bool name_is_good = searchByName.Text.All => 
-                string[] nameAndSurname;
                 MySqlCommand cmd;
                 try
                 {
-                    nameAndSurname = searchByName.Text.Split(' ', ' ');
+                    var nameAndSurname = searchByName.Text.Split(' ', ' ');
                     if (nameAndSurname.Length==2 && !string.IsNullOrEmpty(searchByName.Text))
                     {
                          cmd = new MySqlCommand(
@@ -327,9 +318,8 @@ namespace Diploma
                         // cmd.Parameters.AddWithValue("@name", searchByName.Text);
                         // cmd.Parameters.AddWithValue("@surname", null);
                     }
-
                 }
-                catch (Exception exception)
+                catch (Exception)
                 {
                     
                     
@@ -349,13 +339,14 @@ namespace Diploma
 
                 
                 
-                MySqlDataReader dataReader = cmd.ExecuteReader();
+                var dataReader = cmd.ExecuteReader();
                 
 
-                DataTable dataTable1 = new DataTable();
-                MySqlDataAdapter adapter = new MySqlDataAdapter();
+                var dataTable1 = new DataTable();
+                var adapter = new MySqlDataAdapter();
 
                 dataGridView1.DataSource = dataTable1;
+                
                 dataReader.Close();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(dataTable1);
@@ -364,30 +355,29 @@ namespace Diploma
                 {
                     dataGridView1.Visible = false;
                     label8.Visible = true;
-                    label8.Text = "Ничего не найдено!";
+                    label8.Text = @"Ничего не найдено!";
                 }
                 else
                 {
                     dataGridView1.Visible = true;
                     label8.Visible = true;
-                    label8.Text = "Найдено рузльтатов: " + (dataGridView1.Rows.Count-1);
+                    label8.Text = @"Найдено рузльтатов: " + (dataGridView1.Rows.Count-1);
                 }
 
                 dataBase.CloseConnection();
-                long timeEnd = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                var timeEnd = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-                label15.Text = "Время запроса:" + ((float) (timeEnd - timeNow) / 1000).ToString() + " сек";
+                label15.Text = @"Время запроса:" + ((float) (timeEnd - timeNow) / 1000) + @" сек";
 
-                if (dataGridView1.Rows.Count > 1) label15.Visible = true;
-                else label15.Visible = false;
+                label15.Visible = dataGridView1.Rows.Count > 1;
             }
             catch (InvalidOperationException exception)
             {
                 
-                    using (FileStream fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
+                    using (var fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
                     {
 
-                        byte[] array = Encoding.Default.GetBytes(exception.StackTrace);
+                        var array = Encoding.Default.GetBytes(exception.StackTrace);
                         // асинхронная запись массива байтов в файл
                         await fstream.WriteAsync(array,  0, array.Length);
                         await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
@@ -397,21 +387,22 @@ namespace Diploma
                 
             }
         }
-        Point lastPoint;
+
+        private Point _lastPoint;
         private void formMove(object sender, MouseEventArgs e)
         {
-            int dx = e.X - lastPoint.X;
-            int dy = e.Y - lastPoint.Y;
+            var dx = e.X - _lastPoint.X;
+            var dy = e.Y - _lastPoint.Y;
             if (e.Button.Equals(MouseButtons.Left))
             {
-                this.Left += dx;
-                this.Top += dy;
+                Left += dx;
+                Top += dy;
             }
         }
 
         private void formDown(object sender, MouseEventArgs e)
         {
-            lastPoint = new Point(e.X, e.Y);
+            _lastPoint = new Point(e.X, e.Y);
         }
 
         private void MimimzeClick(object sender, EventArgs e)
@@ -448,21 +439,21 @@ namespace Diploma
             try
             {
                 scienceLeader.SelectedItem = null;
-                DataBase dataBase = new DataBase();
+                var dataBase = new DataBase();
                 dataBase.OpenConnection();
-                List<String> list = new List<String>();
+                var list = new List<String>();
 
                 list.Clear();
                 scienceLeader.Items.Clear();
-                MySqlCommand selectForLeader =
+                var selectForLeader =
                     new MySqlCommand("select worker_type_officer from `worker_table_officer` where worker_type=@wt",
                         dataBase.GetConnection());
                 selectForLeader.Parameters.AddWithValue("@wt", workingXPComboBox.SelectedItem);
-                MySqlDataReader dataReader3 = selectForLeader.ExecuteReader();
+                var dataReader3 = selectForLeader.ExecuteReader();
 
                 while (dataReader3.Read())
                 {
-                    String readData = dataReader3.GetValue(0).ToString();
+                    var readData = dataReader3.GetValue(0).ToString();
                     if (!list.Contains(readData) && !scienceLeader.Items.Contains(readData))
                     {
                         list.Add(readData);
@@ -477,10 +468,10 @@ namespace Diploma
             }
             catch (InvalidOperationException exception)
             {
-                using (FileStream fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
+                using (var fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
                 {
 
-                    byte[] array = Encoding.Default.GetBytes(exception.StackTrace);
+                    var array = Encoding.Default.GetBytes(exception.StackTrace);
                     // асинхронная запись массива байтов в файл
                     await fstream.WriteAsync(array,  0, array.Length);
                     await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
@@ -499,15 +490,15 @@ namespace Diploma
         {
             try
             {
-                DataBase dataBase = new DataBase();
+                var dataBase = new DataBase();
                 dataBase.OpenConnection();
 
                 HeadOfficer.Text = "";
-                MySqlCommand officer = new MySqlCommand(
+                var officer = new MySqlCommand(
                     "select HeadOfficer from engineer_head_officer where department=@dep;"
                     , dataBase.GetConnection());
                 officer.Parameters.AddWithValue("@dep", KnowledgeComboBox.SelectedItem);
-                MySqlDataReader dataReader2 = officer.ExecuteReader();
+                var dataReader2 = officer.ExecuteReader();
                 while (dataReader2.Read())
                 {
                     HeadOfficer.Text = dataReader2.GetValue(0).ToString();
@@ -519,10 +510,10 @@ namespace Diploma
             }
             catch (InvalidOperationException exception)
             {
-                using (FileStream fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
+                using (var fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
                 {
 
-                    byte[] array = Encoding.Default.GetBytes(exception.StackTrace);
+                    var array = Encoding.Default.GetBytes(exception.StackTrace);
                     // асинхронная запись массива байтов в файл
                     await fstream.WriteAsync(array,  0, array.Length);
                     await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
@@ -531,5 +522,18 @@ namespace Diploma
 
             }
         }
+
+        private void AdminControlPanel_Load(object sender, EventArgs e)
+        {
+            var t = new ToolTip();
+            t.SetToolTip(button1, "Изменить данные пользователя");
+      
+            var t1 = new ToolTip();
+            t.SetToolTip(searchField, "Введите логин пользователя");
+            t1.SetToolTip(NameField, "Имя пользователя");
+            t1.SetToolTip(SurnameField, "Фамилия пользователя");
+           
+        }
+        
     }
 }
