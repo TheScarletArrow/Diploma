@@ -167,8 +167,8 @@ namespace Diploma
             this.Name = "Auth";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.formDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.formMove);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMove);
             this.ResumeLayout(false);
             this.PerformLayout();
         }

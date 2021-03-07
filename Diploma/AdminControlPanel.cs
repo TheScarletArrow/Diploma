@@ -5,8 +5,9 @@ using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-
+using System.Runtime.InteropServices;
 
 
 namespace Diploma
@@ -35,7 +36,6 @@ namespace Diploma
             KnowledgeComboBox.SelectedItem = null;
             workingXPComboBox.SelectedItem = null;
             HeadOfficer.Text = null;
-            scienceLeader.SelectedItem = null;
             scienceLeader.SelectedItem = null;
         }
         private async void textBox7_TextChanged(object sender, EventArgs e)
@@ -121,7 +121,7 @@ namespace Diploma
         //удалить
         private async void button3_Click(object sender, EventArgs e)
         {
-            if ((MessageBox.Show(@"Удалить данного пользователя? Это действие нельзя отменить!", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) == DialogResult.Yes)
+            if ((MessageBox.Show(@"Удалить данного пользователя? Это действие нельзя отменить!", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)) == DialogResult.Yes)
                 try
                 {
                     var dataBase = new DataBase();
@@ -174,102 +174,102 @@ namespace Diploma
             if ((MessageBox.Show(@"Изменить данные данного пользователя?", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) == DialogResult.Yes)
 
              try
-            {
-                var password = PasswordField.Text;
-                var password1 = "";
-                var database = new DataBase();
-                database.OpenConnection();
-                var getPasswordFromDb = new MySqlCommand("select password from user_list where login=@ul",
-                    database.GetConnection());
-                getPasswordFromDb.Parameters.AddWithValue("@ul", searchField.Text);
-                var readPassword = getPasswordFromDb.ExecuteReader();
-                while (readPassword.Read())
-                {
-                    password1 = readPassword.GetValue(0).ToString();
-                }
+             {
+                 var password = PasswordField.Text;
+                 var password1 = "";
+                 var database = new DataBase();
+                 database.OpenConnection();
+                 var getPasswordFromDb = new MySqlCommand("select password from user_list where login=@ul",
+                     database.GetConnection());
+                 getPasswordFromDb.Parameters.AddWithValue("@ul", searchField.Text);
+                 var readPassword = getPasswordFromDb.ExecuteReader();
+                 while (readPassword.Read())
+                 {
+                     password1 = readPassword.GetValue(0).ToString();
+                 }
 
-                readPassword.Close();
-
-
-                var change = new MySqlCommand
-                ("update user_info set name=@name,surname=@surname,mail=@mail,phone=@phone,birth_date=@birthdate where login_id=@login;"
-                    , database.GetConnection());
-
-                change.Parameters.AddWithValue("@name", NameField.Text);
-                change.Parameters.AddWithValue("@surname", SurnameField.Text);
-                change.Parameters.AddWithValue("@mail", MailField.Text);
-                change.Parameters.AddWithValue("@phone", PhoneField.Text);
-                change.Parameters.AddWithValue("@birthdate", DateTime.Parse(DateField.Text));
-                change.Parameters.AddWithValue("@login", searchField.Text);
-                change.ExecuteNonQuery();
+                 readPassword.Close();
 
 
-                var change2 = new MySqlCommand
-                ("update user_dep set worker_type=@wt, department_type=@dt where user_id=@login;",
-                    database.GetConnection());
-                change2.Parameters.AddWithValue("@login", searchField.Text);
-                change2.Parameters.AddWithValue("@wt", workingXPComboBox.SelectedItem);
-                change2.Parameters.AddWithValue("@dt", KnowledgeComboBox.SelectedItem);
-                change2.ExecuteNonQuery();
+                 var change = new MySqlCommand
+                 ("update user_info set name=@name,surname=@surname,mail=@mail,phone=@phone,birth_date=@birthdate where login_id=@login;"
+                     , database.GetConnection());
 
-                var changeUserXp = new MySqlCommand
-                ("update user_xp set leader_name=@leader where login=@login;"
-                    , database.GetConnection());
-                changeUserXp.Parameters.AddWithValue("@login", searchField.Text);
-                changeUserXp.Parameters.AddWithValue("@leader", scienceLeader.SelectedItem);
-                changeUserXp.ExecuteNonQuery();
-
-                if (!password.Equals(password1))
-                {
-                    var changePassword = new MySqlCommand
-                    ("update user_list set password=@pass where login=@login;"
-                        , database.GetConnection());
-                    changePassword.Parameters.AddWithValue("@pass",
-                        Convert.ToBase64String(_signUp.sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text))));
-                    changePassword.Parameters.AddWithValue("@login", searchField.Text);
-                    changePassword.ExecuteNonQuery();
-                }
-                else
-                {
-                }
+                 change.Parameters.AddWithValue("@name", NameField.Text);
+                 change.Parameters.AddWithValue("@surname", SurnameField.Text);
+                 change.Parameters.AddWithValue("@mail", MailField.Text);
+                 change.Parameters.AddWithValue("@phone", PhoneField.Text);
+                 change.Parameters.AddWithValue("@birthdate", DateTime.Parse(DateField.Text));
+                 change.Parameters.AddWithValue("@login", searchField.Text);
+                 change.ExecuteNonQuery();
 
 
-                var disable = new MySqlCommand("SET SQL_SAFE_UPDATES = 0;", database.GetConnection());
-                disable.ExecuteNonQuery();
+                 var change2 = new MySqlCommand
+                 ("update user_dep set worker_type=@wt, department_type=@dt where user_id=@login;",
+                     database.GetConnection());
+                 change2.Parameters.AddWithValue("@login", searchField.Text);
+                 change2.Parameters.AddWithValue("@wt", workingXPComboBox.SelectedItem);
+                 change2.Parameters.AddWithValue("@dt", KnowledgeComboBox.SelectedItem);
+                 change2.ExecuteNonQuery();
+
+                 var changeUserXp = new MySqlCommand
+                 ("update user_xp set leader_name=@leader where login=@login;"
+                     , database.GetConnection());
+                 changeUserXp.Parameters.AddWithValue("@login", searchField.Text);
+                 changeUserXp.Parameters.AddWithValue("@leader", scienceLeader.SelectedItem);
+                 changeUserXp.ExecuteNonQuery();
+
+                 if (!password.Equals(password1))
+                 {
+                     var changePassword = new MySqlCommand
+                     ("update user_list set password=@pass where login=@login;"
+                         , database.GetConnection());
+                     changePassword.Parameters.AddWithValue("@pass",
+                         Convert.ToBase64String(_signUp.Sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text))));
+                     changePassword.Parameters.AddWithValue("@login", searchField.Text);
+                     changePassword.ExecuteNonQuery();
+                 }
+                 else
+                 {
+                 }
 
 
-                var change3 = new MySqlCommand(
-                    @"update user_xp set leader_name=@ln where login=@login;",
-                    database.GetConnection());
-                change3.Parameters.AddWithValue("@login", searchField.Text);
-                change3.Parameters.AddWithValue("@ln", scienceLeader.SelectedItem);
+                 var disable = new MySqlCommand("SET SQL_SAFE_UPDATES = 0;", database.GetConnection());
+                 disable.ExecuteNonQuery();
+
+
+                 var change3 = new MySqlCommand(
+                     @"update user_xp set leader_name=@ln where login=@login;",
+                     database.GetConnection());
+                 change3.Parameters.AddWithValue("@login", searchField.Text);
+                 change3.Parameters.AddWithValue("@ln", scienceLeader.SelectedItem);
 
 
 
-                change3.ExecuteNonQuery();
-                EmptyFields();
-                searchField.Text = "";
-                database.CloseConnection();
-                MessageBox.Show(@"Изменено успешно");
-            }
-            catch (InvalidOperationException exception)
-            {
-                using (var fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
-                {
+                 change3.ExecuteNonQuery();
+                 EmptyFields();
+                 searchField.Text = "";
+                 database.CloseConnection();
+                 MessageBox.Show(@"Изменено успешно");
+             }
+             catch (InvalidOperationException exception)
+             {
+                 using (var fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
+                 {
 
-                    var array = Encoding.Default.GetBytes(exception.StackTrace);
-                    // асинхронная запись массива байтов в файл
-                    await fstream.WriteAsync(array,  0, array.Length);
-                    await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
-                }
-            }
+                     var array = Encoding.Default.GetBytes(exception.StackTrace);
+                     // асинхронная запись массива байтов в файл
+                     await fstream.WriteAsync(array,  0, array.Length);
+                     await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
+                 }
+             }
 
 
         }
 
         private void CloseClick(object sender, EventArgs e)
         {
-            Application.Exit();
+          Application.Exit();
         }
         private void CloseHover(object sender, EventArgs e)
         {
@@ -389,7 +389,7 @@ namespace Diploma
         }
 
         private Point _lastPoint;
-        private void formMove(object sender, MouseEventArgs e)
+        private void FormMove(object sender, MouseEventArgs e)
         {
             var dx = e.X - _lastPoint.X;
             var dy = e.Y - _lastPoint.Y;
@@ -400,7 +400,7 @@ namespace Diploma
             }
         }
 
-        private void formDown(object sender, MouseEventArgs e)
+        private void FormDown(object sender, MouseEventArgs e)
         {
             _lastPoint = new Point(e.X, e.Y);
         }
@@ -425,7 +425,7 @@ namespace Diploma
 
         private void войтиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                 new Auth().Show();
+            new Auth().Show();
         
         }
 
@@ -434,7 +434,7 @@ namespace Diploma
             new SignUp().Show();
         }
 
-        private async void change(object sender, EventArgs e)
+        private async void Change(object sender, EventArgs e)
         {
             try
             {
@@ -486,7 +486,7 @@ namespace Diploma
             new About().Show();
         }
 
-        private async void change2(object sender, EventArgs e)
+        private async void Change2(object sender, EventArgs e)
         {
             try
             {
@@ -532,8 +532,169 @@ namespace Diploma
             t.SetToolTip(searchField, "Введите логин пользователя");
             t1.SetToolTip(NameField, "Имя пользователя");
             t1.SetToolTip(SurnameField, "Фамилия пользователя");
-           
+            t1.SetToolTip(PasswordField, "Пароль пользователя");
+            t1.SetToolTip(PhoneField, "Телефон пользователя");
+            t1.SetToolTip(DateField, "Дата рождения");
+            t1.SetToolTip(workingXPComboBox, "Выберите стаж");
+            t1.SetToolTip(KnowledgeComboBox, "Выберите сферу деятельности");
+            t1.SetToolTip(scienceLeader, "Выберите начальника отдела");
+            var t2 = new ToolTip();
+
+            t2.SetToolTip(HeadOfficer, string.IsNullOrEmpty(HeadOfficer.Text) ? null : "Начальник");
         }
-        
+
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var text = dataGridView1.CurrentCell.Value.ToString();
+            if (!text.StartsWith("user")) return;
+            tabControl1.SelectTab(0);
+            searchField.Text = text;
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+                
+           
+
+            var dataGridViewSelectedCellCollection = dataGridView1.CurrentCell.Value;
+            
+        }
+
+        private void копироватьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(dataGridView1.CurrentCell.Value.ToString());
+        }
+
+        private void смотретьПолнуюИнформациюToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var text = dataGridView1.CurrentCell.Value.ToString();
+            searchField.Text = !text.StartsWith("user") ? dataGridView1[0, dataGridView1.CurrentCell.RowIndex].Value.ToString() : text;
+            tabControl1.SelectTab(0);
+            //searchField.Text = text;
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dataGridView1.CurrentCell.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                $@"Этот программный продукт позволяет управлять базой данных пользователей в графическом интерфейсе.
+Разработано и спроектировано Антоном Юрковым.
+----------------------------------------------
+Версии:
+Версия mySQL - Server 5.5
+Версия .NET Framework - {RuntimeInformation.FrameworkDescription}
+Версия ОС - {RuntimeInformation.OSDescription}
+Версия CLR - {Environment.Version}
+Версия данного программного продукта - {Application.ProductVersion}");
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var fstream =
+                    new FileStream(
+                        $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/info_about{searchField.Text}.txt",
+                        FileMode.Append))
+                {
+                    var listoflabels = new List<byte[]>()
+                    {
+                        Encoding.Default.GetBytes("Логин"),
+                        Encoding.Default.GetBytes(label6.Text),
+                        Encoding.Default.GetBytes(label5.Text),
+                        Encoding.Default.GetBytes(label4.Text),
+                        Encoding.Default.GetBytes(label3.Text),
+                        Encoding.Default.GetBytes(label2.Text),
+                        Encoding.Default.GetBytes(label1.Text),
+                        Encoding.Default.GetBytes(label9.Text),
+                        Encoding.Default.GetBytes(label10.Text),
+                        Encoding.Default.GetBytes(label7.Text),
+                        Encoding.Default.GetBytes(label14.Text)
+
+                    };
+                    for (int i = 0; i < listoflabels.Count ; i++)
+                    {
+                        if (listoflabels[i] == null)
+                            return;
+                    }
+
+                    var listoftextboxes = new List<byte[]>()
+                    {
+                        Encoding.Default.GetBytes(searchField.Text),
+                        Encoding.Default.GetBytes(NameField.Text),
+                        Encoding.Default.GetBytes(SurnameField.Text),
+                        Encoding.Default.GetBytes(PasswordField.Text),
+                        Encoding.Default.GetBytes(MailField.Text),
+                        Encoding.Default.GetBytes(PhoneField.Text),
+                        Encoding.Default.GetBytes(DateField.Text),
+                        Encoding.Default.GetBytes(workingXPComboBox.SelectedItem.ToString()),
+                        Encoding.Default.GetBytes(KnowledgeComboBox.SelectedItem.ToString()),
+                        Encoding.Default.GetBytes(HeadOfficer.Text),
+                        Encoding.Default.GetBytes(scienceLeader.SelectedItem==null?" ":scienceLeader.SelectedItem.ToString())
+                    };
+                    for (int i = 0; i < listoftextboxes.Count; i++)
+                    {
+                        if (listoftextboxes[i] == null)
+return;
+                        
+                    }
+
+                    // асинхронная запись массива байтов в файл
+                    await fstream.WriteAsync(new byte[] {123}, 0, 1);
+                    for (var i = 0; i < listoflabels.Count; i++)
+                    {
+                        if (listoflabels[i] != null && listoftextboxes[i] != null)
+                        {
+
+                            await fstream.WriteAsync(new byte[] {123}, 0, 1);
+                            await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
+                            await fstream.WriteAsync(new byte[] {58}, 0, 1);
+
+                            await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
+
+                            await fstream.WriteAsync(new byte[] {125}, 0, 1);
+                            await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
+                        }
+                        else if (listoflabels[i] == null)
+                        {
+
+                            await fstream.WriteAsync(new byte[] {123}, 0, 1);
+                            await fstream.WriteAsync(new byte[] {32}, 0, 1);
+                            await fstream.WriteAsync(new byte[] {58}, 0, 1);
+
+                            await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
+
+                            await fstream.WriteAsync(new byte[] {125}, 0, 1);
+                            await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
+                        }
+                        else
+                        {
+
+                            await fstream.WriteAsync(new byte[] {123}, 0, 1);
+                            await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
+                            await fstream.WriteAsync(new byte[] {58}, 0, 1);
+
+                            await fstream.WriteAsync(new byte[] {32}, 0, 1);
+
+                            await fstream.WriteAsync(new byte[] {125}, 0, 1);
+                            await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
+                        }
+                    }
+
+                    await fstream.WriteAsync(new byte[] {125}, 0, 1);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Убедитесь, что все поля заполнены!");
+                
+            }
+        }
     }
 }

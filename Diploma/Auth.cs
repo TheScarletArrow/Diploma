@@ -21,13 +21,23 @@ namespace Diploma
         {
             try
             {
-                if (!String.IsNullOrEmpty(loginForm.Text) && !String.IsNullOrEmpty(passwordForm.Text))
+                if (!string.IsNullOrEmpty(loginForm.Text) && !string.IsNullOrEmpty(passwordForm.Text))
                 {
-                    if ((loginForm.Text.Equals("admin")) && (passwordForm.Text.Equals("admin")))
+                    if (loginForm.Text.Equals("admin") && passwordForm.Text.Equals("admin"))
                     {
+                        var fc = Application.OpenForms["AdminControlPanel"];
+                        if (fc != null)
+                        {
+                            Hide();
+                        }
+                        else
+                        {
+                            new AdminControlPanel().Show();
+                            Hide();
+                        }
+                        //  fc?.Hide();
+
                         
-                        new AdminControlPanel().Show();
-                        Hide();
                     }
                     else
                     {
@@ -39,23 +49,23 @@ namespace Diploma
                         var adapter = new MySqlDataAdapter();
                         var adapter1 = new MySqlDataAdapter();
 
-                        var name_ = loginForm.Text;
-                        var Name = "";
+                        var nameAsParam = loginForm.Text;
+                        var nameFromDb = "";
 
                         var findPerson =
                             new MySqlCommand("select * from user_list where login=@ul and password = @up;",
                                 database.GetConnection());
-                        findPerson.Parameters.AddWithValue("@ul", name_);
-                        var enc_pass = Convert.ToBase64String
-                            (_sign.sha512.ComputeHash(Encoding.UTF8.GetBytes(passwordForm.Text)));
-                        findPerson.Parameters.AddWithValue("@up", enc_pass);
+                        findPerson.Parameters.AddWithValue("@ul", nameAsParam);
+                        var encPass = Convert.ToBase64String
+                            (_sign.Sha512.ComputeHash(Encoding.UTF8.GetBytes(passwordForm.Text)));
+                        findPerson.Parameters.AddWithValue("@up", encPass);
 
                         var findPersonByLogin =
                             new MySqlCommand(
                                 "select ui.name from user_info ui left join user_list ul on (ui.login_id=ul.login) where ui.login_id=@ul;",
                                 database.GetConnection());
 
-                        findPersonByLogin.Parameters.AddWithValue("@ul", name_);
+                        findPersonByLogin.Parameters.AddWithValue("@ul", nameAsParam);
 
 
                         findPerson.ExecuteNonQuery();
@@ -74,7 +84,7 @@ namespace Diploma
                             {
                                 try
                                 {
-                                    Name = dataReader.GetString("name");
+                                    nameFromDb = dataReader.GetString("name");
                                 }
                                 catch (MySqlException ex)
                                 {
@@ -86,7 +96,7 @@ namespace Diploma
 
 
                         if ((dataTable1.Rows.Count > 0) && (dataTable.Rows.Count > 0))
-                            MessageBox.Show(@"Привет, " + Name);
+                            MessageBox.Show(@"Привет, " + nameFromDb);
                         else
                             MessageBox.Show(@"Неверный логин или пароль");
                         database.CloseConnection();
@@ -95,7 +105,7 @@ namespace Diploma
 
                     }
                 }
-                else if (String.IsNullOrEmpty(loginForm.Text))
+                else if (string.IsNullOrEmpty(loginForm.Text))
                 {
                     MessageBox.Show(@"Логин пустой");
                 }
@@ -142,7 +152,7 @@ namespace Diploma
         }
 
         private Point _lastPoint;
-        private void formMove(object sender, MouseEventArgs e)
+        private void FormMove(object sender, MouseEventArgs e)
         {
             var dx = e.X - _lastPoint.X;
             var dy = e.Y - _lastPoint.Y;
@@ -153,7 +163,7 @@ namespace Diploma
             }
         }
 
-        private void formDown(object sender, MouseEventArgs e)
+        private void FormDown(object sender, MouseEventArgs e)
         {
             _lastPoint = new Point(e.X, e.Y);
         }

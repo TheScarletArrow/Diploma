@@ -12,7 +12,7 @@ namespace Diploma
 {
     public partial class SignUp : Form
     {
-        public readonly SHA512 sha512 = SHA512.Create();
+        public readonly SHA512 Sha512 = SHA512.Create();
 
 
         public SignUp()
@@ -21,7 +21,7 @@ namespace Diploma
             BirthDatePicker.Value = DateTime.Parse("2020-01-01");
         }
 
-        private void clearAllTextBox()
+        private void ClearAllTextBox()
         {
             NameField.Text = "";
             SurnameField.Text = "";
@@ -71,8 +71,8 @@ namespace Diploma
             if (string.IsNullOrEmpty(phone)) { MessageBox.Show(@"Телефон не введен"); return false; }
             
             {
-                var phone_is_good = phone.All(c => char.IsDigit(c) || c.Equals('-') || c.Equals('+') || c.Equals('(')|| c.Equals(')'));
-                if (!phone_is_good) { MessageBox.Show(@"Телефон содержит неверные символы"); return false; }
+                var phoneIsGood = phone.All(c => char.IsDigit(c) || c.Equals('-') || c.Equals('+') || c.Equals('(')|| c.Equals(')'));
+                if (!phoneIsGood) { MessageBox.Show(@"Телефон содержит неверные символы"); return false; }
             }
             if (string.IsNullOrEmpty(PasswordField.Text)) { MessageBox.Show(@"Пароль не задан"); return false; }
 
@@ -106,7 +106,7 @@ namespace Diploma
         {
             try
             {
-                var enc_pass = "";
+                var encPass = "";
                 var dataBase = new DataBase();
                 var dataTable = new DataTable();
 
@@ -123,8 +123,8 @@ namespace Diploma
                 var mail = MailField.Text;
                 var phone = PhoneField.Text;
                 var birthdate = BirthDatePicker.Value.Date;
-                var all_is_ok = check_fields();
-                if (all_is_ok)
+                var allIsOk = check_fields();
+                if (allIsOk)
                     //for(int i=0;i<100;i++)
                     try
                     {
@@ -143,12 +143,12 @@ namespace Diploma
                         adapter2.SelectCommand = countRows;
                         adapter.SelectCommand = insertToUserInfo;
 
-                        var findID = new MySqlCommand("select id from user_info order by id desc limit 1;",
+                        var findId = new MySqlCommand("select id from user_info order by id desc limit 1;",
                             dataBase.GetConnection());
                         MySqlDataReader dataReader = null;
                         try
                         {
-                            dataReader = findID.ExecuteReader();
+                            dataReader = findId.ExecuteReader();
                         }
                         catch (NullReferenceException)
                         {
@@ -161,7 +161,7 @@ namespace Diploma
                         }
 
                         dataReader?.Close();
-                        MessageBox.Show(@"Ваш логин user" + (id.ToString()) + "\nВаш пароль " + PasswordField.Text +
+                        MessageBox.Show(@"Ваш логин user" + id + "\nВаш пароль " + PasswordField.Text +
                                         "\n ЗАПИШИТЕ ИЛИ ЗАПОМНИТЕ ЕГО!");
                         adapter2.Fill(dataTable);
                         insertToUserInfo.Parameters.Add("@ul", MySqlDbType.VarChar).Value =
@@ -175,9 +175,9 @@ namespace Diploma
                             dataBase.GetConnection());
 
                         insertToUserList.Parameters.AddWithValue("@ul", "user" + (id));
-                        enc_pass = Convert.ToBase64String(
-                            sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text)));
-                        insertToUserList.Parameters.AddWithValue("@up", enc_pass);
+                        encPass = Convert.ToBase64String(
+                            Sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text)));
+                        insertToUserList.Parameters.AddWithValue("@up", encPass);
                         //adapterToList.SelectCommand = insertToUserList;
                         insertToUserInfo.ExecuteNonQuery();
 
@@ -206,7 +206,7 @@ namespace Diploma
                         // dataAdapter.SelectCommand = insertToXP;
                         // dataAdapter.Fill(dataTable3);
 
-                        clearAllTextBox();
+                        ClearAllTextBox();
                     }
                     catch (
                         MySqlException mysqlexception
@@ -276,7 +276,7 @@ namespace Diploma
             Hide();
         }
         Point _lastPoint;
-        private void formMove(object sender, MouseEventArgs e)
+        private void FormMove(object sender, MouseEventArgs e)
         {
             var dx = e.X - _lastPoint.X;
             var dy = e.Y - _lastPoint.Y;
@@ -287,7 +287,7 @@ namespace Diploma
             }
         }
 
-        private void formDown(object sender, MouseEventArgs e)
+        private void FormDown(object sender, MouseEventArgs e)
         {
             _lastPoint = new Point(e.X, e.Y);
         }

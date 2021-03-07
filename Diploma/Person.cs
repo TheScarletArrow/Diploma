@@ -5,16 +5,16 @@ namespace Diploma
 {
     class Person
     {
-        private int id;
-        private string name;
-        private string surname;
-        private string mail;
-        private string phone;
-        private DateTime birthdate;
+        private int _id;
+        private string _name;
+        private string _surname;
+        private string _mail;
+        private string _phone;
+        private DateTime _birthdate;
         //Regex regex = new Regex( @"^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$");
 
-        public Person(int ID, string name, string surname, string mail, string phone, DateTime dateTime) {
-            Id = ID;
+        public Person(int id, string name, string surname, string mail, string phone, DateTime dateTime) {
+            Id = id;
             Name = name;
             Surname = surname;
             Mail = mail;
@@ -22,37 +22,37 @@ namespace Diploma
             Birthdate = dateTime;
         }
         public int Id { 
-            get { return id; } 
-            set { id = value; } 
+            get { return _id; } 
+            set { _id = value; } 
         }
         public string Name { 
-            get { return name; } 
-            set { name = value; } 
+            get { return _name; } 
+            set { _name = value; } 
         }
 
         public string Surname { 
-            get { return surname; } 
-            set { surname = value; } 
+            get { return _surname; } 
+            set { _surname = value; } 
         }
 
         public string Mail
         {
-            get { return mail; }
-            set { mail = value; }
+            get { return _mail; }
+            set { _mail = value; }
         }
 
         
         public string Phone
         {
                         
-            get { return phone; }
-            set { phone = value; }
+            get { return _phone; }
+            set { _phone = value; }
         }
 
         public DateTime Birthdate
         {
-            get { return birthdate; }
-            set { birthdate = value; }
+            get { return _birthdate; }
+            set { _birthdate = value; }
         }
 
        
