@@ -599,105 +599,102 @@ namespace Diploma
          //  saveFileDialog1.ShowDialog();
            saveFileDialog1.Filter = "JSON|*.json";
            saveFileDialog1.FileName = $"{searchField.Text}";
-           
-if (saveFileDialog1.ShowDialog()==DialogResult.OK)
+
+           if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
            try
-            {
-                using (var fstream =
-                    new FileStream(
-                        //$"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/info_about{searchField.Text}.txt",
+           {
+               using (var fstream =
+                   new FileStream(
+                       //$"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/info_about{searchField.Text}.txt",
                        $"{saveFileDialog1.FileName}", 
-                        FileMode.Append))
-                {
-                    var listoflabels = new List<byte[]>()
-                    {
-                        Encoding.Default.GetBytes("Логин"),
-                        Encoding.Default.GetBytes(label6.Text),
-                        Encoding.Default.GetBytes(label5.Text),
-                        Encoding.Default.GetBytes(label4.Text),
-                        Encoding.Default.GetBytes(label3.Text),
-                        Encoding.Default.GetBytes(label2.Text),
-                        Encoding.Default.GetBytes(label1.Text),
-                        Encoding.Default.GetBytes(label9.Text),
-                        Encoding.Default.GetBytes(label10.Text),
-                        Encoding.Default.GetBytes(label7.Text),
-                        Encoding.Default.GetBytes(label14.Text)
+                       FileMode.Append))
+               {
+                   var listoflabels = new List<byte[]>()
+                   {
+                       Encoding.Default.GetBytes("Логин"),
+                       Encoding.Default.GetBytes(label6.Text),
+                       Encoding.Default.GetBytes(label5.Text),
+                       Encoding.Default.GetBytes(label4.Text),
+                       Encoding.Default.GetBytes(label3.Text),
+                       Encoding.Default.GetBytes(label2.Text),
+                       Encoding.Default.GetBytes(label1.Text),
+                       Encoding.Default.GetBytes(label9.Text),
+                       Encoding.Default.GetBytes(label10.Text),
+                       Encoding.Default.GetBytes(label7.Text),
+                       Encoding.Default.GetBytes(label14.Text)
 
-                    };
-                    for (int i = 0; i < listoflabels.Count ; i++)
-                    {
-                        if (listoflabels[i] == null)
-                            return;
-                    }
+                   };
+                   if (listoflabels.Any(t => t == null))
+                   {
+                       return;
+                   }
 
-                    var listoftextboxes = new List<byte[]>()
-                    {
-                        Encoding.Default.GetBytes(searchField.Text),
-                        Encoding.Default.GetBytes(NameField.Text),
-                        Encoding.Default.GetBytes(SurnameField.Text),
-                        Encoding.Default.GetBytes(PasswordField.Text),
-                        Encoding.Default.GetBytes(MailField.Text),
-                        Encoding.Default.GetBytes(PhoneField.Text),
-                        Encoding.Default.GetBytes(DateField.Text),
-                        Encoding.Default.GetBytes(workingXPComboBox.SelectedItem.ToString()),
-                        Encoding.Default.GetBytes(KnowledgeComboBox.SelectedItem.ToString()),
-                        Encoding.Default.GetBytes(HeadOfficer.Text),
-                        Encoding.Default.GetBytes(scienceLeader.SelectedItem==null?" ":scienceLeader.SelectedItem.ToString())
-                    };
-                    for (int i = 0; i < listoftextboxes.Count; i++)
-                    {
-                        if (listoftextboxes[i] == null)
-return;
-                        
-                    }
+                   var listoftextboxes = new List<byte[]>()
+                   {
+                       Encoding.Default.GetBytes(searchField.Text),
+                       Encoding.Default.GetBytes(NameField.Text),
+                       Encoding.Default.GetBytes(SurnameField.Text),
+                       Encoding.Default.GetBytes(PasswordField.Text),
+                       Encoding.Default.GetBytes(MailField.Text),
+                       Encoding.Default.GetBytes(PhoneField.Text),
+                       Encoding.Default.GetBytes(DateField.Text),
+                       Encoding.Default.GetBytes(workingXPComboBox.SelectedItem.ToString()),
+                       Encoding.Default.GetBytes(KnowledgeComboBox.SelectedItem.ToString()),
+                       Encoding.Default.GetBytes(HeadOfficer.Text),
+                       Encoding.Default.GetBytes(scienceLeader.SelectedItem==null?" ":scienceLeader.SelectedItem.ToString())
+                   };
+                   if (listoftextboxes.Any(t => t == null))
+                   {
+                       return;
+                   }
 
-                    // асинхронная запись массива байтов в файл
-                    await fstream.WriteAsync(new byte[] {123}, 0, 1);
-                    for (var i = 0; i < listoflabels.Count-1; i++)
-                    {
-                        if (listoflabels[i] == null || listoftextboxes[i] == null) continue;
-                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
+                   // асинхронная запись массива байтов в файл
+                   await fstream.WriteAsync(new byte[] {123}, 0, 1);
+                   for (var i = 0; i < listoflabels.Count-1; i++)
+                   {
+                       if (listoflabels[i] == null || listoftextboxes[i] == null) continue;
+                       await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                        await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
-                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
+                       await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
+                       await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                        await fstream.WriteAsync(new byte[] {58}, 0, 1);
-                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
+                       await fstream.WriteAsync(new byte[] {58}, 0, 1);
+                       await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                        await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
-                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
-                        await fstream.WriteAsync(new byte[] {44}, 0, 1);
+                       await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
+                       await fstream.WriteAsync(new byte[] {34}, 0, 1);
+                       await fstream.WriteAsync(new byte[] {44}, 0, 1);
 
-                        await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
+                       await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
 
-                    }
+                   }
 
-                    for (int i = listoflabels.Count-1; i < listoflabels.Count; i++)
-                    {
-                        if (listoflabels[i] == null || listoftextboxes[i] == null) continue;
-                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
+                   for (var i = listoflabels.Count-1; i < listoflabels.Count; i++)
+                   {
+                       if (listoflabels[i] == null || listoftextboxes[i] == null) continue;
+                       await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                        await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
-                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
+                       await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
+                       await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                        await fstream.WriteAsync(new byte[] {58}, 0, 1);
-                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
+                       await fstream.WriteAsync(new byte[] {58}, 0, 1);
+                       await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                        await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
-                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
+                       await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
+                       await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                        await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
-                    }
+                       await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
+                   }
 
-                    await fstream.WriteAsync(new byte[] {125}, 0, 1);
+                   await fstream.WriteAsync(new byte[] {125}, 0, 1);
 
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(@"Убедитесь, что все поля заполнены!");
+               }
+           }
+           catch (Exception ex)
+           {
+               MessageBox.Show(@"Убедитесь, что все поля заполнены!");
                 
-            }
-        }
+           }
+       }
     }
 }
