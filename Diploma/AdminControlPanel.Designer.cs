@@ -69,7 +69,6 @@ namespace Diploma
             this.searchByName = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.MinimizeLabel = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.тестированиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.войтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,6 +80,8 @@ namespace Diploma
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.копироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.смотретьПолнуюИнформациюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.MinimizeLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize) (this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -526,20 +527,6 @@ namespace Diploma
             this.label12.TabIndex = 37;
             this.label12.Text = "Поиск по имени";
             // 
-            // MinimizeLabel
-            // 
-            this.MinimizeLabel.AutoSize = true;
-            this.MinimizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.MinimizeLabel.ForeColor = System.Drawing.Color.Black;
-            this.MinimizeLabel.Location = new System.Drawing.Point(1040, 9);
-            this.MinimizeLabel.Name = "MinimizeLabel";
-            this.MinimizeLabel.Size = new System.Drawing.Size(24, 20);
-            this.MinimizeLabel.TabIndex = 37;
-            this.MinimizeLabel.Text = "—";
-            this.MinimizeLabel.Click += new System.EventHandler(this.MimimzeClick);
-            this.MinimizeLabel.MouseLeave += new System.EventHandler(this.MinimizeLeave);
-            this.MinimizeLabel.MouseHover += new System.EventHandler(this.MinimizeHover);
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.тестированиеToolStripMenuItem, this.settingsToolStripMenuItem});
@@ -621,6 +608,20 @@ namespace Diploma
             this.смотретьПолнуюИнформациюToolStripMenuItem.Text = "Смотреть полную информацию";
             this.смотретьПолнуюИнформациюToolStripMenuItem.Click += new System.EventHandler(this.смотретьПолнуюИнформациюToolStripMenuItem_Click);
             // 
+            // MinimizeLabel
+            // 
+            this.MinimizeLabel.AutoSize = true;
+            this.MinimizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.MinimizeLabel.ForeColor = System.Drawing.Color.Black;
+            this.MinimizeLabel.Location = new System.Drawing.Point(1040, 9);
+            this.MinimizeLabel.Name = "MinimizeLabel";
+            this.MinimizeLabel.Size = new System.Drawing.Size(15, 20);
+            this.MinimizeLabel.TabIndex = 39;
+            this.MinimizeLabel.Text = "-";
+            this.MinimizeLabel.Click += new System.EventHandler(this.MimimzeClick);
+            this.MinimizeLabel.MouseLeave += new System.EventHandler(this.MinimizeLeave);
+            this.MinimizeLabel.MouseHover += new System.EventHandler(this.MinimizeHover);
+            // 
             // AdminControlPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -651,6 +652,10 @@ namespace Diploma
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Label MinimizeLabel;
+
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 
         private System.Windows.Forms.Button button2;
 
@@ -699,7 +704,6 @@ namespace Diploma
         private System.Windows.Forms.TextBox searchByName;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label MinimizeLabel;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem тестированиеToolStripMenuItem;

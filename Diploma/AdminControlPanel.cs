@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 
@@ -593,13 +594,19 @@ namespace Diploma
 Версия данного программного продукта - {Application.ProductVersion}");
         }
 
-        private async void button2_Click(object sender, EventArgs e)
-        {
-            try
+       private async void button2_Click(object sender, EventArgs e)
+       {
+         //  saveFileDialog1.ShowDialog();
+           saveFileDialog1.Filter = "JSON|*.json";
+           saveFileDialog1.FileName = $"{searchField.Text}";
+           
+if (saveFileDialog1.ShowDialog()==DialogResult.OK)
+           try
             {
                 using (var fstream =
                     new FileStream(
-                        $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/info_about{searchField.Text}.txt",
+                        //$"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/info_about{searchField.Text}.txt",
+                       $"{saveFileDialog1.FileName}", 
                         FileMode.Append))
                 {
                     var listoflabels = new List<byte[]>()
@@ -646,44 +653,40 @@ return;
 
                     // асинхронная запись массива байтов в файл
                     await fstream.WriteAsync(new byte[] {123}, 0, 1);
-                    for (var i = 0; i < listoflabels.Count; i++)
+                    for (var i = 0; i < listoflabels.Count-1; i++)
                     {
-                        if (listoflabels[i] != null && listoftextboxes[i] != null)
-                        {
+                        if (listoflabels[i] == null || listoftextboxes[i] == null) continue;
+                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                            await fstream.WriteAsync(new byte[] {123}, 0, 1);
-                            await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
-                            await fstream.WriteAsync(new byte[] {58}, 0, 1);
+                        await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
+                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                            await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
+                        await fstream.WriteAsync(new byte[] {58}, 0, 1);
+                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                            await fstream.WriteAsync(new byte[] {125}, 0, 1);
-                            await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
-                        }
-                        else if (listoflabels[i] == null)
-                        {
+                        await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
+                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
+                        await fstream.WriteAsync(new byte[] {44}, 0, 1);
 
-                            await fstream.WriteAsync(new byte[] {123}, 0, 1);
-                            await fstream.WriteAsync(new byte[] {32}, 0, 1);
-                            await fstream.WriteAsync(new byte[] {58}, 0, 1);
+                        await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
 
-                            await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
+                    }
 
-                            await fstream.WriteAsync(new byte[] {125}, 0, 1);
-                            await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
-                        }
-                        else
-                        {
+                    for (int i = listoflabels.Count-1; i < listoflabels.Count; i++)
+                    {
+                        if (listoflabels[i] == null || listoftextboxes[i] == null) continue;
+                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                            await fstream.WriteAsync(new byte[] {123}, 0, 1);
-                            await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
-                            await fstream.WriteAsync(new byte[] {58}, 0, 1);
+                        await fstream.WriteAsync(listoflabels[i], 0, listoflabels[i].Length);
+                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                            await fstream.WriteAsync(new byte[] {32}, 0, 1);
+                        await fstream.WriteAsync(new byte[] {58}, 0, 1);
+                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
 
-                            await fstream.WriteAsync(new byte[] {125}, 0, 1);
-                            await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
-                        }
+                        await fstream.WriteAsync(listoftextboxes[i], 0, listoftextboxes[i].Length);
+                        await fstream.WriteAsync(new byte[] {34}, 0, 1);
+
+                        await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
                     }
 
                     await fstream.WriteAsync(new byte[] {125}, 0, 1);

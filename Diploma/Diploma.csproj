@@ -150,7 +150,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="info_aboutuser170.json" />
     <Content Include="search.png" />
+    <Content Include="user250.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
