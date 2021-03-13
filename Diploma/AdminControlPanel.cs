@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using  Json.Net;
+using System.Diagnostics;
+using System.Security.Principal;
+using System.Threading;
 
 
 namespace Diploma
@@ -23,9 +29,12 @@ namespace Diploma
         {
             InitializeComponent();
             label8.Visible = false;
-        }
+            comboBox1.DisplayMember = "Id";
         
+        }
 
+        private List < Person > _persons = new List<Person>();
+        
         private void EmptyFields()
         {
             NameField.Text = "";
@@ -99,8 +108,83 @@ namespace Diploma
 
                 sceinceLeaderReader.Close();
 
-
                 dataBase.CloseConnection();
+
+                
+                //TODO: DO CLEAN UP!!!
+
+
+                try
+                {
+                    if (!string.IsNullOrEmpty(searchField.Text) &&
+                        !String.IsNullOrEmpty(NameField.Text) &&
+                        !String.IsNullOrEmpty(SurnameField.Text) &&
+                        !String.IsNullOrEmpty(MailField.Text) &&
+                        !String.IsNullOrEmpty(PhoneField.Text) &&
+                        !String.IsNullOrEmpty(DateField.Text) &&
+                        !String.IsNullOrEmpty(HeadOfficer.Text) &&
+                        (!scienceLeader.SelectedItem.ToString().Equals(null) ||
+                         !string.IsNullOrEmpty(scienceLeader.SelectedItem.ToString()) ||
+                         !string.IsNullOrWhiteSpace(scienceLeader.SelectedItem.ToString())) &&
+                        !String.IsNullOrEmpty(workingXPComboBox.SelectedItem.ToString()) &&
+                        !String.IsNullOrEmpty(KnowledgeComboBox.SelectedItem.ToString())
+                    )
+                    {
+
+                        var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
+                            PhoneField.Text,
+                            DateTime.Parse(DateField.Text),
+                            HeadOfficer.Text, scienceLeader.SelectedItem.ToString(),
+                            workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
+                        if (!menuComboBox.Items.Contains(person.ToString()))
+                        {
+                            menuComboBox.Items.Add(person.ToString());
+                            //_persons.Add(person);
+                        }
+
+                    }
+
+                    if (!string.IsNullOrEmpty(searchField.Text) &&
+                        !String.IsNullOrEmpty(NameField.Text) &&
+                        !String.IsNullOrEmpty(SurnameField.Text) &&
+                        !String.IsNullOrEmpty(MailField.Text) &&
+                        !String.IsNullOrEmpty(PhoneField.Text) &&
+                        !String.IsNullOrEmpty(DateField.Text) &&
+                        !String.IsNullOrEmpty(HeadOfficer.Text) &&
+                        !String.IsNullOrEmpty(workingXPComboBox.SelectedItem.ToString()) &&
+                        !String.IsNullOrEmpty(KnowledgeComboBox.SelectedItem.ToString()) &&
+                        (scienceLeader.SelectedItem.ToString().Equals(null) ||
+                         string.IsNullOrEmpty(scienceLeader.SelectedItem.ToString()) ||
+                         string.IsNullOrWhiteSpace(scienceLeader.SelectedItem.ToString()))
+
+                    )
+                    {
+                        var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
+                            PhoneField.Text,
+                            DateTime.Parse(DateField.Text), HeadOfficer.Text,
+                            workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
+                        if (!menuComboBox.Items.Contains(person.ToString()))
+                        {
+
+                            menuComboBox.Items.Add(person.ToString());
+                            //_persons.Add(person);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
+                        PhoneField.Text,
+                        DateTime.Parse(DateField.Text), HeadOfficer.Text,
+                        workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
+                    if (!menuComboBox.Items.Contains(person.ToString()))
+                    {
+
+                        menuComboBox.Items.Add(person.ToString());
+                        //_persons.Add(person);
+                    }
+                }
+
             }
             catch (InvalidOperationException exception)
             {
@@ -310,8 +394,8 @@ namespace Diploma
                 from user_list ul left join user_info ui on ((ul.login=ui.login_id)) where ((ui.name like @name and ui.surname like @surname)))
                 as tab on ud.user_id = tab.login_id order by id;"
                             , dataBase.GetConnection());
-                        cmd.Parameters.AddWithValue("@name", nameAndSurname[0]);
-                        cmd.Parameters.AddWithValue("@surname", nameAndSurname[1]);
+                        cmd.Parameters.AddWithValue("@name", "%"+nameAndSurname[0].Split(' ')[0]+"%");
+                        cmd.Parameters.AddWithValue("@surname", "%"+nameAndSurname[1]+"%");
                     }
                     else
                     {
@@ -331,8 +415,8 @@ namespace Diploma
                 from user_list ul left join user_info ui on ((ul.login=ui.login_id)) where ((ui.name like @name)))
                 as tab on ud.user_id = tab.login_id order by id;"
                             , dataBase.GetConnection());
-                        cmd.Parameters.AddWithValue("@name",  searchByName.Text );
-                        cmd.Parameters.AddWithValue("@surname", searchByName.Text);
+                        cmd.Parameters.AddWithValue("@name",  "%"+searchByName.Text+"%" );
+                        cmd.Parameters.AddWithValue("@surname", "%"+searchByName.Text+"%");
                     
                     
 
@@ -572,7 +656,6 @@ namespace Diploma
             var text = dataGridView1.CurrentCell.Value.ToString();
             searchField.Text = !text.StartsWith("user") ? dataGridView1[0, dataGridView1.CurrentCell.RowIndex].Value.ToString() : text;
             tabControl1.SelectTab(0);
-            //searchField.Text = text;
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -597,7 +680,7 @@ namespace Diploma
        private async void button2_Click(object sender, EventArgs e)
        {
          //  saveFileDialog1.ShowDialog();
-           saveFileDialog1.Filter = "JSON|*.json";
+           saveFileDialog1.Filter = @"JSON|*.json";
            saveFileDialog1.FileName = $"{searchField.Text}";
 
            if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
@@ -607,21 +690,21 @@ namespace Diploma
                    new FileStream(
                        //$"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/info_about{searchField.Text}.txt",
                        $"{saveFileDialog1.FileName}", 
-                       FileMode.Append))
+                       FileMode.OpenOrCreate))
                {
                    var listoflabels = new List<byte[]>()
                    {
-                       Encoding.Default.GetBytes("Логин"),
-                       Encoding.Default.GetBytes(label6.Text),
-                       Encoding.Default.GetBytes(label5.Text),
-                       Encoding.Default.GetBytes(label4.Text),
-                       Encoding.Default.GetBytes(label3.Text),
-                       Encoding.Default.GetBytes(label2.Text),
-                       Encoding.Default.GetBytes(label1.Text),
-                       Encoding.Default.GetBytes(label9.Text),
-                       Encoding.Default.GetBytes(label10.Text),
-                       Encoding.Default.GetBytes(label7.Text),
-                       Encoding.Default.GetBytes(label14.Text)
+                       Encoding.UTF8.GetBytes("Логин"),
+                       Encoding.UTF8.GetBytes(label6.Text),
+                       Encoding.UTF8.GetBytes(label5.Text),
+                       Encoding.UTF8.GetBytes(label4.Text),
+                       Encoding.UTF8.GetBytes(label3.Text),
+                       Encoding.UTF8.GetBytes(label2.Text),
+                       Encoding.UTF8.GetBytes(label1.Text),
+                       Encoding.UTF8.GetBytes(label9.Text),
+                       Encoding.UTF8.GetBytes(label10.Text),
+                       Encoding.UTF8.GetBytes(label7.Text),
+                       Encoding.UTF8.GetBytes(label14.Text)
 
                    };
                    if (listoflabels.Any(t => t == null))
@@ -631,17 +714,17 @@ namespace Diploma
 
                    var listoftextboxes = new List<byte[]>()
                    {
-                       Encoding.Default.GetBytes(searchField.Text),
-                       Encoding.Default.GetBytes(NameField.Text),
-                       Encoding.Default.GetBytes(SurnameField.Text),
-                       Encoding.Default.GetBytes(PasswordField.Text),
-                       Encoding.Default.GetBytes(MailField.Text),
-                       Encoding.Default.GetBytes(PhoneField.Text),
-                       Encoding.Default.GetBytes(DateField.Text),
-                       Encoding.Default.GetBytes(workingXPComboBox.SelectedItem.ToString()),
-                       Encoding.Default.GetBytes(KnowledgeComboBox.SelectedItem.ToString()),
-                       Encoding.Default.GetBytes(HeadOfficer.Text),
-                       Encoding.Default.GetBytes(scienceLeader.SelectedItem==null?" ":scienceLeader.SelectedItem.ToString())
+                       Encoding.UTF8.GetBytes(searchField.Text),
+                       Encoding.UTF8.GetBytes(NameField.Text),
+                       Encoding.UTF8.GetBytes(SurnameField.Text),
+                       Encoding.UTF8.GetBytes(PasswordField.Text),
+                       Encoding.UTF8.GetBytes(MailField.Text),
+                       Encoding.UTF8.GetBytes(PhoneField.Text),
+                       Encoding.UTF8.GetBytes(DateField.Text),
+                       Encoding.UTF8.GetBytes(workingXPComboBox.SelectedItem.ToString()),
+                       Encoding.UTF8.GetBytes(KnowledgeComboBox.SelectedItem.ToString()),
+                       Encoding.UTF8.GetBytes(HeadOfficer.Text),
+                       Encoding.UTF8.GetBytes(scienceLeader.SelectedItem==null?" ":scienceLeader.SelectedItem.ToString())
                    };
                    if (listoftextboxes.Any(t => t == null))
                    {
@@ -690,11 +773,108 @@ namespace Diploma
 
                }
            }
-           catch (Exception ex)
+           catch (Exception)
            {
                MessageBox.Show(@"Убедитесь, что все поля заполнены!");
                 
            }
        }
+
+ 
+       private void workbenchToolStripMenuItem_Click(object sender, EventArgs e)
+       {
+           Process.Start("C:\\Program Files\\MySQL\\MySQL Workbench 8.0 CE\\MySQLWorkbench.exe");          
+           Thread.Sleep(100);
+       }
+
+
+       private void label13_Click(object sender, EventArgs e)
+       {
+           try
+           {
+               var count=0;
+               var database = new DataBase();
+               database.OpenConnection();
+               var cmd = new MySqlCommand("select count(*) from user_list", database.GetConnection());
+               var datareader = cmd.ExecuteReader();
+               while (datareader.Read())
+               {
+                   count = int.Parse(datareader.GetValue(0).ToString());
+               }
+
+               label13.Text = count.ToString();
+           }
+           catch (Exception exception)
+           {
+               MessageBox.Show(exception.Message);
+           }
+       }
+
+       private void оБазеДанныхToolStripMenuItem_Click(object sender, EventArgs e)
+       {
+           var countUsers = 0;
+           var countTables = 0;
+           DataBase database = new DataBase();
+           try
+           {
+        
+               database.OpenConnection();
+               var cmd = new MySqlCommand("select count(*) from user_list", database.GetConnection());
+               var datareader = cmd.ExecuteReader();
+               while (datareader.Read())
+               {
+                   countUsers = int.Parse(datareader.GetValue(0).ToString());
+               }
+               
+               datareader.Close();
+               database.OpenConnection();
+
+               var cmd2 = new MySqlCommand("SELECT count(*) FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='userdb'",
+                   database.GetConnection());
+               var datareader2 = cmd2.ExecuteReader();
+               while (datareader2.Read())
+               {
+                   countTables = int.Parse(datareader2.GetValue(0).ToString());
+               }
+           }
+           catch (Exception exception)
+           {
+               MessageBox.Show(exception.Message);
+           }
+           finally
+           {
+               MessageBox.Show(@"Количество пользователей в базе данных - " + countUsers + '\n'+
+                               $@"Количество таблиц в базе данных {database.GetConnection().Database} - " + countTables);
+           }
+       }
+
+       private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+       {
+        //   searchField.Text = comboBox1.SelectedItem.ToString();
+        //  var find =  persons.Find(person => person.Id.Equals(searchField.Text));
+          
+       }
+
+       private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+       {
+
+
+           //searchField.Text = (comboBox1.SelectedItem as Person).Id;
+       }
+
+       private void button4_Click(object sender, EventArgs e)
+       {
+          // comboBox1.DataSource = _persons.ToHashSet().ToList();
+
+          
+       }
+
+       private void очиститьИсториюПросмотровToolStripMenuItem_Click(object sender, EventArgs e)
+       {
+            menuComboBox.Items.Clear();
+
+       }
     }
 }
+    
+

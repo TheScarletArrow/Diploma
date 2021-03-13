@@ -13,7 +13,7 @@ namespace Diploma
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-          Application.Run(new AdminControlPanel());
+            Application.Run(new AdminControlPanel());
           //  Application.Run(new Auth());
         }
 

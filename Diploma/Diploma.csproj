@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Json.Net, Version=1.0.25.1, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Json.Net.1.0.25\lib\netstandard2.0\Json.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="MySql.Data, Version=8.0.22.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -40,6 +44,10 @@
     </Reference>
     <Reference Include="MySqlConnector, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92">
       <HintPath>..\packages\MySqlConnector.1.2.1\lib\net471\MySqlConnector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -152,6 +160,8 @@
   <ItemGroup>
     <Content Include="info_aboutuser170.json" />
     <Content Include="search.png" />
+    <Content Include="user1000.json" />
+    <Content Include="user1234.json" />
     <Content Include="user250.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

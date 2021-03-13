@@ -200,7 +200,7 @@ namespace Diploma
                         var insertToXp = new MySqlCommand
                             ("insert into user_xp (login) values (@UL);", dataBase.GetConnection());
                         insertToXp.Parameters.AddWithValue("@UL", "user" + (id));
-                        var dataAdapter = new MySqlDataAdapter();
+                       // var dataAdapter = new MySqlDataAdapter();
                         insertToXp.ExecuteNonQuery();
 
                         // dataAdapter.SelectCommand = insertToXP;

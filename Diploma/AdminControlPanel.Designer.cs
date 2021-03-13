@@ -60,6 +60,8 @@ namespace Diploma
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
             this.scienceLeader = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -69,6 +71,8 @@ namespace Diploma
             this.searchByName = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.тестированиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.войтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +80,13 @@ namespace Diploma
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.размерыФайловToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.оБазеДанныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.дополнительноToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mySQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workbenchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.историяПросмотровToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.очиститьИсториюПросмотровToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.копироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,6 +97,7 @@ namespace Diploma
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -383,6 +395,7 @@ namespace Diploma
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(119, 44);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
@@ -393,6 +406,8 @@ namespace Diploma
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage1.Controls.Add(this.button4);
+            this.tabPage1.Controls.Add(this.comboBox1);
             this.tabPage1.Controls.Add(this.button2);
             this.tabPage1.Controls.Add(this.scienceLeader);
             this.tabPage1.Controls.Add(this.label14);
@@ -427,6 +442,24 @@ namespace Diploma
             this.tabPage1.Text = "По логину";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(610, 308);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(91, 42);
+            this.button4.TabIndex = 37;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(580, 124);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 36;
+            // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
@@ -435,14 +468,14 @@ namespace Diploma
             this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gainsboro;
             this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.AliceBlue;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button2.Location = new System.Drawing.Point(3, 485);
+            this.button2.Location = new System.Drawing.Point(22, 487);
             this.button2.Margin = new System.Windows.Forms.Padding(0);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(171, 50);
             this.button2.TabIndex = 35;
-            this.button2.Text = "Сохранить информацию в отдельный файл\r\n";
+            this.button2.Text = "Экспорт в файл";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -527,9 +560,29 @@ namespace Diploma
             this.label12.TabIndex = 37;
             this.label12.Text = "Поиск по имени";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.label13);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(825, 548);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label13
+            // 
+            this.label13.Location = new System.Drawing.Point(75, 66);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(621, 455);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "label13";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
+            // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.тестированиеToolStripMenuItem, this.settingsToolStripMenuItem});
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.тестированиеToolStripMenuItem, this.settingsToolStripMenuItem, this.дополнительноToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1131, 24);
@@ -561,7 +614,7 @@ namespace Diploma
             // 
             // settingsToolStripMenuItem
             // 
-            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {this.размерыФайловToolStripMenuItem, this.оПрограммеToolStripMenuItem});
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {this.размерыФайловToolStripMenuItem, this.оПрограммеToolStripMenuItem, this.оБазеДанныхToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
             this.settingsToolStripMenuItem.Text = "Информация";
@@ -579,6 +632,53 @@ namespace Diploma
             this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.оПрограммеToolStripMenuItem.Text = "О программе";
             this.оПрограммеToolStripMenuItem.Click += new System.EventHandler(this.оПрограммеToolStripMenuItem_Click);
+            // 
+            // оБазеДанныхToolStripMenuItem
+            // 
+            this.оБазеДанныхToolStripMenuItem.Name = "оБазеДанныхToolStripMenuItem";
+            this.оБазеДанныхToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.оБазеДанныхToolStripMenuItem.Text = "О Базе Данных";
+            this.оБазеДанныхToolStripMenuItem.Click += new System.EventHandler(this.оБазеДанныхToolStripMenuItem_Click);
+            // 
+            // дополнительноToolStripMenuItem
+            // 
+            this.дополнительноToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {this.mySQLToolStripMenuItem, this.историяПросмотровToolStripMenuItem, this.очиститьИсториюПросмотровToolStripMenuItem});
+            this.дополнительноToolStripMenuItem.Name = "дополнительноToolStripMenuItem";
+            this.дополнительноToolStripMenuItem.Size = new System.Drawing.Size(107, 20);
+            this.дополнительноToolStripMenuItem.Text = "Дополнительно";
+            // 
+            // mySQLToolStripMenuItem
+            // 
+            this.mySQLToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {this.workbenchToolStripMenuItem});
+            this.mySQLToolStripMenuItem.Name = "mySQLToolStripMenuItem";
+            this.mySQLToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.mySQLToolStripMenuItem.Text = "MySQL";
+            // 
+            // workbenchToolStripMenuItem
+            // 
+            this.workbenchToolStripMenuItem.Name = "workbenchToolStripMenuItem";
+            this.workbenchToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.workbenchToolStripMenuItem.Text = "Workbench";
+            this.workbenchToolStripMenuItem.Click += new System.EventHandler(this.workbenchToolStripMenuItem_Click);
+            // 
+            // историяПросмотровToolStripMenuItem
+            // 
+            this.историяПросмотровToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {this.menuComboBox});
+            this.историяПросмотровToolStripMenuItem.Name = "историяПросмотровToolStripMenuItem";
+            this.историяПросмотровToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.историяПросмотровToolStripMenuItem.Text = "История просмотров";
+            // 
+            // menuComboBox
+            // 
+            this.menuComboBox.Name = "menuComboBox";
+            this.menuComboBox.Size = new System.Drawing.Size(121, 23);
+            // 
+            // очиститьИсториюПросмотровToolStripMenuItem
+            // 
+            this.очиститьИсториюПросмотровToolStripMenuItem.Name = "очиститьИсториюПросмотровToolStripMenuItem";
+            this.очиститьИсториюПросмотровToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.очиститьИсториюПросмотровToolStripMenuItem.Text = "Очистить историю просмотров";
+            this.очиститьИсториюПросмотровToolStripMenuItem.Click += new System.EventHandler(this.очиститьИсториюПросмотровToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 
@@ -646,12 +746,33 @@ namespace Diploma
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.ToolStripMenuItem очиститьИсториюПросмотровToolStripMenuItem;
+
+        private System.Windows.Forms.ToolStripComboBox menuComboBox;
+
+        private System.Windows.Forms.ToolStripMenuItem историяПросмотровToolStripMenuItem;
+
+        private System.Windows.Forms.Button button4;
+
+        private System.Windows.Forms.ComboBox comboBox1;
+
+        private System.Windows.Forms.ToolStripMenuItem оБазеДанныхToolStripMenuItem;
+
+        private System.Windows.Forms.Label label13;
+
+        private System.Windows.Forms.TabPage tabPage3;
+
+        private System.Windows.Forms.ToolStripMenuItem mySQLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workbenchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem дополнительноToolStripMenuItem;
 
         private System.Windows.Forms.Label MinimizeLabel;
 
