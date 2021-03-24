@@ -60,8 +60,6 @@ namespace Diploma
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button4 = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
             this.scienceLeader = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -72,7 +70,6 @@ namespace Diploma
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label13 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.тестированиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.войтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,13 +88,13 @@ namespace Diploma
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.копироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.смотретьПолнуюИнформациюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.удалитьПользователяToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.MinimizeLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize) (this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -385,6 +382,7 @@ namespace Diploma
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView1.RowTemplate.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(744, 346);
             this.dataGridView1.TabIndex = 34;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
@@ -406,8 +404,6 @@ namespace Diploma
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.tabPage1.Controls.Add(this.button4);
-            this.tabPage1.Controls.Add(this.comboBox1);
             this.tabPage1.Controls.Add(this.button2);
             this.tabPage1.Controls.Add(this.scienceLeader);
             this.tabPage1.Controls.Add(this.label14);
@@ -441,24 +437,6 @@ namespace Diploma
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "По логину";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(610, 308);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(91, 42);
-            this.button4.TabIndex = 37;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(580, 124);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 36;
             // 
             // button2
             // 
@@ -562,7 +540,6 @@ namespace Diploma
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.label13);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -570,15 +547,6 @@ namespace Diploma
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // label13
-            // 
-            this.label13.Location = new System.Drawing.Point(75, 66);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(621, 455);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "label13";
-            this.label13.Click += new System.EventHandler(this.label13_Click);
             // 
             // menuStrip1
             // 
@@ -690,9 +658,9 @@ namespace Diploma
             // 
             // contextMenuStrip1
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.копироватьToolStripMenuItem, this.смотретьПолнуюИнформациюToolStripMenuItem});
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.копироватьToolStripMenuItem, this.смотретьПолнуюИнформациюToolStripMenuItem, this.удалитьПользователяToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(254, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(254, 70);
             // 
             // копироватьToolStripMenuItem
             // 
@@ -708,6 +676,13 @@ namespace Diploma
             this.смотретьПолнуюИнформациюToolStripMenuItem.Text = "Смотреть полную информацию";
             this.смотретьПолнуюИнформациюToolStripMenuItem.Click += new System.EventHandler(this.смотретьПолнуюИнформациюToolStripMenuItem_Click);
             // 
+            // удалитьПользователяToolStripMenuItem
+            // 
+            this.удалитьПользователяToolStripMenuItem.Name = "удалитьПользователяToolStripMenuItem";
+            this.удалитьПользователяToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
+            this.удалитьПользователяToolStripMenuItem.Text = "Удалить пользователя";
+            this.удалитьПользователяToolStripMenuItem.Click += new System.EventHandler(this.удалитьПользователяToolStripMenuItem_Click);
+            // 
             // MinimizeLabel
             // 
             this.MinimizeLabel.AutoSize = true;
@@ -715,9 +690,9 @@ namespace Diploma
             this.MinimizeLabel.ForeColor = System.Drawing.Color.Black;
             this.MinimizeLabel.Location = new System.Drawing.Point(1040, 9);
             this.MinimizeLabel.Name = "MinimizeLabel";
-            this.MinimizeLabel.Size = new System.Drawing.Size(15, 20);
+            this.MinimizeLabel.Size = new System.Drawing.Size(24, 20);
             this.MinimizeLabel.TabIndex = 39;
-            this.MinimizeLabel.Text = "-";
+            this.MinimizeLabel.Text = "—";
             this.MinimizeLabel.Click += new System.EventHandler(this.MimimzeClick);
             this.MinimizeLabel.MouseLeave += new System.EventHandler(this.MinimizeLeave);
             this.MinimizeLabel.MouseHover += new System.EventHandler(this.MinimizeHover);
@@ -746,7 +721,6 @@ namespace Diploma
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -754,19 +728,15 @@ namespace Diploma
             this.PerformLayout();
         }
 
+        private System.Windows.Forms.ToolStripMenuItem удалитьПользователяToolStripMenuItem;
+
         private System.Windows.Forms.ToolStripMenuItem очиститьИсториюПросмотровToolStripMenuItem;
 
         private System.Windows.Forms.ToolStripComboBox menuComboBox;
 
         private System.Windows.Forms.ToolStripMenuItem историяПросмотровToolStripMenuItem;
 
-        private System.Windows.Forms.Button button4;
-
-        private System.Windows.Forms.ComboBox comboBox1;
-
         private System.Windows.Forms.ToolStripMenuItem оБазеДанныхToolStripMenuItem;
-
-        private System.Windows.Forms.Label label13;
 
         private System.Windows.Forms.TabPage tabPage3;
 

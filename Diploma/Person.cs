@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 
 namespace Diploma
 {
@@ -12,50 +11,11 @@ namespace Diploma
         private string _mail;
         private string _phone;
         private DateTime _birthdate;
-        private string leader1;
-        private string leader2;
-        private string stage;
-        private string knowledge;
-        public Person(string ID, string name, string surname, string mail, string phone, DateTime dateTime, string leader1, string leader2, string stage, string knowledge) {
-            Id = ID;
-            Name = name;
-            Surname = surname;
-            Mail = mail;
-            Phone = phone;
-            Birthdate = dateTime;
-            Leader1 = leader1;
-            Leader2 = leader2;
-            Stage = stage;
-            Knowledge = knowledge;
-
-        }
-        public Person(string ID, string name, string surname, string mail, string phone, DateTime dateTime, string leader1,  string stage, string knowledge) {
-            Id = ID;
-            Name = name;
-            Surname = surname;
-            Mail = mail;
-            Phone = phone;
-            Birthdate = dateTime;
-            Leader1 = leader1;
-            Leader2 = " ";
-            Stage = stage;
-            Knowledge = knowledge;
-
-        }
-
-        public override string ToString()
-        {
-            return  Id;
-        }
-
-        public Person()
-        {
-        }
-
-        public Person(string id)
-        {
-            _id = id;
-        }
+        private string _leader1;
+        private string _leader2;
+        private string _stage;
+        private string _knowledge;
+     
 
         public string Id { 
             get => _id;
@@ -100,26 +60,67 @@ namespace Diploma
 
         public string Leader1
         {
-            get => leader1;
-            set => leader1 = value;
+            get => _leader1;
+            set => _leader1 = value;
         }
 
         public string Leader2
         {
-            get => leader1;
-            set => leader1 = value;
+            get => _leader2;
+            set => _leader2 = value;
         }
 
         public string Stage
         {
-            get => stage;
-            set => stage = value;
+            get => _stage;
+            set => _stage = value;
         }
 
         public string Knowledge
         {
-            get => knowledge;
-            set => knowledge = value;
+            get => _knowledge;
+            set => _knowledge = value;
+        }
+        
+        public Person(string ID, string name, string surname, string mail, string phone, DateTime dateTime, string leader1, string leader2, string stage, string knowledge) {
+            Id = ID;
+            Name = name;
+            Surname = surname;
+            Mail = mail;
+            Phone = phone;
+            Birthdate = dateTime;
+            Leader1 = leader1;
+            Leader2 = leader2;
+            Stage = stage;
+            Knowledge = knowledge;
+
+        }
+        public Person(string ID, string name, string surname, string mail, string phone, DateTime dateTime, string leader1,  string stage, string knowledge) {
+            Id = ID;
+            Name = name;
+            Surname = surname;
+            Mail = mail;
+            Phone = phone;
+            Birthdate = dateTime;
+            Leader1 = leader1;
+            Leader2 = " ";
+            Stage = stage;
+            Knowledge = knowledge;
+
+        }
+
+        public override string ToString()
+        {
+            return  Id;
+        }
+
+        public Person()
+        {
+        }
+
+        public Person(string id)
+        {
+            _id = id;
         }
     }
 }
