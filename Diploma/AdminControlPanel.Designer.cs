@@ -640,6 +640,7 @@ namespace Diploma
             // 
             this.menuComboBox.Name = "menuComboBox";
             this.menuComboBox.Size = new System.Drawing.Size(121, 23);
+            this.menuComboBox.SelectedIndexChanged += new System.EventHandler(this.HistoryChangedIndex);
             // 
             // очиститьИсториюПросмотровToolStripMenuItem
             // 

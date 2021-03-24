@@ -919,6 +919,11 @@ namespace Diploma
                     var message = exception.Message;
                 }
        }
+
+       private void HistoryChangedIndex(object sender, EventArgs e)
+       {
+           searchField.Text = menuComboBox.SelectedItem.ToString();
+       }
     }
 }
     
