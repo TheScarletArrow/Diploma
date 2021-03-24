@@ -1,18 +1,14 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 
 namespace Diploma
 {
     class DataBase
     {
-        
-       
-        MySqlConnection mySQLConnection = new MySqlConnection("username=root;password=RaPtorJEDI1;database=userdb");
+       private readonly MySqlConnection _mySqlConnection = 
+            new MySqlConnection("username=root;password=RaPtorJEDI1;database=userdb");
 
         
 
@@ -20,22 +16,29 @@ namespace Diploma
         {
             try
             {
-                if (mySQLConnection.State == System.Data.ConnectionState.Closed)
-                    mySQLConnection.Open();
+                if (_mySqlConnection.State == System.Data.ConnectionState.Closed)
+                    _mySqlConnection.Open();
+               
             }
-            catch (MySqlException exception){
-                MessageBox.Show("Невозможно открыть связь с базой данных\n" + exception.StackTrace);
+            catch (MySqlException exception)
+            {
+                MessageBox.Show(@"Невозможно открыть связь с базой данных" + exception.StackTrace);
+
+            }
+            catch (InvalidOperationException exception)
+            {
+                MessageBox.Show(@"Невозможно открыть связь с базой данных" + exception.StackTrace);
 
             }
         }
         public void CloseConnection()
         {
-            if (mySQLConnection.State == System.Data.ConnectionState.Open)
-                mySQLConnection.Close();
+            if (_mySqlConnection.State == System.Data.ConnectionState.Open)
+                _mySqlConnection.Close();
         }
 
         public MySqlConnection GetConnection() {
-            return mySQLConnection;
+            return _mySqlConnection;
         }
 
        
