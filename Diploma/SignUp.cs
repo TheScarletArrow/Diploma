@@ -115,7 +115,7 @@ namespace Diploma
                 var adapter = new MySqlDataAdapter();
                 var adapter2 = new MySqlDataAdapter();
 
-                dataBase.OpenConnection();
+               
 
                 var name = NameField.Text;
                 var id = 0;
@@ -125,7 +125,7 @@ namespace Diploma
                 var birthdate = BirthDatePicker.Value.Date;
                 var allIsOk = check_fields();
                 if (allIsOk)
-                    //for(int i=0;i<100;i++)
+                   //for (int i=0;i<100;i++)
                     try
                     {
                         dataBase.OpenConnection();
@@ -167,7 +167,7 @@ namespace Diploma
                         insertToUserInfo.Parameters.Add("@ul", MySqlDbType.VarChar).Value =
                             "user" + (id.ToString()).ToString();
 
-                        adapter.Fill(dataTable);
+                        //adapter.Fill(dataTable);
 
 
                         var insertToUserList = new MySqlCommand(
@@ -183,7 +183,7 @@ namespace Diploma
 
                         insertToUserList.ExecuteNonQuery();
 
-                        dataBase.OpenConnection();
+                   //     dataBase.OpenConnection();
                         //adapterToList.Fill(dataTable1);
 
                         var insertToWork = new MySqlCommand
@@ -206,7 +206,7 @@ namespace Diploma
                         // dataAdapter.SelectCommand = insertToXP;
                         // dataAdapter.Fill(dataTable3);
 
-                        ClearAllTextBox();
+                        //ClearAllTextBox();
                     }
                     catch (
                         MySqlException mysqlexception

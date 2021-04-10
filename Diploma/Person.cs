@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Diploma
 {
+    [DisplayName("person")]
     public class Person
     {
         private string _id;
@@ -16,7 +19,7 @@ namespace Diploma
         private string _stage;
         private string _knowledge;
      
-
+        
         public string Id { 
             get => _id;
             set => _id = value;
@@ -121,6 +124,19 @@ namespace Diploma
         public Person(string id)
         {
             _id = id;
+        }
+
+        private List<Person> _persons = new List<Person>();
+
+        public List<Person> GetPersons()
+        {
+            return _persons;
+        }
+
+        public void ClearAllPersons()
+        {
+            _persons.Clear();
+            
         }
     }
 }

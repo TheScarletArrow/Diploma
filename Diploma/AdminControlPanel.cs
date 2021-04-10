@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Data;
 using System.Drawing;
 using System.Text;
@@ -10,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
 using System.Threading;
 
 
@@ -21,15 +20,17 @@ namespace Diploma
     /// </summary>
     public partial class AdminControlPanel : Form
     {
-        private readonly SignUp _signUp = new SignUp();
+        private SHA512 _sha512;
         public AdminControlPanel()
         {
             InitializeComponent();
             label8.Visible = false;
-        
+            label16.Visible = false;
+
         }
 
-        private List < Person > _persons = new List<Person>();
+        private readonly List<Person> _persons = new Person().GetPersons();
+        
         
         private void EmptyFields()
         {
@@ -202,6 +203,7 @@ namespace Diploma
         //удалить
         private async void button3_Click(object sender, EventArgs e)
         {
+            
             if ((MessageBox.Show(@"Удалить данного пользователя? Это действие нельзя отменить!", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)) == DialogResult.Yes)
                 try
                 {
@@ -262,10 +264,11 @@ namespace Diploma
         //изменить
         private async void button1_Click(object sender, EventArgs e)
         {
+            
             if ((MessageBox.Show(@"Изменить данные данного пользователя?", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) == DialogResult.Yes)
-
-                try
-                {
+                if (!searchField.Equals(null))
+                 try
+                 {
                     var password = PasswordField.Text;
                     var password1 = "";
                     var database = new DataBase();
@@ -317,7 +320,7 @@ namespace Diploma
                             , database.GetConnection());
                         changePassword.Parameters.AddWithValue("@pass",
                             Convert.ToBase64String(
-                                _signUp.Sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text))));
+                                _sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text))));
                         changePassword.Parameters.AddWithValue("@login", searchField.Text);
                         changePassword.ExecuteNonQuery();
                     }
@@ -327,7 +330,7 @@ namespace Diploma
 
 
                     var disable = new MySqlCommand("SET SQL_SAFE_UPDATES = 0;", database.GetConnection());
-                    disable.ExecuteNonQuery();
+                   // disable.ExecuteNonQuery();
                    
 
                     var change3 = new MySqlCommand(
@@ -337,8 +340,7 @@ namespace Diploma
                     change3.Parameters.AddWithValue("@ln", scienceLeader.SelectedItem);
 
 
-
-                    change3.ExecuteNonQuery();
+                   change3.ExecuteNonQuery();
 
                     var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
                         PhoneField.Text,
@@ -355,9 +357,9 @@ namespace Diploma
                     EmptyFields();
                     searchField.Text = "";
                     database.CloseConnection();
-                    MessageBox.Show(@"Изменено успешно");
-                    var enable = new MySqlCommand("SET SQL_SAFE_UPDATES = 1;", database.GetConnection());
-                    enable.ExecuteNonQuery();
+                    MessageBox.Show($@"Изменено успешно");
+                    //var enable = new MySqlCommand("SET SQL_SAFE_UPDATES = 1;", database.GetConnection()); 
+                   // enable.ExecuteNonQuery();
                 }
                 catch (InvalidOperationException exception)
                 {
@@ -391,6 +393,7 @@ namespace Diploma
                  searchField.Text = "";
 
                 }
+                catch(FormatException){}
 
 
         }
@@ -401,12 +404,12 @@ namespace Diploma
         }
         private void CloseHover(object sender, EventArgs e)
         {
-            CloseLabel.BackColor = Color.Red;
+            label30.BackColor = Color.Red;
         }
 
         private void CloseLeave(object sender, EventArgs e)
         {
-            CloseLabel.BackColor = Color.Transparent;
+            label30.BackColor = Color.Transparent;
 
         }
 
@@ -414,8 +417,14 @@ namespace Diploma
         {
             try
             {
-                
 
+                if (string.IsNullOrEmpty(searchByName.Text)|| string.IsNullOrWhiteSpace(searchByName.Text))
+                {
+                    label8.Text = @"Введен пустой запрос";
+                    label15.Visible = false;
+                    dataGridView1.Visible = false;
+                    return;
+                }
                 var timeNow = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
                 if (searchByName.Text.Contains("%")) return;
@@ -439,7 +448,6 @@ namespace Diploma
                             , dataBase.GetConnection());
                         cmd.Parameters.AddWithValue("@name", "%"+nameAndSurname[0].Split(' ')[0]+"%");
                         cmd.Parameters.AddWithValue("@surname", "%"+nameAndSurname[1]+"%");
-                        
                     }
                     else
                     {
@@ -456,7 +464,7 @@ namespace Diploma
                             @"select ud.user_id as Логин, ud.worker_type as Тип, ud.department_type as Департамент, tab.name as Имя, tab.surname as Фамилия, 
                 tab.mail as Почта, tab.phone as Телефон, tab.birth_date as `Дата Рождения` from user_dep ud inner join 
                 (select ui.login_id, ui.name, ui.surname, ui.mail, ui.phone, ui.birth_date 
-                from user_list ul left join user_info ui on ((ul.login=ui.login_id)) where ((ui.name like @name)))
+                from user_list ul left join user_info ui on ((ul.login=ui.login_id)) where ((ui.name like @name)||(ui.surname like @surname)))
                 as tab on ud.user_id = tab.login_id order by id;"
                             , dataBase.GetConnection());
                         cmd.Parameters.AddWithValue("@name",  "%"+searchByName.Text+"%" );
@@ -466,9 +474,7 @@ namespace Diploma
 
                 }
                 
-                
                 var dataReader = cmd.ExecuteReader();
-                
 
                 var dataTable1 = new DataTable();
                 var adapter = new MySqlDataAdapter();
@@ -478,7 +484,6 @@ namespace Diploma
                 dataReader.Close();
                 adapter.SelectCommand = cmd;
                 adapter.Fill(dataTable1);
-
                 if (dataGridView1.Rows.Count <=1)
                 {
                     dataGridView1.Visible = false;
@@ -543,11 +548,11 @@ namespace Diploma
         }
         private void MinimizeHover(object sender, EventArgs e)
         {
-            MinimizeLabel.BackColor = Color.FromArgb(70, 63, 72, 204);
+            label29.BackColor = Color.FromArgb(70, 63, 72, 204);
         }
         private void MinimizeLeave(object sender, EventArgs e)
         {
-            MinimizeLabel.BackColor = Color.Transparent;
+            label29.BackColor = Color.Transparent;
 
         }
 
@@ -701,21 +706,25 @@ namespace Diploma
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            
             dataGridView1.CurrentCell.ContextMenuStrip = contextMenuStrip1;
         }
 
         private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var dataBase = new DataBase();
+            dataBase.OpenConnection();
             MessageBox.Show(
                 $@"Этот программный продукт позволяет управлять базой данных пользователей в графическом интерфейсе.
 Разработано и спроектировано Антоном Юрковым.
 ----------------------------------------------
 Версии:
-Версия mySQL - Server 5.5
+Версия mySQL - {dataBase.ShowVersion()}
 Версия .NET Framework - {RuntimeInformation.FrameworkDescription}
 Версия ОС - {RuntimeInformation.OSDescription}
 Версия CLR - {Environment.Version}
 Версия данного программного продукта - {Application.ProductVersion}");
+            dataBase.CloseConnection();
         }
 
        private async void button2_Click(object sender, EventArgs e)
@@ -830,17 +839,18 @@ namespace Diploma
 
 
       
-
+        
        private void оБазеДанныхToolStripMenuItem_Click(object sender, EventArgs e)
        {
+           
            var countUsers = 0;
            var countTables = 0;
-           DataBase database = new DataBase();
+           var database = new DataBase();
            try
            {
         
                database.OpenConnection();
-               var cmd = new MySqlCommand("select count(*) from user_list", database.GetConnection());
+               var cmd = new MySqlCommand("select count(*) from user_info", database.GetConnection());
                var datareader = cmd.ExecuteReader();
                while (datareader.Read())
                {
@@ -857,6 +867,7 @@ namespace Diploma
                {
                    countTables = int.Parse(datareader2.GetValue(0).ToString());
                }
+               database.CloseConnection();
            }
            catch (Exception exception)
            {
@@ -869,12 +880,17 @@ namespace Diploma
            }
        }
 
-       
-     
+
+
        private void очиститьИсториюПросмотровToolStripMenuItem_Click(object sender, EventArgs e)
        {
-            menuComboBox.Items.Clear();
-
+           if (menuComboBox.Items.Count == 0) return;
+           else
+           {
+               menuComboBox.Items.Clear();
+               new Person().ClearAllPersons();
+               menuComboBox.SelectedItem = null;
+           }
        }
 
 
@@ -883,6 +899,7 @@ namespace Diploma
             if ((MessageBox.Show(@"Удалить данного пользователя? Это действие нельзя отменить!", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)) == DialogResult.Yes)
                 try
                 {
+                    
                     var text = 
                         dataGridView1[0, dataGridView1.CurrentCell.RowIndex].Value.ToString();
 
@@ -913,17 +930,231 @@ namespace Diploma
                     searchField.Text = "";
 
                     MessageBox.Show(@"Пользователь удален");
+                    dataBase.CloseConnection();
                 }
                 catch (Exception exception)
                 {
                     var message = exception.Message;
+                    Console.WriteLine(message);
                 }
        }
 
        private void HistoryChangedIndex(object sender, EventArgs e)
        {
            searchField.Text = menuComboBox.SelectedItem.ToString();
+           
        }
+
+       private void button4_Click(object sender, EventArgs e)
+       {
+           if (BackColor == Color.White)
+           {
+               BackColor = Color.FromArgb(51, 51, 51);
+               CloseLabel.BackColor = Color.White;
+               MinimizeLabel.BackColor = Color.White;
+               tabPage1.BackColor=Color.FromArgb(51, 51, 51);
+               tabPage2.BackColor=Color.FromArgb(51, 51, 51);
+               label1.ForeColor = Color.White;
+               label2.ForeColor = Color.White;
+               label3.ForeColor = Color.White;
+               label4.ForeColor = Color.White;
+               label5.ForeColor = Color.White;
+               label6.ForeColor = Color.White;
+               label7.ForeColor = Color.White;
+               label8.ForeColor = Color.White;
+               label9.ForeColor = Color.White;
+               label10.ForeColor = Color.White;
+               label11.ForeColor = Color.White;
+               label12.ForeColor = Color.White;
+               label14.ForeColor = Color.White;
+               Title.ForeColor= Color.White;
+               NameField.BackColor = Color.FromArgb(51, 51, 51);
+               NameField.ForeColor = Color.White;
+
+
+           }
+           else if (BackColor == Color.FromArgb(51, 51, 51))
+           {
+               BackColor = Color.White;
+               CloseLabel.ForeColor = Color.Black;
+
+           }
+       }
+
+    
+
+       private void button5_Click(object sender, EventArgs e)
+       {
+           var dataBase = new DataBase();
+           
+           using (var connection = dataBase.GetConnection())
+           {
+
+               if (dataBase.Ping())
+                  dataBase.OpenConnection();
+               else
+               {
+                   MessageBox.Show(@"Невозможно подключиться к базе");
+                   return;
+               }
+               MySqlCommand CommandBefore = null;
+               if (radioButton1.Checked || radioButton2.Checked || radioButton3.Checked)
+                   try
+                   {
+                       var datePicked = dateTimePicker1.Value;
+
+                       if (radioButton1.Checked)
+                       {
+                           CommandBefore = new MySqlCommand(
+                               "select login_id as `Логин`, name as `Имя`, surname as `Фамилия`, mail as `Почта`, phone as `Номер Телефона`, birth_date as `Дата рождения` from user_info where birth_date<@datepicked;",
+                               dataBase.GetConnection());
+                           CommandBefore.Parameters.AddWithValue("@datepicked", datePicked);
+                       }
+
+                       if (radioButton2.Checked)
+                       {
+                           CommandBefore = new MySqlCommand(
+                               "select login_id as `Логин`, name as `Имя`, surname as `Фамилия`, mail as `Почта`, phone as `Номер Телефона`, birth_date as `Дата рождения` from user_info where birth_date>@datepicked;",
+                               dataBase.GetConnection());
+                           CommandBefore.Parameters.AddWithValue("@datepicked", datePicked);
+                       }
+
+                       if (radioButton3.Checked)
+                       {
+                           CommandBefore = new MySqlCommand(
+                               "select login_id as `Логин`, name as `Имя`, surname as `Фамилия`, mail as `Почта`, phone as `Номер Телефона`, birth_date as `Дата рождения` from user_info where birth_date=@datepicked;",
+                               dataBase.GetConnection());
+                           CommandBefore.Parameters.AddWithValue("@datepicked", datePicked);
+                       }
+                   }
+                   catch (Exception)
+                   {
+                       return;
+                   }
+               else
+               {
+                   MessageBox.Show("Убедитесь, что выделено значение параметра \"До\",\"После\" или \"В\" ");
+
+               }
+
+               MySqlDataReader dataReader = null;
+               try
+               {
+                   if (CommandBefore != null) dataReader = CommandBefore.ExecuteReader();
+                   else
+                   {
+                       throw new NullReferenceException();
+                   }
+               }
+               catch (NullReferenceException)
+               {
+                   return;
+               }
+
+               var dataTable1 = new DataTable();
+               var adapter = new MySqlDataAdapter();
+
+               dataGridView2.DataSource = dataTable1;
+               dataReader.Close();
+               adapter.SelectCommand = CommandBefore;
+               adapter.Fill(dataTable1);
+               dataGridView2.Visible = dataGridView2.Rows.Count > 1;
+               label16.Visible = true;
+               label16.Text = @"Найдено " + (dataGridView2.Rows.Count - 1).ToString()
+                                          + @" результат(ов), соответствующих заданным параметрам";
+           }
+       }
+
+       private void dataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
+       {
+           dataGridView2.CurrentCell.ContextMenuStrip = contextMenuStrip2;
+
+       }
+
+       private void dataGridView2_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+       {
+           var text = dataGridView2.CurrentCell.Value.ToString();
+           if (!text.StartsWith("user")) return;
+           tabControl1.SelectTab(0);
+           searchField.Text = text;
+       }
+
+
+       private void полнаяИнформацияToolStripMenuItem_Click(object sender, EventArgs e)
+       {
+           var text = dataGridView2.CurrentCell.Value.ToString();
+           searchField.Text = !text.StartsWith("user") ? dataGridView2[0, dataGridView2.CurrentCell.RowIndex].Value.ToString() : text;
+           tabControl1.SelectTab(0);       }
+
+
+       private void копироватьЗначениеToolStripMenuItem_Click(object sender, EventArgs e)
+       {
+           Clipboard.SetText(dataGridView2.CurrentCell.Value.ToString());
+       }
+
+       private void проверитьСоединениеToolStripMenuItem_Click(object sender, EventArgs e)
+       {
+           DataBase dataBase = new DataBase();
+           MessageBox.Show(dataBase.Ping() ? "Соединение прошло успешно" : "Соединение не прошло");
+       }
+
+      
+
+       private void смотретьБазуToolStripMenuItem_Click(object sender, EventArgs e)
+       {
+           new ShowTables().Show();       }
+
+        private void показатьБазуДанныхToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = @"C:\Users\Антон\RiderProjects\DB Search\DB Search\bin\Debug\net5.0-windows\DB Search.exe";
+            //new ShowTables().Show();
+            Process.Start(path);          
+            Thread.Sleep(100);
+        }
+
+
+        private async void button4_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                string line = "";
+                saveFileDialog1.Filter = @"CSV|*.csv";
+                saveFileDialog1.FileName = "List of people";
+
+                if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
+                if (dataGridView2.RowCount > 1)
+                    for (var j = 0; j < dataGridView2.RowCount - 1; j++)
+                    {
+                        for (int i = 0; i < dataGridView2.ColumnCount - 1; i++)
+                        {
+                            line += dataGridView2[i, j].Value.ToString();
+                            line += ",";
+                        }
+
+                        for (int i = dataGridView2.Columns.Count - 1; i < dataGridView2.ColumnCount; i++)
+                        {
+                            line += dataGridView2[i, 0].Value.ToString();
+                            line += "\r\n";
+                        }
+                    }
+
+                label31.Text = line;
+                using (var fstream =
+                    new FileStream(
+                        $"{saveFileDialog1.FileName}",
+                        FileMode.OpenOrCreate))
+                {
+
+                    var array = Encoding.Default.GetBytes(line);
+                    await fstream.WriteAsync(array, 0, array.Length);
+
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Файл открыт в другой программе");
+            }
+        }
     }
 }
     
