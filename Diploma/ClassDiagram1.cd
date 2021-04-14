@@ -2,6 +2,10 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Diploma.DataBase">
     <Position X="8.25" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAABAAAAAEAAAFAAAQAAAAAAAAAAABAAAAA=</HashCode>
       <FileName>DataBase.cs</FileName>
@@ -11,6 +15,7 @@
     <Position X="4.25" Y="2" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>EgAAAAYMACAAgBgAAADgAoECAAAcAEAAAPAAAEASCIA=</HashCode>
@@ -24,13 +29,14 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>kAQCIBgAAABAACAFAABDAQQABAAAAAACAAggIQAEABA=</HashCode>
-      <FileName>Person.cs</FileName>
+      <FileName>Entities\Person.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Diploma.Auth">
     <Position X="2.25" Y="2" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAIAQMACAAABAAAADAAIESAAAMAEAAAFgAAAAQAAA=</HashCode>
@@ -41,9 +47,10 @@
     <Position X="0.5" Y="2" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>/0eQCAKdkSREwXAGREHDk4EmUJg8AEQJAHEMiGATTLY=</HashCode>
+      <HashCode>/0eQCAKdkSREwXAGREHDk4EmUNg8QEQJAHEMiGATTLY=</HashCode>
       <FileName>AdminControlPanel.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -51,6 +58,7 @@
     <Position X="6" Y="2" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAACBAAAGAIgoAAAAAEAEAAAAAAI=</HashCode>
@@ -58,8 +66,46 @@
     </TypeIdentifier>
   </Class>
   <Class Name="System.Windows.Forms.Form" Collapsed="true">
-    <Position X="3.75" Y="0.5" Width="1.5" />
+    <Position X="2.5" Y="0.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
+  <Class Name="Diploma.UserControllerImpl">
+    <Position X="8.5" Y="5.25" Width="1.5" />
+    <Members>
+      <Field Name="_sha512" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQAAAABAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\UserControllerImpl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.221" />
+  </Class>
+  <Class Name="Diploma.About" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>About.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diploma.Program" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Diploma.IUserContoller">
+    <Position X="8.5" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\IUserContoller.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

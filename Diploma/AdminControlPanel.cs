@@ -9,8 +9,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Threading;
+using Diploma.Controllers;
+using Diploma.Entities;
 
 
 namespace Diploma
@@ -27,6 +30,11 @@ namespace Diploma
             label8.Visible = false;
             label16.Visible = false;
 
+            if (_persons.Count == 0 || _persons==null)
+            {
+                menuComboBox.SelectedText = "История пуста";
+                menuComboBox.SelectedItem = "История пуста";
+            }
         }
 
         private readonly List<Person> _persons = new Person().GetPersons();
@@ -49,83 +57,41 @@ namespace Diploma
         {
             try
             {
-
                 var dataBase = new DataBase();
                 dataBase.OpenConnection();
                 EmptyFields();
-                var cmd = new MySqlCommand(
-                    @"select ui.login_id, ui.name, ui.surname, ul.password,
-                ui.mail, ui.phone, ui.birth_date from user_list ul left join
-                user_info ui on ((ul.login=ui.login_id)) where ui.login_id=@id;"
-                    , dataBase.GetConnection());
-                cmd.Parameters.AddWithValue("@id", searchField.Text);
-                
-                var dataReader = cmd.ExecuteReader();
 
-
-                var passwordCached = PasswordField.Text;
-
-                while (dataReader.Read())
-                {
-                    NameField.Text = dataReader.GetValue(1).ToString();
-                    SurnameField.Text = dataReader.GetValue(2).ToString();
-                    passwordCached = dataReader.GetValue(3).ToString();
-                    PasswordField.Text = passwordCached;
-                    MailField.Text = dataReader.GetValue(4).ToString();
-                    PhoneField.Text = dataReader.GetValue(5).ToString();
-                    DateField.Text = dataReader.GetValue(6).ToString();
-                }
-
-                dataReader.Close();
-
-                var cmd2 = new MySqlCommand(
-                    "select ud.user_id, ud.worker_type, ud.department_type, eho.HeadOfficer from user_dep ud left join engineer_head_officer eho on ud.department_type=Department where  user_id=@ui;"
-                    , dataBase.GetConnection());
-                cmd2.Parameters.AddWithValue("@ui", searchField.Text);
-                var dataReader1 = cmd2.ExecuteReader();
-
-                while (dataReader1.Read())
-                {
-                    workingXPComboBox.SelectedItem = dataReader1.GetValue(1).ToString();
-                    KnowledgeComboBox.SelectedItem = dataReader1.GetValue(2).ToString();
-                    HeadOfficer.Text = dataReader1.GetValue(3).ToString();
-                }
-
-                dataReader1.Close();
-
-                var selectScienceLeader = new MySqlCommand
-                ("select ux.leader_name from user_xp ux left join worker_table_officer wo on wo.worker_type_officer=ux.leader_name where login=@ul;"
-                    , dataBase.GetConnection());
-                selectScienceLeader.Parameters.AddWithValue("@ul", searchField.Text);
-                var sceinceLeaderReader = selectScienceLeader.ExecuteReader();
-                while (sceinceLeaderReader.Read())
-                {
-                    scienceLeader.SelectedItem = sceinceLeaderReader.GetValue(0).ToString();
-                }
-
-                sceinceLeaderReader.Close();
-
-                dataBase.CloseConnection();
-
-                
-                //TODO: DO CLEAN UP!!!
-
-
+                UserControllerImpl impl = new UserControllerImpl();
                 try
                 {
-                    if (!string.IsNullOrEmpty(searchField.Text) &&
-                        !string.IsNullOrEmpty(NameField.Text) &&
-                        !string.IsNullOrEmpty(SurnameField.Text) &&
-                        !string.IsNullOrEmpty(MailField.Text) &&
-                        !string.IsNullOrEmpty(PhoneField.Text) &&
-                        !string.IsNullOrEmpty(DateField.Text) &&
-                        !string.IsNullOrEmpty(HeadOfficer.Text) &&
+                    impl.Get(searchField.Text);
+                }
+                catch (NoSuchUserException ex)
+                {
+                    MessageBox.Show("222222");
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+                dataBase.CloseConnection();
+
+                var cond = !string.IsNullOrEmpty(searchField.Text) &&
+                           !string.IsNullOrEmpty(NameField.Text) &&
+                           !string.IsNullOrEmpty(SurnameField.Text) &&
+                           !string.IsNullOrEmpty(MailField.Text) &&
+                           !string.IsNullOrEmpty(PhoneField.Text) &&
+                           !string.IsNullOrEmpty(DateField.Text) &&
+                           !string.IsNullOrEmpty(HeadOfficer.Text) &&
+                           !string.IsNullOrEmpty(workingXPComboBox.SelectedItem.ToString()) &&
+                           !string.IsNullOrEmpty(KnowledgeComboBox.SelectedItem.ToString());
+                try
+                {
+                    if (cond &&
                         (!scienceLeader.SelectedItem.ToString().Equals(null) ||
                          !string.IsNullOrEmpty(scienceLeader.SelectedItem.ToString()) ||
-                         !string.IsNullOrWhiteSpace(scienceLeader.SelectedItem.ToString())) &&
-                        !string.IsNullOrEmpty(workingXPComboBox.SelectedItem.ToString()) &&
-                        !string.IsNullOrEmpty(KnowledgeComboBox.SelectedItem.ToString())
-                    )
+                         !string.IsNullOrWhiteSpace(scienceLeader.SelectedItem.ToString())))
+
                     {
 
                         var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
@@ -141,15 +107,7 @@ namespace Diploma
 
                     }
 
-                    if (!string.IsNullOrEmpty(searchField.Text) &&
-                        !string.IsNullOrEmpty(NameField.Text) &&
-                        !string.IsNullOrEmpty(SurnameField.Text) &&
-                        !string.IsNullOrEmpty(MailField.Text) &&
-                        !string.IsNullOrEmpty(PhoneField.Text) &&
-                        !string.IsNullOrEmpty(DateField.Text) &&
-                        !string.IsNullOrEmpty(HeadOfficer.Text) &&
-                        !string.IsNullOrEmpty(workingXPComboBox.SelectedItem.ToString()) &&
-                        !string.IsNullOrEmpty(KnowledgeComboBox.SelectedItem.ToString()) &&
+                    if (cond &&
                         (scienceLeader.SelectedItem.ToString().Equals(null) ||
                          string.IsNullOrEmpty(scienceLeader.SelectedItem.ToString()) ||
                          string.IsNullOrWhiteSpace(scienceLeader.SelectedItem.ToString()))
@@ -162,7 +120,6 @@ namespace Diploma
                             workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
                         if (!menuComboBox.Items.Contains(person.ToString()))
                         {
-
                             menuComboBox.Items.Add(person.ToString());
                             _persons.Add(person);
                         }
@@ -176,66 +133,89 @@ namespace Diploma
                         workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
                     if (!menuComboBox.Items.Contains(person.ToString()))
                     {
-
                         menuComboBox.Items.Add(person.ToString());
                         _persons.Add(person);
                     }
                 }
-
+                
             }
             catch (InvalidOperationException exception)
             {
-                using (var fstream = new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log", FileMode.Append))
+                using (var fstream =
+                    new FileStream(
+                        $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log",
+                        FileMode.Append))
                 {
 
                     var array = Encoding.Default.GetBytes(exception.StackTrace);
                     // асинхронная запись массива байтов в файл
-                    await fstream.WriteAsync(array,  0, array.Length);
+                    await fstream.WriteAsync(array, 0, array.Length);
                     await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
 
                 }
 
             }
-                
-
+            catch (NoSuchUserException exception)
+            {
+            }
         }
 
         //удалить
         private async void button3_Click(object sender, EventArgs e)
         {
-            
+            if (!string.IsNullOrEmpty(searchField.Text))
             if ((MessageBox.Show(@"Удалить данного пользователя? Это действие нельзя отменить!", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)) == DialogResult.Yes)
                 try
                 {
-                    var dataBase = new DataBase();
-                    dataBase.OpenConnection();
-            
-                    var dropFromUserInfo = new MySqlCommand("delete from user_info where login_id=@login;",
-                        dataBase.GetConnection());
-                    var dropFromUserList =
-                        new MySqlCommand("delete from user_list where login=@login;", dataBase.GetConnection());
-                    var dropFromUserDep =
-                        new MySqlCommand("delete from user_dep where user_id=@login", dataBase.GetConnection());
-                    var dropFromUserXp =
-                        new MySqlCommand("delete from user_xp where login=@login", dataBase.GetConnection());
+                    Person person = null;
+                    try
+                    {
+                        person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
+                            PhoneField.Text,
+                            DateTime.Parse(DateField.Text), HeadOfficer.Text,
+                            workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
+                        menuComboBox.Items.Remove(person.ToString());
 
-                    dropFromUserInfo.Parameters.AddWithValue("@login", searchField.Text);
-                    dropFromUserList.Parameters.AddWithValue("@login", searchField.Text);
-                    dropFromUserDep.Parameters.AddWithValue("@login", searchField.Text);
-                    dropFromUserXp.Parameters.AddWithValue("@login", searchField.Text);
+                    }
+                    catch (FormatException)
+                    {
 
-                    dropFromUserList.ExecuteNonQuery();
-                    dropFromUserDep.ExecuteNonQuery();
-                    dropFromUserInfo.ExecuteNonQuery();
-                    dropFromUserXp.ExecuteNonQuery();
-                    var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
-                        PhoneField.Text,
-                        DateTime.Parse(DateField.Text), HeadOfficer.Text,
-                        workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
-                    dataBase.CloseConnection();
+                    }
+                    catch (NullReferenceException)
+                    {
+                        
+                    }
 
-                    
-                    menuComboBox.Items.Remove(person.ToString());
+                    var impl = new UserControllerImpl();
+                    try
+                    {
+                        impl.Get(searchField.Text);
+
+                        var person1 = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
+                            PhoneField.Text,
+                            DateTime.Parse(DateField.Text), HeadOfficer.Text,
+                            workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
+                        if (_persons.Contains(person1))
+                        {
+                            impl.Delete(searchField.Text);
+                        }
+                    }
+                    catch (NoSuchUserException)
+                    {
+                        MessageBox.Show(@"Такого пользователя нет в базе");
+                        return;
+                    }
+                    catch (FormatException)
+                    {
+                        return;
+                    }
+                    finally
+                    {
+                        impl.Delete(searchField.Text);
+                    }
+                
+
+                 
 
                     MessageBox.Show(@"Пользователь удален");
                     if (_persons.Contains(person))
@@ -245,6 +225,7 @@ namespace Diploma
                     }
                     EmptyFields();
                     searchField.Text = "";
+                    
                 }
                 catch (InvalidOperationException exception)
                 {
@@ -264,137 +245,74 @@ namespace Diploma
         //изменить
         private async void button1_Click(object sender, EventArgs e)
         {
-            
             if ((MessageBox.Show(@"Изменить данные данного пользователя?", @"Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) == DialogResult.Yes)
                 if (!searchField.Equals(null))
-                 try
-                 {
-                    var password = PasswordField.Text;
-                    var password1 = "";
-                    var database = new DataBase();
-                    database.OpenConnection();
-                    var getPasswordFromDb = new MySqlCommand("select password from user_list where login=@ul",
-                        database.GetConnection());
-                    getPasswordFromDb.Parameters.AddWithValue("@ul", searchField.Text);
-                    var readPassword = getPasswordFromDb.ExecuteReader();
-                    while (readPassword.Read())
+                    try
                     {
-                        password1 = readPassword.GetValue(0).ToString();
+                                          
+                       UserControllerImpl userControllerImpl = new UserControllerImpl();
+                       userControllerImpl.Update(searchField.Text);
+
+                        var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
+                            PhoneField.Text,
+                            DateTime.Parse(DateField.Text),
+                            HeadOfficer.Text, scienceLeader.SelectedItem.ToString(),
+                            workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
+                        if (menuComboBox.Items.Contains(person.ToString()))
+                        {
+                            menuComboBox.Items.Remove(person.ToString());
+                            menuComboBox.Items.Add(person.ToString());
+    
+                        }
+
+                        EmptyFields();
+                        searchField.Text = "";
+                        MessageBox.Show($@"Изменено успешно");
+                        var database = new DataBase();
+                        database.OpenConnection();
+                        var enable = new MySqlCommand("SET SQL_SAFE_UPDATES = 1;", database.GetConnection()); 
+                        enable.ExecuteNonQuery();
+                        database.CloseConnection();
                     }
-
-                    readPassword.Close();
-
-
-                    var change = new MySqlCommand
-                    ("update user_info set name=@name,surname=@surname,mail=@mail,phone=@phone,birth_date=@birthdate where login_id=@login;"
-                        , database.GetConnection());
-
-                    change.Parameters.AddWithValue("@name", NameField.Text);
-                    change.Parameters.AddWithValue("@surname", SurnameField.Text);
-                    change.Parameters.AddWithValue("@mail", MailField.Text);
-                    change.Parameters.AddWithValue("@phone", PhoneField.Text);
-                    change.Parameters.AddWithValue("@birthdate", DateTime.Parse(DateField.Text));
-                    change.Parameters.AddWithValue("@login", searchField.Text);
-                    change.ExecuteNonQuery();
-
-
-                    var change2 = new MySqlCommand
-                    ("update user_dep set worker_type=@wt, department_type=@dt where user_id=@login;",
-                        database.GetConnection());
-                    change2.Parameters.AddWithValue("@login", searchField.Text);
-                    change2.Parameters.AddWithValue("@wt", workingXPComboBox.SelectedItem);
-                    change2.Parameters.AddWithValue("@dt", KnowledgeComboBox.SelectedItem);
-                    change2.ExecuteNonQuery();
-
-                    var changeUserXp = new MySqlCommand
-                    ("update user_xp set leader_name=@leader where login=@login;"
-                        , database.GetConnection());
-                    changeUserXp.Parameters.AddWithValue("@login", searchField.Text);
-                    changeUserXp.Parameters.AddWithValue("@leader", scienceLeader.SelectedItem);
-                    changeUserXp.ExecuteNonQuery();
-
-                    if (!password.Equals(password1))
+                    catch (InvalidOperationException exception)
                     {
-                        var changePassword = new MySqlCommand
-                        ("update user_list set password=@pass where login=@login;"
-                            , database.GetConnection());
-                        changePassword.Parameters.AddWithValue("@pass",
-                            Convert.ToBase64String(
-                                _sha512.ComputeHash(Encoding.UTF8.GetBytes(PasswordField.Text))));
-                        changePassword.Parameters.AddWithValue("@login", searchField.Text);
-                        changePassword.ExecuteNonQuery();
+                        using (var fstream =
+                            new FileStream(
+                                $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log",
+                                FileMode.Append))
+                        {
+
+                            var array = Encoding.Default.GetBytes(exception.StackTrace);
+                            // асинхронная запись массива байтов в файл
+                            await fstream.WriteAsync(array, 0, array.Length);
+                            await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
+                        }
                     }
-                    else
+                    catch (NullReferenceException)
                     {
-                    }
-
-
-                    var disable = new MySqlCommand("SET SQL_SAFE_UPDATES = 0;", database.GetConnection());
-                   // disable.ExecuteNonQuery();
-                   
-
-                    var change3 = new MySqlCommand(
-                        @"update user_xp set leader_name=@ln where login=@login;",
-                        database.GetConnection());
-                    change3.Parameters.AddWithValue("@login", searchField.Text);
-                    change3.Parameters.AddWithValue("@ln", scienceLeader.SelectedItem);
-
-
-                   change3.ExecuteNonQuery();
-
-                    var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
-                        PhoneField.Text,
-                        DateTime.Parse(DateField.Text),
-                        HeadOfficer.Text, scienceLeader.SelectedItem.ToString(),
-                        workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
-                    if (menuComboBox.Items.Contains(person.ToString()))
-                    {
-                        menuComboBox.Items.Remove(person.ToString());
-                        menuComboBox.Items.Add(person.ToString());
+                              var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
+                               PhoneField.Text,
+                               DateTime.Parse(DateField.Text),
+                               HeadOfficer.Text, 
+                               workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
+                           if (menuComboBox.Items.Contains(person.ToString()))
+                           {
+                               menuComboBox.Items.Remove(person.ToString());
+                               menuComboBox.Items.Add(person.ToString());
+                           }
+                        //MessageBox.Show("Убедитесь, что все поля заполнены!");
+                        MessageBox.Show(@"Изменено успешно");
+                        EmptyFields();
+                        searchField.Text = "";
 
                     }
-
-                    EmptyFields();
-                    searchField.Text = "";
-                    database.CloseConnection();
-                    MessageBox.Show($@"Изменено успешно");
-                    //var enable = new MySqlCommand("SET SQL_SAFE_UPDATES = 1;", database.GetConnection()); 
-                   // enable.ExecuteNonQuery();
-                }
-                catch (InvalidOperationException exception)
-                {
-                    using (var fstream =
-                        new FileStream(
-                            $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}/error{DateTime.Now.ToShortDateString()}.log",
-                            FileMode.Append))
+                    catch (FormatException)
                     {
-
-                        var array = Encoding.Default.GetBytes(exception.StackTrace);
-                        // асинхронная запись массива байтов в файл
-                        await fstream.WriteAsync(array, 0, array.Length);
-                        await fstream.WriteAsync(new byte[] {13, 10}, 0, 2);
                     }
-                }
-                catch (NullReferenceException)
-                {
-                 /*      var person = new Person(searchField.Text, NameField.Text, SurnameField.Text, MailField.Text,
-                        PhoneField.Text,
-                        DateTime.Parse(DateField.Text),
-                        HeadOfficer.Text, 
-                        workingXPComboBox.SelectedItem.ToString(), KnowledgeComboBox.SelectedItem.ToString());
-                    if (menuComboBox.Items.Contains(person.ToString()))
+                    catch (Exception ex)
                     {
-                        menuComboBox.Items.Remove(person.ToString());
-                        menuComboBox.Items.Add(person.ToString());
-                    }*/
-                 //MessageBox.Show("Убедитесь, что все поля заполнены!");
-                 MessageBox.Show(@"Изменено успешно");
-                 EmptyFields();
-                 searchField.Text = "";
-
-                }
-                catch(FormatException){}
-
+                        MessageBox.Show(ex.Message);
+                    }
 
         }
 
@@ -431,8 +349,6 @@ namespace Diploma
                 var dataBase = new DataBase();
                 dataBase.OpenConnection();
                
-                //String[] name = searchByName.Text.Split(' ');
-                // bool name_is_good = searchByName.Text.All => 
                 MySqlCommand cmd;
                 try
                 {
@@ -452,8 +368,6 @@ namespace Diploma
                     else
                     {
                         throw new Exception();
-                        // cmd.Parameters.AddWithValue("@name", searchByName.Text);
-                        // cmd.Parameters.AddWithValue("@surname", null);
                     }
                 }
                 catch (Exception)
@@ -518,6 +432,10 @@ namespace Diploma
                     }
 
                 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -695,12 +613,13 @@ namespace Diploma
             Clipboard.SetText(dataGridView1.CurrentCell.Value.ToString());
             
         }
-
-        
         private void смотретьПолнуюИнформациюToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var impl = new UserControllerImpl();
+           
             var text = dataGridView1.CurrentCell.Value.ToString();
             searchField.Text = !text.StartsWith("user") ? dataGridView1[0, dataGridView1.CurrentCell.RowIndex].Value.ToString() : text;
+            impl.Get(dataGridView1[0, dataGridView1.CurrentCell.RowIndex].ToString());
             tabControl1.SelectTab(0);
         }
 
@@ -906,25 +825,8 @@ namespace Diploma
                     var dataBase = new DataBase();
                     dataBase.OpenConnection();
 
-                    var dropFromUserInfo = new MySqlCommand("delete from user_info where login_id=@login;",
-                        dataBase.GetConnection());
-                    var dropFromUserList =
-                        new MySqlCommand("delete from user_list where login=@login;", dataBase.GetConnection());
-                    var dropFromUserDep =
-                        new MySqlCommand("delete from user_dep where user_id=@login", dataBase.GetConnection());
-                    var dropFromUserXp =
-                        new MySqlCommand("delete from user_xp where login=@login", dataBase.GetConnection());
-
-                    dropFromUserInfo.Parameters.AddWithValue("@login", text);
-                    dropFromUserList.Parameters.AddWithValue("@login", text);
-                    dropFromUserDep.Parameters.AddWithValue("@login", text);
-                    dropFromUserXp.Parameters.AddWithValue("@login", text);
-
-                    dropFromUserList.ExecuteNonQuery();
-                    dropFromUserDep.ExecuteNonQuery();
-                    dropFromUserInfo.ExecuteNonQuery();
-                   dropFromUserXp.ExecuteNonQuery();
-                    dataBase.CloseConnection();
+                    UserControllerImpl impl = new UserControllerImpl();
+                    impl.Delete(text);
 
                     EmptyFields();
                     searchField.Text = "";
@@ -943,42 +845,6 @@ namespace Diploma
        {
            searchField.Text = menuComboBox.SelectedItem.ToString();
            
-       }
-
-       private void button4_Click(object sender, EventArgs e)
-       {
-           if (BackColor == Color.White)
-           {
-               BackColor = Color.FromArgb(51, 51, 51);
-               CloseLabel.BackColor = Color.White;
-               MinimizeLabel.BackColor = Color.White;
-               tabPage1.BackColor=Color.FromArgb(51, 51, 51);
-               tabPage2.BackColor=Color.FromArgb(51, 51, 51);
-               label1.ForeColor = Color.White;
-               label2.ForeColor = Color.White;
-               label3.ForeColor = Color.White;
-               label4.ForeColor = Color.White;
-               label5.ForeColor = Color.White;
-               label6.ForeColor = Color.White;
-               label7.ForeColor = Color.White;
-               label8.ForeColor = Color.White;
-               label9.ForeColor = Color.White;
-               label10.ForeColor = Color.White;
-               label11.ForeColor = Color.White;
-               label12.ForeColor = Color.White;
-               label14.ForeColor = Color.White;
-               Title.ForeColor= Color.White;
-               NameField.BackColor = Color.FromArgb(51, 51, 51);
-               NameField.ForeColor = Color.White;
-
-
-           }
-           else if (BackColor == Color.FromArgb(51, 51, 51))
-           {
-               BackColor = Color.White;
-               CloseLabel.ForeColor = Color.Black;
-
-           }
        }
 
     
@@ -1121,8 +987,10 @@ namespace Diploma
                 saveFileDialog1.Filter = @"CSV|*.csv";
                 saveFileDialog1.FileName = "List of people";
 
-                if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
                 if (dataGridView2.RowCount > 1)
+                {
+                    if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
+
                     for (var j = 0; j < dataGridView2.RowCount - 1; j++)
                     {
                         for (int i = 0; i < dataGridView2.ColumnCount - 1; i++)
@@ -1137,6 +1005,7 @@ namespace Diploma
                             line += "\r\n";
                         }
                     }
+                }
 
                 label31.Text = line;
                 using (var fstream =

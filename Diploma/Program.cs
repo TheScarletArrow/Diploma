@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Diploma
@@ -13,9 +14,8 @@ namespace Diploma
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AdminControlPanel());
-              //Application.Run(new Auth());
-              //Application.Run(new ShowTables());
+           Application.Run(new AdminControlPanel());
+         //   Application.Run(new Auth());
         }
 
     }

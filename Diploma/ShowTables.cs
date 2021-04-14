@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using Diploma.Entities;
 using MySql.Data.MySqlClient;
 
 namespace Diploma

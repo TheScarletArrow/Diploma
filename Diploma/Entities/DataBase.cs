@@ -1,9 +1,9 @@
 ﻿using System;
-using MySql.Data.MySqlClient;
-using System.Windows.Forms;
 using System.Data;
+using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
-namespace Diploma
+namespace Diploma.Entities
 {
     internal class DataBase
     {
@@ -20,7 +20,7 @@ namespace Diploma
             }
             catch (MySqlException exception)
             {
-                MessageBox.Show(@"Невозможно открыть связь с базой данных" + exception.StackTrace);
+                MessageBox.Show(@"Невозможно открыть соединение с базой данных" + exception.StackTrace);
 
             }
             catch (InvalidOperationException exception)

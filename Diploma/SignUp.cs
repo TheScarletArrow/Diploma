@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Drawing;
 using System.IO;
+using Diploma.Entities;
 
 namespace Diploma
 {
@@ -206,7 +207,7 @@ namespace Diploma
                         // dataAdapter.SelectCommand = insertToXP;
                         // dataAdapter.Fill(dataTable3);
 
-                        //ClearAllTextBox();
+                        ClearAllTextBox();
                     }
                     catch (
                         MySqlException mysqlexception

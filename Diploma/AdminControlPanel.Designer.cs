@@ -1,5 +1,4 @@
-﻿
-namespace Diploma
+﻿namespace Diploma
 {
     partial class AdminControlPanel
     {
@@ -18,6 +17,7 @@ namespace Diploma
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -36,12 +36,12 @@ namespace Diploma
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.NameField = new System.Windows.Forms.TextBox();
-            this.SurnameField = new System.Windows.Forms.TextBox();
-            this.PasswordField = new System.Windows.Forms.TextBox();
-            this.MailField = new System.Windows.Forms.TextBox();
-            this.PhoneField = new System.Windows.Forms.TextBox();
-            this.DateField = new System.Windows.Forms.TextBox();
+            NameField = new System.Windows.Forms.TextBox();
+            SurnameField = new System.Windows.Forms.TextBox();
+            PasswordField = new System.Windows.Forms.TextBox();
+            MailField = new System.Windows.Forms.TextBox();
+            PhoneField = new System.Windows.Forms.TextBox();
+            DateField = new System.Windows.Forms.TextBox();
             this.searchField = new System.Windows.Forms.TextBox();
             this.search = new System.Windows.Forms.Label();
             this.Title = new System.Windows.Forms.Label();
@@ -49,8 +49,8 @@ namespace Diploma
             this.button3 = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.KnowledgeComboBox = new System.Windows.Forms.ComboBox();
-            this.workingXPComboBox = new System.Windows.Forms.ComboBox();
+            KnowledgeComboBox = new System.Windows.Forms.ComboBox();
+            workingXPComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -58,7 +58,7 @@ namespace Diploma
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.HeadOfficer = new System.Windows.Forms.TextBox();
+            HeadOfficer = new System.Windows.Forms.TextBox();
             this.CloseLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -75,7 +75,7 @@ namespace Diploma
             this.label17 = new System.Windows.Forms.Label();
             this.label17f = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.scienceLeader = new System.Windows.Forms.ComboBox();
+            scienceLeader = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label27 = new System.Windows.Forms.Label();
@@ -138,45 +138,45 @@ namespace Diploma
             // 
             // NameField
             // 
-            this.NameField.Location = new System.Drawing.Point(393, 79);
-            this.NameField.Name = "NameField";
-            this.NameField.Size = new System.Drawing.Size(100, 20);
-            this.NameField.TabIndex = 2;
+            NameField.Location = new System.Drawing.Point(393, 79);
+            NameField.Name = "NameField";
+            NameField.Size = new System.Drawing.Size(100, 20);
+            NameField.TabIndex = 0;
             // 
             // SurnameField
             // 
-            this.SurnameField.Location = new System.Drawing.Point(393, 120);
-            this.SurnameField.Name = "SurnameField";
-            this.SurnameField.Size = new System.Drawing.Size(100, 20);
-            this.SurnameField.TabIndex = 1;
+            SurnameField.Location = new System.Drawing.Point(393, 120);
+            SurnameField.Name = "SurnameField";
+            SurnameField.Size = new System.Drawing.Size(100, 20);
+            SurnameField.TabIndex = 1;
             // 
             // PasswordField
             // 
-            this.PasswordField.Location = new System.Drawing.Point(393, 163);
-            this.PasswordField.Name = "PasswordField";
-            this.PasswordField.Size = new System.Drawing.Size(100, 20);
-            this.PasswordField.TabIndex = 2;
+            PasswordField.Location = new System.Drawing.Point(393, 163);
+            PasswordField.Name = "PasswordField";
+            PasswordField.Size = new System.Drawing.Size(100, 20);
+            PasswordField.TabIndex = 2;
             // 
             // MailField
             // 
-            this.MailField.Location = new System.Drawing.Point(393, 204);
-            this.MailField.Name = "MailField";
-            this.MailField.Size = new System.Drawing.Size(100, 20);
-            this.MailField.TabIndex = 3;
+            MailField.Location = new System.Drawing.Point(393, 204);
+            MailField.Name = "MailField";
+            MailField.Size = new System.Drawing.Size(100, 20);
+            MailField.TabIndex = 3;
             // 
             // PhoneField
             // 
-            this.PhoneField.Location = new System.Drawing.Point(393, 250);
-            this.PhoneField.Name = "PhoneField";
-            this.PhoneField.Size = new System.Drawing.Size(100, 20);
-            this.PhoneField.TabIndex = 4;
+            PhoneField.Location = new System.Drawing.Point(393, 250);
+            PhoneField.Name = "PhoneField";
+            PhoneField.Size = new System.Drawing.Size(100, 20);
+            PhoneField.TabIndex = 4;
             // 
             // DateField
             // 
-            this.DateField.Location = new System.Drawing.Point(393, 289);
-            this.DateField.Name = "DateField";
-            this.DateField.Size = new System.Drawing.Size(100, 20);
-            this.DateField.TabIndex = 5;
+            DateField.Location = new System.Drawing.Point(393, 289);
+            DateField.Name = "DateField";
+            DateField.Size = new System.Drawing.Size(100, 20);
+            DateField.TabIndex = 5;
             // 
             // searchField
             // 
@@ -264,23 +264,23 @@ namespace Diploma
             // 
             // KnowledgeComboBox
             // 
-            this.KnowledgeComboBox.FormattingEnabled = true;
-            this.KnowledgeComboBox.Items.AddRange(new object[] {"IT, программирование", "Инженер", "Медицина", "Юриспруденция", "Гос. Служба"});
-            this.KnowledgeComboBox.Location = new System.Drawing.Point(372, 373);
-            this.KnowledgeComboBox.Name = "KnowledgeComboBox";
-            this.KnowledgeComboBox.Size = new System.Drawing.Size(121, 21);
-            this.KnowledgeComboBox.TabIndex = 22;
-            this.KnowledgeComboBox.SelectedIndexChanged += new System.EventHandler(this.Change2);
+            KnowledgeComboBox.FormattingEnabled = true;
+            KnowledgeComboBox.Items.AddRange(new object[] {"IT, программирование", "Инженер", "Медицина", "Юриспруденция", "Гос. Служба"});
+            KnowledgeComboBox.Location = new System.Drawing.Point(372, 373);
+            KnowledgeComboBox.Name = "KnowledgeComboBox";
+            KnowledgeComboBox.Size = new System.Drawing.Size(121, 21);
+            KnowledgeComboBox.TabIndex = 22;
+            KnowledgeComboBox.SelectedIndexChanged += new System.EventHandler(this.Change2);
             // 
             // workingXPComboBox
             // 
-            this.workingXPComboBox.FormattingEnabled = true;
-            this.workingXPComboBox.Items.AddRange(new object[] {"Студент", "Преподаватель", "Работающий", "Стажер", "Ученик"});
-            this.workingXPComboBox.Location = new System.Drawing.Point(372, 333);
-            this.workingXPComboBox.Name = "workingXPComboBox";
-            this.workingXPComboBox.Size = new System.Drawing.Size(121, 21);
-            this.workingXPComboBox.TabIndex = 21;
-            this.workingXPComboBox.SelectedIndexChanged += new System.EventHandler(this.Change);
+            workingXPComboBox.FormattingEnabled = true;
+            workingXPComboBox.Items.AddRange(new object[] {"Студент", "Преподаватель", "Работающий", "Стажер", "Ученик"});
+            workingXPComboBox.Location = new System.Drawing.Point(372, 333);
+            workingXPComboBox.Name = "workingXPComboBox";
+            workingXPComboBox.Size = new System.Drawing.Size(121, 21);
+            workingXPComboBox.TabIndex = 21;
+            workingXPComboBox.SelectedIndexChanged += new System.EventHandler(this.Change);
             // 
             // label1
             // 
@@ -354,14 +354,14 @@ namespace Diploma
             // 
             // HeadOfficer
             // 
-            this.HeadOfficer.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.HeadOfficer.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.HeadOfficer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.HeadOfficer.Location = new System.Drawing.Point(372, 415);
-            this.HeadOfficer.Name = "HeadOfficer";
-            this.HeadOfficer.ReadOnly = true;
-            this.HeadOfficer.Size = new System.Drawing.Size(152, 19);
-            this.HeadOfficer.TabIndex = 31;
+            HeadOfficer.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            HeadOfficer.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            HeadOfficer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            HeadOfficer.Location = new System.Drawing.Point(372, 415);
+            HeadOfficer.Name = "HeadOfficer";
+            HeadOfficer.ReadOnly = true;
+            HeadOfficer.Size = new System.Drawing.Size(152, 19);
+            HeadOfficer.TabIndex = 31;
             // 
             // CloseLabel
             // 
@@ -442,18 +442,18 @@ namespace Diploma
             this.tabPage1.Controls.Add(this.label17);
             this.tabPage1.Controls.Add(this.label17f);
             this.tabPage1.Controls.Add(this.button2);
-            this.tabPage1.Controls.Add(this.scienceLeader);
+            this.tabPage1.Controls.Add(scienceLeader);
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Controls.Add(this.NameField);
-            this.tabPage1.Controls.Add(this.SurnameField);
-            this.tabPage1.Controls.Add(this.PasswordField);
+            this.tabPage1.Controls.Add(NameField);
+            this.tabPage1.Controls.Add(SurnameField);
+            this.tabPage1.Controls.Add(PasswordField);
             this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.MailField);
-            this.tabPage1.Controls.Add(this.HeadOfficer);
-            this.tabPage1.Controls.Add(this.PhoneField);
+            this.tabPage1.Controls.Add(MailField);
+            this.tabPage1.Controls.Add(HeadOfficer);
+            this.tabPage1.Controls.Add(PhoneField);
             this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.DateField);
+            this.tabPage1.Controls.Add(DateField);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.searchField);
             this.tabPage1.Controls.Add(this.label4);
@@ -463,9 +463,9 @@ namespace Diploma
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.button3);
             this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.workingXPComboBox);
+            this.tabPage1.Controls.Add(workingXPComboBox);
             this.tabPage1.Controls.Add(this.label10);
-            this.tabPage1.Controls.Add(this.KnowledgeComboBox);
+            this.tabPage1.Controls.Add(KnowledgeComboBox);
             this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -605,11 +605,11 @@ namespace Diploma
             // 
             // scienceLeader
             // 
-            this.scienceLeader.FormattingEnabled = true;
-            this.scienceLeader.Location = new System.Drawing.Point(372, 446);
-            this.scienceLeader.Name = "scienceLeader";
-            this.scienceLeader.Size = new System.Drawing.Size(121, 21);
-            this.scienceLeader.TabIndex = 34;
+            scienceLeader.FormattingEnabled = true;
+            scienceLeader.Location = new System.Drawing.Point(372, 446);
+            scienceLeader.Name = "scienceLeader";
+            scienceLeader.Size = new System.Drawing.Size(121, 21);
+            scienceLeader.TabIndex = 34;
             // 
             // label14
             // 
@@ -1044,12 +1044,12 @@ namespace Diploma
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
             this.label29.Location = new System.Drawing.Point(1004, 30);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(14, 20);
+            this.label29.Size = new System.Drawing.Size(24, 24);
             this.label29.TabIndex = 40;
-            this.label29.Text = "-";
+            this.label29.Text = "—";
             this.label29.ClientSizeChanged += new System.EventHandler(this.MinimizeLeave);
             this.label29.Click += new System.EventHandler(this.MimimzeClick);
             this.label29.MouseHover += new System.EventHandler(this.MinimizeHover);
@@ -1057,10 +1057,10 @@ namespace Diploma
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.label30.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
             this.label30.Location = new System.Drawing.Point(1033, 30);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(20, 20);
+            this.label30.Size = new System.Drawing.Size(24, 24);
             this.label30.TabIndex = 41;
             this.label30.Text = "X";
             this.label30.Click += new System.EventHandler(this.CloseClick);
@@ -1163,22 +1163,12 @@ namespace Diploma
         private System.Windows.Forms.ToolStripMenuItem размерыФайловToolStripMenuItem;
 
         #endregion
-
-        private System.Windows.Forms.TextBox NameField;
-        private System.Windows.Forms.TextBox SurnameField;
-        private System.Windows.Forms.TextBox PasswordField;
-        private System.Windows.Forms.TextBox MailField;
-        private System.Windows.Forms.TextBox PhoneField;
-        private System.Windows.Forms.TextBox DateField;
-        private System.Windows.Forms.TextBox searchField;
         private System.Windows.Forms.Label search;
         private System.Windows.Forms.Label Title;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox KnowledgeComboBox;
-        private System.Windows.Forms.ComboBox workingXPComboBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -1186,7 +1176,7 @@ namespace Diploma
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox HeadOfficer;
+        public static System.Windows.Forms.TextBox HeadOfficer;
         private System.Windows.Forms.Label CloseLabel;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TabControl tabControl1;
@@ -1201,7 +1191,6 @@ namespace Diploma
         private System.Windows.Forms.ToolStripMenuItem войтиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem регистрацияToolStripMenuItem;
-        private System.Windows.Forms.ComboBox scienceLeader;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label17f;
         private System.Windows.Forms.Label label25;
@@ -1219,5 +1208,15 @@ namespace Diploma
         private System.Windows.Forms.ToolStripMenuItem показатьБазуДанныхToolStripMenuItem;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
+        public static System.Windows.Forms.TextBox NameField;
+        public static System.Windows.Forms.TextBox SurnameField;
+        public static System.Windows.Forms.TextBox PasswordField;
+        public static System.Windows.Forms.TextBox MailField;
+        public static System.Windows.Forms.TextBox PhoneField;
+        public static System.Windows.Forms.TextBox DateField;
+        public System.Windows.Forms.TextBox searchField;
+        public static System.Windows.Forms.ComboBox KnowledgeComboBox;
+        public static System.Windows.Forms.ComboBox workingXPComboBox;
+        public static System.Windows.Forms.ComboBox scienceLeader;
     }
 }
